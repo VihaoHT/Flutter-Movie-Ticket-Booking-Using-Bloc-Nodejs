@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:http/http.dart' as http;
@@ -48,7 +47,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           // Lưu token vào SharedPreferences
           await preferences.setString("token", token);
           // print(token);
-          print('Username: $username, Email: $email');
+          // print('Username: $username, Email: $email');
           // print(password);
 
           await Future.delayed(const Duration(milliseconds: 100), () async {

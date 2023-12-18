@@ -18,8 +18,8 @@ class _LoginScreenState extends State<LoginScreen> {
       colors: <Color>[Color(0xffFA6900), Color(0xffDA004E)],
     ).createShader(const Rect.fromLTWH(0.0, 0.0, 200, 70.0));
 
-    final TextEditingController _emailController = TextEditingController();
-    final TextEditingController _passwordController = TextEditingController();
+    final TextEditingController emailController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
 
     return SafeArea(
       child: BlocProvider(
@@ -89,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       CustomTextField(
-                          controller: _emailController,
+                          controller: emailController,
                           hintText: "Enter your email")
                     ],
                   ),
@@ -107,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       CustomTextField(
-                          controller: _passwordController,
+                          controller: passwordController,
                           hintText: "Enter your password"),
                       Container(
                         alignment: Alignment.topRight,
@@ -124,8 +124,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ElevatedButton(
                         onPressed: () {
                           context.read<AuthBloc>().add(LoginButtonPressed(
-                              email: _emailController.text,
-                              password: _passwordController.text));
+                              email: emailController.text,
+                              password: passwordController.text));
                         },
                         style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.zero,

@@ -1,9 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart';
 import 'package:movie_booking_app/core/constants/constants.dart';
 import 'package:movie_booking_app/home/bloc/movie_bloc.dart';
+import 'package:movie_booking_app/home/screens/movie_details_screen.dart';
 import 'package:movie_booking_app/home/widgets/custom_textfileld_search.dart';
 import 'package:movie_booking_app/models/movie_model.dart';
 
@@ -23,7 +22,7 @@ class HomeScreen extends StatelessWidget {
           return Center(
             child: Text(
               state.error,
-              style: TextStyle(fontSize: 12),
+              style: const TextStyle(fontSize: 12),
             ),
           );
         }
@@ -58,16 +57,16 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 30),
                   Container(
                     alignment: Alignment.centerLeft,
+                    margin: const EdgeInsets.only(left: 13),
                     child: const Text(
                       "Danh sách phim đang công chiếu:",
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700
-                      ),
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700),
                     ),
                   ),
-                  const SizedBox(height:5),
+                  const SizedBox(height: 9),
                   Expanded(
                     child: GridView.builder(
                       gridDelegate:
@@ -82,31 +81,42 @@ class HomeScreen extends StatelessWidget {
                         final imageURL =
                             'http://149.28.159.68:3000/img/movies/${movieList[index].imageCover}';
                         // print(movieList[index].title);
-                        return GridTile(
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(14.0),
-                                  child: Image.network(
-                                    imageURL,
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    MovieDetailsScreen(movie: movieList[index]),
+                              ),
+                            );
+                          },
+                          child: GridTile(
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(14.0),
+                                    child: Image.network(
+                                      imageURL,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 20),
-                              Text(
-                                movieList[index].title,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    color: Constants.colorTitle,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            ],
+                                const SizedBox(height: 20),
+                                Text(
+                                  movieList[index].title,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      color: Constants.colorTitle,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ],
 
-                            // Các thuộc tính khác của ListTile (ví dụ: subtitle, leading, ...)
+                              // Các thuộc tính khác của ListTile (ví dụ: subtitle, leading, ...)
+                            ),
                           ),
                         );
                       },

@@ -9,7 +9,7 @@ class MovieRespository {
 
   Future<List<Movie>> getMovies() async {
     // Define the base URL and the endpoint
-    final url = Uri.parse('$uri/api/movies');
+    final url = Uri.parse(api);
 
     // Make the HTTP GET request and await the response
     final response = await get(url);
