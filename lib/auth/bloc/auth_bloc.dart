@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:http/http.dart' as http;
+import 'package:movie_booking_app/core/constants/constants.dart';
 import 'package:movie_booking_app/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 part 'auth_event.dart';
@@ -25,7 +26,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         SharedPreferences preferences = await SharedPreferences.getInstance();
 
         final response = await http.post(
-          Uri.parse('http://149.28.159.68:3000/api/users/login'),
+          Uri.parse('$uri/api/users/login'),
           body: json.encode({
             'email': event.email,
             'password': event.password,
