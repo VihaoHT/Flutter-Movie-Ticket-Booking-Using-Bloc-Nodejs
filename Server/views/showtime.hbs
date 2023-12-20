@@ -1,0 +1,80 @@
+{{> menu}}
+
+<!-- Nội dung -->
+<div class="p-4">
+    {{!-- Insert Showtime --}}
+    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addShowtime">Add Showtime</button>
+    <!-- Modal -->
+    <div class="modal fade rounded" id="addShowtime" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header d-flex justify-content-center" style="background-color:#DA004E;">
+            <h5 class="modal-title text-white">Add Showtime</h5>
+          </div>
+          <div class="modal-body" style="background-color:#130B2B;">
+            <form action="/showtime/insert_postshowtime" method="post">
+              <div class="mb-3 mt-3">
+                  <label for="movie">Movie:</label>
+                 <select class="form-control" id="movie" name="movie" required>
+                    {{#each movies}}
+                        <option value="{{_id}}">{{title}}</option>
+                    {{/each}}
+                </select>
+              </div>
+              <div class="mb-3 mt-3">
+                 <label for="room">Room:</label>
+                 <select class="form-control" id="room" name="room" required>
+                    {{#each rooms}}
+                        <option value="{{_id}}">{{name}}</option>
+                    {{/each}}
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="time">Start time:</label>
+                <input type="datetime-local" class="form-control" id="start_time" name="start_time" required>
+              </div>
+              <div class="mb-3">
+                <label for="time">End time:</label>
+                <input type="datetime-local" class="form-control" id="end_time" name="end_time" required>
+              </div>
+              <div class="mb-3">
+                <label for="time">Price:</label>
+                <input type="number" class="form-control" id="price" name="price" required>
+              </div>
+              <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal">Close</button>
+                <button name="submit" type="submit" class="btn btn-success m-2">Add</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    {{!-- List showtime --}}
+    <table class="table table-dark text-center">
+      <thead>
+        <tr>
+          <th>Movie</th>
+          <th>Room</th>
+          <th>Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each showtimes}}
+        <tr>
+            <td>{{this.movie.title}}</td>
+            <td>{{this.room.name}}</td>
+            <td>{{this.price}}</td>
+            <td>
+              <a href='/showtime/deleteshowtime/{{this._id}}' class='btn btn-danger'>Delete</a>
+              <a href='/showtime/{{this._id}}' class='btn btn-primary'>Update</a>
+            </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+</div>
+
+

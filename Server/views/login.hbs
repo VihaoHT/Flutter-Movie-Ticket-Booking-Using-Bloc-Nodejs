@@ -1,0 +1,33 @@
+<div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="p-5 text-white text-center vh-100 d-flex flex-column justify-content-center bg-dark">
+                    <h1>This is Admin's Login</h1>
+                    <h6>Please fill all information on the right side</h6>
+                </div>
+            </div>
+            <div class="col-sm-6 d-flex flex-column justify-content-center ps-5 pe-5" style="background-color: white;">
+                <form action="/login" method="post">
+                    <h1 align="center">Welcome admin</h1>
+                    <div class="mb-5 mt-5">
+                    <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" required>
+                    </div>
+                    <div class="mb-5">
+                    <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="password" required>
+                    </div>
+                    <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" name="remember"> 
+                    <label class="form-check-label d-flex justify-content-between">
+                        <p>Remember me</p>
+                        <p>Forgot password?</p>
+                    </label>
+                    
+                    </div>
+                    <div class="d-grid">
+                    <button type="submit" name="submit" class="btn btn-dark">Login</button>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </div>

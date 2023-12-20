@@ -1,0 +1,12 @@
+{{> menu}}
+
+<!-- Nội dung -->
+<div class="container">
+        <form action="/category/update_postcategory/{{_id}}" method="post">
+            <div class="mb-3 mt-3">
+                <label for="name">Category name:</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{name}}" required>
+            </div>
+            <button name="submit" type="submit" class="btn btn-primary">Update Category</button>
+        </form>
+</div>

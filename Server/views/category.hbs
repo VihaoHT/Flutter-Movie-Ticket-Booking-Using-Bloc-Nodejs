@@ -1,0 +1,52 @@
+{{> menu}}
+
+<!-- Nội dung -->
+<div class="p-4">
+    {{!-- Insert Category --}}
+    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addCategory">Add Category</button>
+    <!-- Modal -->
+    <div class="modal fade rounded" id="addCategory" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header d-flex justify-content-center" style="background-color:#DA004E;">
+            <h5 class="modal-title text-white">Add Category</h5>
+          </div>
+          <div class="modal-body" style="background-color:#130B2B;">
+            <form action="/category/insert_postcategory" method="post">
+              <div class="mb-3 mt-3">
+                  <label for="name">Category name:</label>
+                  <input type="text" class="form-control" id="name" name="name" required>
+              </div>
+              <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal">Close</button>
+                <button name="submit" type="submit" class="btn btn-success m-2">Add</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    {{!-- List Category --}}
+    <table class="table table-dark text-center">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each categories}}
+        <tr>
+            <td>{{this.name}}</td>
+            <td>
+              <a href='/category/deletecategory/{{this._id}}' class='btn btn-danger'>Delete</a>
+              <a href='/category/{{this._id}}' class='btn btn-primary'>Update</a>
+            </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+</div>
+
+

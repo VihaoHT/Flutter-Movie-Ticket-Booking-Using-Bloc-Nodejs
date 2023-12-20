@@ -1,0 +1,67 @@
+{{> menu}}
+
+<!-- Nội dung -->
+<div class="p-4 .table-responsive">
+    {{!-- Insert Actor --}}
+    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addActor">Add Actor</button>
+    <!-- Modal -->
+    <div class="modal fade rounded" id="addActor" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header d-flex justify-content-center" style="background-color:#DA004E;">
+            <h5 class="modal-title text-white">Add Actor</h5>
+          </div>
+          <div class="modal-body" style="background-color:#130B2B;">
+            <form action="/actor/insert_postActor" method="post" enctype="multipart/form-data">
+              <div class="mb-3 mt-3">
+                  <label for="name">Actor name:</label>
+                  <input type="text" class="form-control" id="name" name="name" required>
+              </div>
+              <div class="mb-3 mt-3">
+                  <label for="dob">Dob:</label>
+                  <input type="date" class="form-control" id="dob" name="dob" required>
+              </div>
+              <div class="mb-3 mt-3">
+                  <label for="country">Country:</label>
+                  <input type="text" class="form-control" id="country" name="country" required>
+              </div>
+              <div class="mb-3 mt-3">
+                  <label for="avatar">Avatar:</label>
+                  <input type="file" class="form-control" id="avatar" name="avatar" required>
+              </div>
+              <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal">Close</button>
+                <button name="submit" type="submit" class="btn btn-success m-2">Add</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <table class="table table-dark text-center">
+      <thead>
+        <tr>
+          <th>Avatar</th>
+          <th>Name</th>
+          <th>Dob</th>
+          <th>country</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each actors}}
+        <tr>
+            <td class="align-middle"><img src="http://149.28.159.68:3000/img/actors/{{this.avatar}}" width="75" height="75" style="object-fit: cover;"></td>
+            <td class="align-middle">{{this.name}}</td>
+            <td class="align-middle">{{this.dob}}</td>
+            <td class="align-middle">{{this.country}}</td>
+            <td class="align-middle">
+              <a href='/actor/deleteactor/{{this._id}}' class='btn btn-danger'>Delete</a>
+            </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+</div>
+
+

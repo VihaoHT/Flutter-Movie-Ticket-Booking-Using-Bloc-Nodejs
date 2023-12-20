@@ -1,0 +1,68 @@
+{{> menu}}
+    
+    
+<!-- Nội dung -->
+<div class="p-4">
+
+    {{!-- Insert Room --}}
+    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addCinema">Add Cinema</button>
+    <!-- Modal -->
+    <div class="modal fade rounded" id="addCinema" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header d-flex justify-content-center" style="background-color:#DA004E;">
+            <h5 class="modal-title text-white">Add Cinema</h5>
+          </div>
+          <div class="modal-body" style="background-color:#130B2B;">
+            <form action="/cinema/insert_postcinema" method="post">
+              <div class="mb-3 mt-3">
+                  <label for="name">Name:</label>
+                  <input type="text" class="form-control" id="name" name="name" required>
+              </div>
+              <div class="mb-3 mt-3">
+                  <label for="coordinates.">Longtitude</label>
+                  <input type="number" class="form-control" id="coordinates" name="coordinates" required>
+              </div>
+              <div class="mb-3 mt-3">
+                  <label for="coordinates">Latitude</label>
+                  <input type="number" class="form-control" id="coordinates" name="coordinates" required>
+              </div>
+              <div class="mb-3 mt-3">
+                  <label for="address">Address</label>
+                  <input type="text" class="form-control" id="address" name="address" required>
+              </div>
+              <div class="mb-3 mt-3">
+                  <label for="description">Description</label>
+                  <input type="text" class="form-control" id="description" name="description" required>
+              </div>
+              <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal">Close</button>
+                <button name="submit" type="submit" class="btn btn-success m-2">Add</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <table class="table table-dark text-center">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each cinemas}}
+        <tr>
+            <td>{{this.name}}</td>
+            <td>
+              <a href='/cinema/deletecinema/{{this._id}}' class='btn btn-danger'>Delete</a>
+              <a href='/cinema/{{this._id}}' class='btn btn-primary'>Detail</a>
+            </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+</div>
+<!-- Nội dung -->

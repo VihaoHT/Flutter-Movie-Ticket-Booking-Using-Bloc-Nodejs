@@ -1,0 +1,27 @@
+{{> menu}}
+
+<!-- Nội dung -->
+<div class="p-4">
+    <table class="table table-dark text-center">
+      <thead>
+        <tr>
+          <th>Avatar</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each users}}
+        <tr>
+             <td class="align-middle"><img src="http://149.28.159.68:3000/img/users/{{this.avatar}}" width="75" height="75" style="object-fit: cover;"></td>
+            <td class="align-middle">{{this.username}}</td>
+            <td class="align-middle">{{this.email}}</td>
+            <td class="align-middle">{{this.role}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+</div>
+<!-- Nội dung -->
+

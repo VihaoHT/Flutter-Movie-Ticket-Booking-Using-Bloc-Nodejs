@@ -1,0 +1,29 @@
+<script src="/menu/sidemenu.js"></script>
+<link rel="stylesheet" type="text/css" href="/menu/sidemenu.css" media="screen">
+<div class="row">
+            <div class="col-1 d-flex justify-content-center">
+                <div id="mySidenav" class="sidenav">
+                    <h4 class="ms-2 text-light">Manager</h4>
+                    <a href="/index"><i class="bi bi-film p-2"></i>Movie</a>
+                    <a href="/category"><i class="bi bi-camera-reels p-2"></i>Movie Category</a>
+                    <a href="/room"><i class="bi bi-camera-video p-2"></i>Room</a>  
+                    <a href="/cinema"><i class="bi bi-geo-alt p-2"></i>Cinema</a>  
+                    <a href="/showtime"><i class="bi bi-calendar-event p-2"></i>Showtime</a>
+                    <a href="/user"><i class="bi bi-person p-2"></i>User</a>
+                    <a href="/actor"><i class="bi bi-emoji-sunglasses-fill p-2"></i>Actor</a>
+                    <h4 class="ms-2 text-light">Chart</h4>
+                    <a href="/statistic"><i class="bi bi-bar-chart-steps p-2"></i>Revenue Statistics</a>
+                </div>
+            </div>
+</div>
+<!--Navbar-->
+<nav class="navbar" style="background-color:#DA004E;" style="box-shadow: 0px 0px 8px #888888;">
+    <!-- Collapse button -->
+    <button class="navbar-toggler hamburger-button" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation" onclick="Nav()" style="z-index: 2">
+        <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+    <!-- Navbar brand -->
+    <div class="mx-auto order-0">
+        <a class="navbar-brand mx-auto text-white fw-bold" href="#">{{titles}}</a>
+    </div>
+</nav>

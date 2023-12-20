@@ -1,0 +1,33 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{{> menu}}
+
+<div class="p-4 m-5">
+    <div class="p-4">
+        <canvas id="myChart"></canvas>
+    </div>
+</div>
+<!-- Nội dung -->
+<script>
+    
+  const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+      datasets: [{
+        label: 'Total Revenue Each Months',
+        data: [{{data}}],
+        borderWidth: 1,
+        backgroundColor: '#DA004E',
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>

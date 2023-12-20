@@ -1,0 +1,41 @@
+{{> menu}}
+
+<!-- Nội dung -->
+<div class="p-4">
+    <a href='/index/insert_getmovie' class='btn btn-success mb-3'>Add Movie</a>
+    <table class="table table-dark text-center">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Title</th>
+          <th>Ratings Average</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each movies}}
+        <tr>
+            <td class="align-middle"><img src="http://149.28.159.68:3000/img/movies/{{this.imageCover}}" width="75" height="75" style="object-fit: cover;"></td>
+            <td class="align-middle">{{this.title}}</td>
+            <td class="align-middle">{{this.ratingsAverage}}</td>
+            {{#if this.status}}
+              <td class="align-middle">Active</td>
+            {{else}}
+              <td class="align-middle">Inactive</td>
+            {{/if}}
+            <td class="align-middle">
+              {{#if this.status}}
+                <a href='/index/deletemovie/{{this._id}}' class='btn btn-danger'>Inactive</a>
+              {{else}}
+                <a href='/index/deletemovie/{{this._id}}' class='btn btn-danger'>Active</a>
+              {{/if}}
+              <a href='/index/detailmovie/{{this._id}}' class='btn btn-primary'>Update</a>
+            </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+</div>
+
+
