@@ -49,7 +49,7 @@ exports.resizeMovieImages = catchAsync(async (req, res, next) => {
   // next();
 
   if (!req.files || req.files.imageCover[0] == undefined) return next();
-  const storageRef = ref(storage, `files/${req.files.imageCover[0].originalname}`);
+  const storageRef = ref(storage, `movies/${req.files.imageCover[0].originalname}`);
   // Create file metadata including the content type
   const metadata = {
     contentType: req.files.imageCover.mimetype,
@@ -109,7 +109,7 @@ exports.getMovieByName = catchAsync(async (req, res, next) => {
 
 exports.saveMovieTrailerToStorage = catchAsync(async (req, res, next) => {
   if (!req.files || req.files.trailer[0] == undefined) return next();
-  const storageRef = ref(storage, `files/${req.files.trailer[0].originalname}`);
+  const storageRef = ref(storage, `trailer/${req.files.trailer[0].originalname}`);
   // Create file metadata including the content type
   const metadata = {
     contentType: req.files.trailer.mimetype,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_booking_app/auth/bloc/auth_bloc.dart';
+import 'package:movie_booking_app/auth/screens/login_screen.dart';
 import 'package:movie_booking_app/core/respository/movie_respository.dart';
 import 'package:movie_booking_app/home/bloc/movie_bloc.dart';
 import 'package:movie_booking_app/home/screens/home_screen.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: const Color(0xff130B2B),
           useMaterial3: true,
         ),
-        home: const HomeScreen(),
+        home: const LoginScreen(),
       ),
     );
   }
