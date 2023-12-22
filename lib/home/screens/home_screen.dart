@@ -79,7 +79,8 @@ class HomeScreen extends StatelessWidget {
                       itemCount: movieList.length,
                       itemBuilder: (context, index) {
                         final imageURL =
-                            'http://149.28.159.68:3000/img/movies/${movieList[index].imageCover}';
+                            'http://192.168.2.6:3000/img/movies/${movieList[index].imageCover}';
+                        print(imageURL);
                         // print(movieList[index].title);
                         return GestureDetector(
                           onTap: () {
@@ -98,7 +99,7 @@ class HomeScreen extends StatelessWidget {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(14.0),
                                     child: Image.network(
-                                      imageURL,
+                                      movieList[index].imageCover,
                                     ),
                                   ),
                                 ),

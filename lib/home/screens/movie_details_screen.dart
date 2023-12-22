@@ -15,7 +15,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final imageURL =
-        'http://149.28.159.68:3000/img/movies/${widget.movie.imageCover}';
+        'http://192.168.2.6:3000/img/movies/${widget.movie.imageCover}';
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -28,7 +28,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                   height: 360,
                   width: double.infinity,
                   child: Image.network(
-                    imageURL,
+                    widget.movie.imageCover,
                     width: double.infinity,
                     fit: BoxFit.fill,
                   ),
