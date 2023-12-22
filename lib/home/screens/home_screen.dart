@@ -1,15 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart';
-import 'package:movie_booking_app/auth/bloc/auth_bloc.dart';
+
 import 'package:movie_booking_app/core/constants/constants.dart';
 import 'package:movie_booking_app/home/bloc/movie_bloc.dart';
 import 'package:movie_booking_app/home/screens/movie_details_screen.dart';
 import 'package:movie_booking_app/home/widgets/custom_textfileld_search.dart';
 import 'package:movie_booking_app/models/movie_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -106,9 +102,6 @@ class HomeScreen extends StatelessWidget {
                       ),
                       itemCount: movieList.length,
                       itemBuilder: (context, index) {
-                        final imageURL =
-                            'http://192.168.2.6:3000/img/movies/${movieList[index].imageCover}';
-                        print(imageURL);
                         // print(movieList[index].title);
                         return GestureDetector(
                           onTap: () {

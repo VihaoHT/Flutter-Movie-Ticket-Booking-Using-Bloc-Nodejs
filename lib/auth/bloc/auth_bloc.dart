@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_booking_app/core/constants/constants.dart';
@@ -11,7 +10,6 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final Dio dio = Dio();
   AuthBloc() : super(AuthInitial()) {
     on(mapEventToState);
   }
@@ -42,6 +40,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           final String token = data['token'];
           final String username = userData['username'];
           final String email = userData['email'];
+          final String? avatar = userData['avatar'];
+          final String? phoneNumber = userData['phone_number'];
+          
           // final String email = data['email'];
           // final String password = data['password'];
           // Lưu token vào SharedPreferences
@@ -51,7 +52,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           // print(password);
 
           await Future.delayed(const Duration(milliseconds: 100), () async {
-            return emit(AuthSuccess(user: User(email: email, username: username, token: token)));
+            return emit(AuthSuccess(
+                user: User(
+                    email: email,
+                    username: username,
+                    token: token,
+                    avatar: avatar,
+                    phone_number: phoneNumber)));
           });
         } else {
           return emit(const AuthFailure(
