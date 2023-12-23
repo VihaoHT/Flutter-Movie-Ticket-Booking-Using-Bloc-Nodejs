@@ -29,8 +29,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     double myRating = 0;
+
     return SafeArea(
-      child: Scaffold(
+      child: Scaffold( 
         body: BlocProvider(
           create: (context) => ReviewBloc(ReviewRespository(widget.movie.id))
             ..add(LoadReviewEvent()),
@@ -216,7 +217,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       final List<Review> reviews = state.reviews;
 
                       return Container(
-                        margin: const EdgeInsets.only(left: 20),
+                        margin: const EdgeInsets.only(left: 10),
+
                         child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: reviews.length,
@@ -231,66 +233,80 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                 DateFormat("HH:mm dd/MM/yyyy").format(dateTime);
 
                             print("Thời gian đã định dạng: $formattedDateTime");
-                            return GridTile(
-                              child: Row(
-                                children: [
-                                  ClipRRect(
-                                      borderRadius: BorderRadius.circular(40.0),
-                                      child: Image.network(
-                                        reviews[index].user.avatar,
-                                        width: 50,
-                                        height: 50,
-                                        fit: BoxFit.cover,
-                                      )),
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 10),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          reviews[index].user.username,
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500),
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: GridTile(
+                                child: Flexible(
+                                  child: Row(
+                                    children: [
+                                      ClipRRect(
+                                          borderRadius: BorderRadius.circular(40.0),
+                                          child: Image.network(
+                                            reviews[index].user.avatar,
+                                            width: 50,
+                                            height: 50,
+                                            fit: BoxFit.cover,
+                                          )),
+                                      Container(
+                                        margin: const EdgeInsets.only(left: 10),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              reviews[index].user.username,
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            Row(
+                                              children: [
+                                                RatingBar.builder(
+                                                  initialRating: reviews[index].rating,
+                                                  minRating: 1,
+                                                  direction: Axis.horizontal,
+                                                  allowHalfRating: true,
+                                                  itemCount: 5,
+                                                  itemSize: 16,
+                                                  itemBuilder: (context, _) => const Icon(
+                                                    Icons.star,
+                                                    color: Colors.yellow,
+                                                  ),
+                                                  onRatingUpdate: (rating) {
+                                                    // Thực hiện các hành động khi rating được cập nhật (nếu cần)
+                                                  },
+                                                ),
+                                                Container(
+                                                  margin: const EdgeInsets.only(left: 50),
+                                                  child: Text(
+                                                    formattedDateTime,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 12,
+                                                        fontWeight: FontWeight.w300),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Container(
+                                              width: 300,
+                                              child: Text(
+                                                reviews[index].review,
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w300),
+
+                                              ),
+                                            ),
+
+                                          ],
                                         ),
-                                        RatingBar.builder(
-                                          initialRating: reviews[index].rating,
-                                          minRating: 1,
-                                          direction: Axis.horizontal,
-                                          allowHalfRating: true,
-                                          itemCount: 5,
-                                          itemSize: 16,
-                                          itemBuilder: (context, _) => const Icon(
-                                            Icons.star,
-                                            color: Colors.yellow,
-                                          ),
-                                          onRatingUpdate: (rating) {
-                                            // Thực hiện các hành động khi rating được cập nhật (nếu cần)
-                                          },
-                                        ),
-                                        Text(
-                                          reviews[index].review,
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w300),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 20),
-                                    child: Text(
-                                      formattedDateTime,
-                                      style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
                             );
                           },

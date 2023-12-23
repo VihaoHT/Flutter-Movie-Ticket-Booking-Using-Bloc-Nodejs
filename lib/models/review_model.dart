@@ -19,7 +19,7 @@ class Review {
     return Review(
       id: json['_id'] ?? '',
       review: json['review'] ?? '',
-      rating: json['rating'] ?? 0.0,
+      rating: json['rating'].toDouble(),
       createdAt: json['created_At'] ?? '',
       movieId: json['movie'] ?? '',
       user: User.fromJson(json['user'] ?? {}),
