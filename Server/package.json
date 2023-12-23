@@ -17,6 +17,7 @@
     "html-to-text": "^9.0.5",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^9.0.2",
+    "mime-types": "^2.1.35",
     "mongodb": "^6.1.0",
     "mongoose": "^7.6.0",
     "morgan": "~1.9.1",

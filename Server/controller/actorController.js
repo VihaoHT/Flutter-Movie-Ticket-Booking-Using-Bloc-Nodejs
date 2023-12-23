@@ -5,7 +5,26 @@ const factory = require('./handleFactory');
 const multer = require('multer');
 const sharp = require('sharp');
 const Actor = require('../model/actorModel');
-
+const mime = require('mime-types');
+const { initializeApp } = require("firebase/app");
+const {
+  getStorage,
+  ref,
+  getDownloadURL,
+  uploadBytesResumable,
+} = require("firebase/storage");
+// firebase config
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+};
+initializeApp(firebaseConfig);
+const storage = getStorage();
 const multerStorage = multer.memoryStorage();
 
 const multerFilter = (req, file, cb) => {
@@ -24,16 +43,36 @@ const upload = multer({
 exports.uploadActorPhoto = upload.single('avatar');
 
 exports.resizeActorPhoto = catchAsync(async (req, res, next) => {
+  // if (!req.file) return next();
+
+  // req.file.filename = `actor-${Date.now()}.jpeg`;
+
+  // await sharp(req.file.buffer)
+  //   .resize(500, 500)
+  //   .toFormat('jpeg')
+  //   .jpeg({ quality: 90 })
+  //   .toFile(`public/img/actors/${req.file.filename}`);
+
+  // next();
+
   if (!req.file) return next();
+  const storageRef = ref(storage, `actors/${req.file.filename}`);
+  // Create file metadata including the content type
+  const metadata = {
+    contentType: 'image/jpeg',
+  };
 
-  req.file.filename = `actor-${Date.now()}.jpeg`;
+  // Upload the file in the bucket storage
+  const snapshot = await uploadBytesResumable(
+    storageRef,
+    req.file.buffer,
+    metadata
+  );
+  //by using uploadBytesResumable we can control the progress of uploading like pause, resume, cancel
 
-  await sharp(req.file.buffer)
-    .resize(500, 500)
-    .toFormat('jpeg')
-    .jpeg({ quality: 90 })
-    .toFile(`public/img/actors/${req.file.filename}`);
-
+  // Grab the public url  
+  const downloadURL = await getDownloadURL(snapshot.ref);
+  req.file.filename = downloadURL;
   next();
 });
 const filterObj = (obj, ...allowedFields) => {

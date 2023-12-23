@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_booking_app/auth/bloc/auth_bloc.dart';
 import 'package:movie_booking_app/auth/screens/login_screen.dart';
 import 'package:movie_booking_app/core/respository/movie_respository.dart';
-import 'package:movie_booking_app/home/bloc/movie_bloc.dart';
+import 'package:movie_booking_app/home/movie_bloc/movie_bloc.dart';
 
 void main() {
   runApp( RepositoryProvider(

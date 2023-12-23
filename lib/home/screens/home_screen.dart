@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:movie_booking_app/core/constants/constants.dart';
-import 'package:movie_booking_app/home/bloc/movie_bloc.dart';
+import 'package:movie_booking_app/home/movie_bloc/movie_bloc.dart';
 import 'package:movie_booking_app/home/screens/movie_details_screen.dart';
 import 'package:movie_booking_app/home/widgets/custom_textfileld_search.dart';
 import 'package:movie_booking_app/models/movie_model.dart';

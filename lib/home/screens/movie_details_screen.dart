@@ -1,7 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:http/http.dart';
 import 'package:movie_booking_app/core/constants/constants.dart';
 import 'package:movie_booking_app/home/screens/movie_trailer_Screen.dart';
+import 'package:movie_booking_app/home/widgets/custom_textfields_rating.dart';
 import 'package:movie_booking_app/models/movie_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
   final Movie movie;
@@ -13,8 +19,11 @@ class MovieDetailsScreen extends StatefulWidget {
 }
 
 class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
+  final TextEditingController ratingController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    double myRating = 0;
     print(widget.movie.category);
     return SafeArea(
       child: Scaffold(
@@ -119,26 +128,76 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         color: const Color(0xff2B2B38),
                         borderRadius: BorderRadius.circular(40),
                       ),
-                      child: Image.asset(Constants.searchPath),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(40),
+                        child: Image.network(
+                          widget.movie.actors[index].avatar,
+                          width: 70,
+                          height: 70,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     );
                   },
                 ),
               ),
               const SizedBox(height: 23),
               Container(
-                margin: const EdgeInsets.only(left: 20,right: 20),
+                margin: const EdgeInsets.only(left: 20, right: 20),
                 child: Text(
                   widget.movie.description,
                   textAlign: TextAlign.center,
-                  style:  const TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 15,
-                    fontWeight:  FontWeight.w400,
+                    fontWeight: FontWeight.w400,
                   ),
-
                 ),
               ),
-            ],
+              const SizedBox(height: 47),
+              Image.asset(Constants.bookingPath),
+              const SizedBox(height: 25),
+              const Text(
+                "Đánh giá cho bộ phim này",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 25),
+              RatingBar.builder(
+                initialRating: myRating,
+                minRating: 1,
+                direction: Axis.horizontal,
+                allowHalfRating: true,
+                itemCount: 5,
+                itemPadding: const EdgeInsets.symmetric(horizontal: 4),
+                itemBuilder: (context, _) => const Icon(
+                  Icons.star,
+                  color: Colors.yellow,
+                ),
+                onRatingUpdate: (rating) {},
+              ),
+              const SizedBox(height: 25),
+              Container(
+                margin: const EdgeInsets.only(left: 20, right: 20),
+                child: CustomTextFieldRating(
+                  controller: ratingController,
+                  hintText: 'Suy nghĩ của bạn về bộ phim này',
+                ),
+              ),
+              const SizedBox(height: 25),
+              const Text(
+                'Review',
+                style: TextStyle(
+                  color: Color(0xffDA004E),
+                  fontSize: 24,
+                  fontWeight: FontWeight.w500
+                ),
+              ),
+
+              ],
           ),
         ),
       ),
