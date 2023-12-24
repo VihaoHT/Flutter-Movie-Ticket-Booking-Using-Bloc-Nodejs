@@ -54,12 +54,10 @@ exports.resizeActorPhoto = catchAsync(async (req, res, next) => {
   //   .toFile(`public/img/actors/${req.file.filename}`);
 
   // next();
-
-  if (!req.file) return next();
-  const storageRef = ref(storage, `actors/${req.file.filename}`);
+  const storageRef = ref(storage, `actors/${req.file.originalname}`);
   // Create file metadata including the content type
   const metadata = {
-    contentType: 'image/jpeg',
+    contentType: req.file.mimetype,
   };
 
   // Upload the file in the bucket storage

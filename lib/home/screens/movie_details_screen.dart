@@ -30,7 +30,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   Widget build(BuildContext context) {
     double myRating = 0;
 
-    Future<Review> postReviews(String review,double rating) async {
+    Future<List<Review>> postReviews(String review, double rating) async {
       // String api = "$uri/api/users/652c13658f6c95d46e4c2822";
       // // Define the base URL and the endpoint
       // final url = Uri.parse(api);
@@ -38,12 +38,13 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
       // Make the HTTP GET request and await the response
       // final response = await get(url);
       String? token = preferences.getString('token');
-      Response res = await post(
-          Uri.parse('$uri/api/movies/${widget.movie.id}/reviews'), body: json.encode({
-        'review': review,
-        'rating': rating,
-      }),
-          headers: {
+      Response res =
+          await post(Uri.parse('$uri/api/movies/${widget.movie.id}/reviews'),
+              body: json.encode({
+                'review': review,
+                'rating': rating,
+              }),
+              headers: {
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': 'Bearer $token',
           });
@@ -51,8 +52,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
       if (res.statusCode == 201) {
         // Parse the response body as a map of JSON objects
         final Map<String, dynamic> data = jsonDecode(res.body);
-        print(data);
-        return Review.fromJson(data['data']);
+        final List<dynamic> reviews = data['data'];
+        // return Review.fromJson(data['data']);
+        return reviews.map((review) => Review.fromJson(review)).toList();
       } else {
         // Throw an exception if the response status code is not 200
         throw Exception(res.statusCode);
@@ -193,10 +195,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 ),
                 const SizedBox(height: 47),
                 GestureDetector(
-                    onTap: () {
-
-                    },
-                    child: Image.asset(Constants.bookingPath)),
+                    onTap: () {}, child: Image.asset(Constants.bookingPath)),
                 const SizedBox(height: 25),
                 const Text(
                   "Đánh giá cho bộ phim này",
@@ -207,21 +206,37 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                   ),
                 ),
                 const SizedBox(height: 25),
-                RatingBar.builder(
-                  initialRating: myRating,
-                  minRating: 1,
-                  direction: Axis.horizontal,
-                  allowHalfRating: true,
-                  itemCount: 5,
-                  itemPadding: const EdgeInsets.symmetric(horizontal: 4),
-                  itemBuilder: (context, _) => const Icon(
-                    Icons.star,
-                    color: Colors.yellow,
-                  ),
-                  onRatingUpdate: (rating) {
-                  setState(() {
-                   postReviews(ratingController.text, rating);
-                  });
+                BlocBuilder<ReviewBloc, ReviewState>(
+                  builder: (context, state) {
+                    return RatingBar.builder(
+                      initialRating: myRating,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemPadding: const EdgeInsets.symmetric(horizontal: 4),
+                      itemBuilder: (context, _) => const Icon(
+                        Icons.star,
+                        color: Colors.yellow,
+                      ),
+                      onRatingUpdate: (rating) {
+                        // setState(() {
+                        //   postReviews(ratingController.text, rating);
+                        // });
+
+                        Future.delayed(const Duration(milliseconds: 1000), () {
+                          context.read<ReviewBloc>().add(UpdateLoadReviewEvent(
+                                reviews: ratingController.text.trim(),
+                                rating: rating.toDouble(),
+                              ));
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => MovieDetailsScreen(movie: widget.movie),
+                            ),
+                          );
+                        });
+                      },
+                    );
                   },
                 ),
                 const SizedBox(height: 25),
@@ -230,9 +245,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                   child: CustomTextFieldRating(
                     controller: ratingController,
                     hintText: 'Suy nghĩ của bạn về bộ phim này',
-                    onSendPressed: (review, rating) {
-
-                    },
+                    onSendPressed: (review, rating) {},
                   ),
                 ),
                 const SizedBox(height: 25),
@@ -249,8 +262,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       return const CircularProgressIndicator();
                     }
                     if (state is ReviewErrorState) {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text(state.error)));
+                      return Text(state.error);
                     }
                     if (state is ReviewLoadedState) {
                       // Hiển thị danh sách review ở đây
@@ -271,7 +283,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                             String formattedDateTime =
                                 DateFormat("HH:mm dd/MM/yyyy").format(dateTime);
 
-                            print("Thời gian đã định dạng: $formattedDateTime");
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: GridTile(

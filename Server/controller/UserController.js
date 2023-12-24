@@ -60,10 +60,10 @@ exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
   // })
   // next();
   if (!req.file) return next();
-  const storageRef = ref(storage, `users/${req.file.filename}`);
+  const storageRef = ref(storage, `users/${req.file.originalname}`);
   // Create file metadata including the content type
   const metadata = {
-    contentType: "image/jpeg",
+    contentType: req.file.mimetype,
   };
 
   // Upload the file in the bucket storage

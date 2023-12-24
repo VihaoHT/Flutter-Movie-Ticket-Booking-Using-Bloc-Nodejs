@@ -10,3 +10,12 @@ class LoadReviewEvent extends ReviewEvent{
   @override
   List<Object> get props => [];
 }
+
+class UpdateLoadReviewEvent extends ReviewEvent{
+  final String reviews;
+  final double rating;
+
+  const UpdateLoadReviewEvent({required this.reviews, required this.rating});
+  @override
+  List<Object> get props => [reviews,rating.toDouble()];
+}
