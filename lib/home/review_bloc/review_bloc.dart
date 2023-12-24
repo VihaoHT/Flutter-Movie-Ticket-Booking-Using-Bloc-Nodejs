@@ -1,5 +1,7 @@
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../../models/review_model.dart';
 import 'package:movie_booking_app/core/respository/review_respository.dart';
@@ -24,8 +26,8 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
     on<UpdateLoadReviewEvent>((event,emit) async{
       emit(ReviewLoadingState());
       try {
-        await _reviewRespository.postReviews(event.reviews, event.rating.toDouble());
-        LoadReviewEvent();
+        final reviews = await _reviewRespository.postReviews(event.reviews, event.rating, event.context);
+        emit(ReviewLoadedState(reviews));
       }
       catch (e) {
         emit(ReviewErrorState(e.toString()));

@@ -14,8 +14,9 @@ class LoadReviewEvent extends ReviewEvent{
 class UpdateLoadReviewEvent extends ReviewEvent{
   final String reviews;
   final double rating;
+  final BuildContext context;
 
-  const UpdateLoadReviewEvent({required this.reviews, required this.rating});
+  const UpdateLoadReviewEvent({required this.reviews, required this.rating,required this.context});
   @override
-  List<Object> get props => [reviews,rating.toDouble()];
+  List<Object> get props => [reviews,rating,context];
 }

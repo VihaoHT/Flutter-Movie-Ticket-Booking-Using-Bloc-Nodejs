@@ -1,7 +1,7 @@
 class Review {
   final String id;
   final String review;
-  final double rating;
+  final double? rating;
   final String createdAt;
   final String movieId;
   final User user;
@@ -9,7 +9,7 @@ class Review {
   Review({
     required this.id,
     required this.review,
-    required this.rating,
+     this.rating,
     required this.createdAt,
     required this.movieId,
     required this.user,

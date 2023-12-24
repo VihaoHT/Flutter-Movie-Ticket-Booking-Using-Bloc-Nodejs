@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:http/http.dart';
+
 import 'package:intl/intl.dart';
 import 'package:movie_booking_app/core/constants/constants.dart';
 import 'package:movie_booking_app/core/respository/review_respository.dart';
@@ -12,7 +10,7 @@ import 'package:movie_booking_app/home/screens/movie_trailer_Screen.dart';
 import 'package:movie_booking_app/home/widgets/custom_textfields_rating.dart';
 import 'package:movie_booking_app/models/movie_model.dart';
 import 'package:movie_booking_app/models/review_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class MovieDetailsScreen extends StatefulWidget {
   final Movie movie;
@@ -29,37 +27,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     double myRating = 0;
-
-    Future<List<Review>> postReviews(String review, double rating) async {
-      // String api = "$uri/api/users/652c13658f6c95d46e4c2822";
-      // // Define the base URL and the endpoint
-      // final url = Uri.parse(api);
-      SharedPreferences preferences = await SharedPreferences.getInstance();
-      // Make the HTTP GET request and await the response
-      // final response = await get(url);
-      String? token = preferences.getString('token');
-      Response res =
-          await post(Uri.parse('$uri/api/movies/${widget.movie.id}/reviews'),
-              body: json.encode({
-                'review': review,
-                'rating': rating,
-              }),
-              headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer $token',
-          });
-      // Check if the response status code is 200 (OK)
-      if (res.statusCode == 201) {
-        // Parse the response body as a map of JSON objects
-        final Map<String, dynamic> data = jsonDecode(res.body);
-        final List<dynamic> reviews = data['data'];
-        // return Review.fromJson(data['data']);
-        return reviews.map((review) => Review.fromJson(review)).toList();
-      } else {
-        // Throw an exception if the response status code is not 200
-        throw Exception(res.statusCode);
-      }
-    }
 
     return SafeArea(
       child: Scaffold(
@@ -223,18 +190,31 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         // setState(() {
                         //   postReviews(ratingController.text, rating);
                         // });
-
-                        Future.delayed(const Duration(milliseconds: 1000), () {
-                          context.read<ReviewBloc>().add(UpdateLoadReviewEvent(
-                                reviews: ratingController.text.trim(),
-                                rating: rating.toDouble(),
-                              ));
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => MovieDetailsScreen(movie: widget.movie),
+                        if(ratingController.text == ""){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Bạn quên chưa nhập suy nghĩ của bạn về bộ phim!'),
+                              duration: Duration(
+                                  seconds: 2), // Đặt thời gian hiển thị
                             ),
                           );
-                        });
+                        }else{
+                          Future.delayed(const Duration(milliseconds: 1000), () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Đã đăng review thành công!'),
+                                duration: Duration(
+                                    seconds: 2), // Đặt thời gian hiển thị
+                              ),
+                            );
+                            context.read<ReviewBloc>().add(UpdateLoadReviewEvent(
+                              reviews: ratingController.text.trim(),
+                              rating: rating.toDouble(),
+                              context: context,
+                            ));
+                          });
+                        }
+
                       },
                     );
                   },
@@ -315,7 +295,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                               children: [
                                                 RatingBar.builder(
                                                   initialRating:
-                                                      reviews[index].rating,
+                                                      reviews[index].rating!,
                                                   minRating: 1,
                                                   direction: Axis.horizontal,
                                                   allowHalfRating: true,
