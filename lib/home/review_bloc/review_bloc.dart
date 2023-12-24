@@ -15,7 +15,10 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
       try {
         final reviews = await _reviewRespository.getReview();
         emit(ReviewLoadedState(reviews));
-      } catch (e) {
+      }
+
+
+      catch (e) {
         emit(ReviewErrorState(e.toString()));
       }
     });

@@ -30,8 +30,37 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   Widget build(BuildContext context) {
     double myRating = 0;
 
+    Future<Review> postReviews(String review,double rating) async {
+      // String api = "$uri/api/users/652c13658f6c95d46e4c2822";
+      // // Define the base URL and the endpoint
+      // final url = Uri.parse(api);
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      // Make the HTTP GET request and await the response
+      // final response = await get(url);
+      String? token = preferences.getString('token');
+      Response res = await post(
+          Uri.parse('$uri/api/movies/${widget.movie.id}/reviews'), body: json.encode({
+        'review': review,
+        'rating': rating,
+      }),
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer $token',
+          });
+      // Check if the response status code is 200 (OK)
+      if (res.statusCode == 201) {
+        // Parse the response body as a map of JSON objects
+        final Map<String, dynamic> data = jsonDecode(res.body);
+        print(data);
+        return Review.fromJson(data['data']);
+      } else {
+        // Throw an exception if the response status code is not 200
+        throw Exception(res.statusCode);
+      }
+    }
+
     return SafeArea(
-      child: Scaffold( 
+      child: Scaffold(
         body: BlocProvider(
           create: (context) => ReviewBloc(ReviewRespository(widget.movie.id))
             ..add(LoadReviewEvent()),
@@ -163,7 +192,11 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                   ),
                 ),
                 const SizedBox(height: 47),
-                Image.asset(Constants.bookingPath),
+                GestureDetector(
+                    onTap: () {
+
+                    },
+                    child: Image.asset(Constants.bookingPath)),
                 const SizedBox(height: 25),
                 const Text(
                   "Đánh giá cho bộ phim này",
@@ -185,7 +218,11 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                     Icons.star,
                     color: Colors.yellow,
                   ),
-                  onRatingUpdate: (rating) {},
+                  onRatingUpdate: (rating) {
+                  setState(() {
+                   postReviews(ratingController.text, rating);
+                  });
+                  },
                 ),
                 const SizedBox(height: 25),
                 Container(
@@ -193,6 +230,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                   child: CustomTextFieldRating(
                     controller: ratingController,
                     hintText: 'Suy nghĩ của bạn về bộ phim này',
+                    onSendPressed: (review, rating) {
+
+                    },
                   ),
                 ),
                 const SizedBox(height: 25),
@@ -218,7 +258,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
 
                       return Container(
                         margin: const EdgeInsets.only(left: 10),
-
                         child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: reviews.length,
@@ -240,7 +279,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                   child: Row(
                                     children: [
                                       ClipRRect(
-                                          borderRadius: BorderRadius.circular(40.0),
+                                          borderRadius:
+                                              BorderRadius.circular(40.0),
                                           child: Image.network(
                                             reviews[index].user.avatar,
                                             width: 50,
@@ -263,13 +303,15 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                             Row(
                                               children: [
                                                 RatingBar.builder(
-                                                  initialRating: reviews[index].rating,
+                                                  initialRating:
+                                                      reviews[index].rating,
                                                   minRating: 1,
                                                   direction: Axis.horizontal,
                                                   allowHalfRating: true,
                                                   itemCount: 5,
                                                   itemSize: 16,
-                                                  itemBuilder: (context, _) => const Icon(
+                                                  itemBuilder: (context, _) =>
+                                                      const Icon(
                                                     Icons.star,
                                                     color: Colors.yellow,
                                                   ),
@@ -278,13 +320,15 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                                   },
                                                 ),
                                                 Container(
-                                                  margin: const EdgeInsets.only(left: 50),
+                                                  margin: const EdgeInsets.only(
+                                                      left: 50),
                                                   child: Text(
                                                     formattedDateTime,
                                                     style: const TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 12,
-                                                        fontWeight: FontWeight.w300),
+                                                        fontWeight:
+                                                            FontWeight.w300),
                                                   ),
                                                 ),
                                               ],
@@ -296,11 +340,10 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                                 style: const TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 12,
-                                                    fontWeight: FontWeight.w300),
-
+                                                    fontWeight:
+                                                        FontWeight.w300),
                                               ),
                                             ),
-
                                           ],
                                         ),
                                       ),

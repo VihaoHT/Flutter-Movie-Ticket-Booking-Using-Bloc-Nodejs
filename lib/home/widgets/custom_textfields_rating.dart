@@ -1,45 +1,27 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart';
 import 'package:movie_booking_app/core/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomTextFieldRating extends StatelessWidget {
-  // Future<void> getd() async {
-  //   // String api = "$uri/api/users/652c13658f6c95d46e4c2822";
-  //   // // Define the base URL and the endpoint
-  //   // final url = Uri.parse(api);
-  //   SharedPreferences preferences = await SharedPreferences.getInstance();
-  //   // Make the HTTP GET request and await the response
-  //   // final response = await get(url);
-  //   String? token =  preferences.getString('token');
-  //   Response res = await get(Uri.parse('$uri/api/movies/658596d9cf2a5e978c6902e6/reviews'), headers: {
-  //     'Content-Type': 'application/json; charset=UTF-8',
-  //     'Authorization': 'Bearer $token',
-  //   });
-  //   // Check if the response status code is 200 (OK)
-  //   if (res.statusCode == 200) {
-  //     // Parse the response body as a map of JSON objects
-  //     final Map<String, dynamic> data = jsonDecode(res.body);
-  //     print(data);
-  //   } else {
-  //     // Throw an exception if the response status code is not 200
-  //     throw Exception(res.statusCode);
-  //   }
-  // }
+
   final TextEditingController controller;
   final String hintText;
   final int maxLines;
-
+  final Function(String, double) onSendPressed; // Hàm callbackam số hàm callback
   const CustomTextFieldRating(
       {super.key,
       required this.controller,
       required this.hintText,
-      this.maxLines = 1});
+        required this.onSendPressed,
+        this.maxLines = 1});
 
   @override
   Widget build(BuildContext context) {
+    double myRating = 3.5; // Khai báo myRating ở đây
     return TextFormField(
       style: const TextStyle(color: Colors.white),
       controller: controller,
@@ -54,13 +36,30 @@ class CustomTextFieldRating extends StatelessWidget {
         ),
         suffixIcon: GestureDetector(
           onTap: () {
-            print('Image tapped!');
+            // Gọi hàm callback khi nút gửi được nhấn
+            onSendPressed(controller.text, myRating); // Giả sử bạn muốn gửi rating là 3.5
           },
           child: Container(
             padding: const EdgeInsets.all(8),
             child: Image.asset(Constants.sendPath, width: 36, height: 36),
           ),
         ),
+        // Thêm RatingBar
+        // label:RatingBar.builder(
+        //   initialRating: myRating,
+        //   minRating: 1,
+        //   direction: Axis.horizontal,
+        //   allowHalfRating: true,
+        //   itemCount: 5,
+        //   itemPadding: const EdgeInsets.symmetric(horizontal: 4),
+        //   itemBuilder: (context, _) => const Icon(
+        //     Icons.star,
+        //     color: Colors.yellow,
+        //   ),
+        //   onRatingUpdate: (rating) {
+        //     myRating = rating; // Cập nhật giá trị myRating khi rating thay đổi
+        //   },
+        // ),
       ),
       maxLines: maxLines,
 
