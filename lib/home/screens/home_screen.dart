@@ -52,6 +52,7 @@ class HomeScreen extends StatelessWidget {
         }
         if (state is MovieLoadedState) {
           List<Movie> movieList = state.movies;
+
           return SafeArea(
             child: Scaffold(
               body: Column(
@@ -136,8 +137,6 @@ class HomeScreen extends StatelessWidget {
                                       fontWeight: FontWeight.w700),
                                 ),
                               ],
-
-                              // Các thuộc tính khác của ListTile (ví dụ: subtitle, leading, ...)
                             ),
                           ),
                         );
@@ -155,7 +154,7 @@ class HomeScreen extends StatelessWidget {
               children: [
                 const SizedBox(height: 30),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width, // Sửa đổi dòng này
+                  width: MediaQuery.of(context).size.width,
                   child: Container(
                     margin: const EdgeInsets.only(left: 15, right: 25),
                     child: Row(
@@ -184,21 +183,4 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-Widget buildMovieGrid(List<Movie> movies) {
-  return GridView.builder(
-    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 2,
-      crossAxisSpacing: 8.0,
-      mainAxisSpacing: 8.0,
-    ),
-    itemCount: movies.length,
-    itemBuilder: (context, index) {
-      return GridTile(
-        child: ListTile(
-          title: Text(movies[index].title),
-          // Các thuộc tính khác của ListTile (ví dụ: subtitle, leading, ...)
-        ),
-      );
-    },
-  );
-}
+

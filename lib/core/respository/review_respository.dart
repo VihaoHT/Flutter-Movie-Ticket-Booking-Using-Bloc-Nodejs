@@ -57,12 +57,20 @@ class ReviewRespository {
         });
     // Check if the response status code is 200 (OK)
     if (res.statusCode == 201) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Review posted successfully!'),
+          duration: Duration(
+              seconds: 4), // Đặt thời gian hiển thị
+        ),
+      );
+
       return getReview();
     } else {
       // Throw an exception if the response status code is not 200
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Đã đăng review rồi k được đăng tiếp!'),
+          content: Text('You just can review one time!'),
           duration: Duration(
               seconds: 4), // Đặt thời gian hiển thị
         ),

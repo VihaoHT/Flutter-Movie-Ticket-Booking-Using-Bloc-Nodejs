@@ -8,6 +8,9 @@ class Constants {
   static const trailerPath = 'assets/images/trailerbutton.png';
   static const bookingPath = 'assets/images/bookingbutton.png';
   static const sendPath = 'assets/images/send.png';
+  static const back2Path = 'assets/images/back2.png';
+  static const locationPath = 'assets/images/location.png';
+  static const linePath = 'assets/images/line.png';
 
   static const colorTitle = Color(0xffF74346);
   static const backgroundColor = Color(0xff130B2B);

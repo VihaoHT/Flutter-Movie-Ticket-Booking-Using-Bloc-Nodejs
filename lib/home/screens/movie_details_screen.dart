@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import 'package:intl/intl.dart';
+import 'package:movie_booking_app/cinema/screens/cinema_screen.dart';
 import 'package:movie_booking_app/core/constants/constants.dart';
 import 'package:movie_booking_app/core/respository/review_respository.dart';
 import 'package:movie_booking_app/home/review_bloc/review_bloc.dart';
@@ -162,7 +163,15 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 ),
                 const SizedBox(height: 47),
                 GestureDetector(
-                    onTap: () {}, child: Image.asset(Constants.bookingPath)),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              CinemaScreen(id: widget.movie.id, title: widget.movie.title,),
+                        ),
+                      );
+                    }, child: Image.asset(Constants.bookingPath)),
                 const SizedBox(height: 25),
                 const Text(
                   "Đánh giá cho bộ phim này",
@@ -187,26 +196,16 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         color: Colors.yellow,
                       ),
                       onRatingUpdate: (rating) {
-                        // setState(() {
-                        //   postReviews(ratingController.text, rating);
-                        // });
                         if(ratingController.text == ""){
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Bạn quên chưa nhập suy nghĩ của bạn về bộ phim!'),
                               duration: Duration(
-                                  seconds: 2), // Đặt thời gian hiển thị
+                                  seconds: 2),
                             ),
                           );
                         }else{
                           Future.delayed(const Duration(milliseconds: 1000), () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Đã đăng review thành công!'),
-                                duration: Duration(
-                                    seconds: 2), // Đặt thời gian hiển thị
-                              ),
-                            );
                             context.read<ReviewBloc>().add(UpdateLoadReviewEvent(
                               reviews: ratingController.text.trim(),
                               rating: rating.toDouble(),
