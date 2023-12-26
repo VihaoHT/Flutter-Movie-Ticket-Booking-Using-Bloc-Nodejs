@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
 import 'package:movie_booking_app/core/constants/constants.dart';
+import 'package:movie_booking_app/showtime/screens/showtime_screen.dart';
 
 class CinemaScreen extends StatelessWidget {
   final String id;
@@ -60,8 +61,7 @@ class CinemaScreen extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    //Navigator.pop(context);
-                    // fetchDistances();
+                    Navigator.pop(context);
                   },
                   child: Container(
                     margin: const EdgeInsets.only(left: 20, top: 10),
@@ -119,61 +119,72 @@ class CinemaScreen extends StatelessWidget {
                                     distanceSnapshot.data?[index];
                                 var distance = distanceData['distance'];
                                 //print(distance);
-                                return Container(
-                                  color: Color(0xff201934),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(
-                                            left: 20, top: 5),
-                                        child: Column(
+                                return GestureDetector(
+                                  onTap: () {
+                                     Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ShowTimeScreen(id: item['room']['cinema']['_id'],title: item['movie']['title'] ),
+                              ),
+                            );
+                                  },
+                                  child: Container(
+                                    color: const Color(0xff201934),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                              left: 20, top: 5),
+                                          child: Column(
+                                            children: [
+                                              Image.asset(Constants.locationPath),
+                                              const SizedBox(height: 5),
+                                              Text(
+                                                "$distance km",
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w300),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Column(
                                           children: [
-                                            Image.asset(Constants.locationPath),
-                                            const SizedBox(height: 5),
-                                            Text(
-                                              "$distance km",
-                                              style: const TextStyle(
+                                            Container(
+                                              width: 300,
+                                              margin: const EdgeInsets.only(
+                                                  left: 20, top: 10),
+                                              child: Text(
+                                                cinemaName,
+                                                style: const TextStyle(
+                                                  color: Constants.colorTitle,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Container(
+                                              width: 300,
+                                              margin:
+                                                  const EdgeInsets.only(left: 20),
+                                              child: Text(
+                                                cinemaAddress,
+                                                style: const TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 12,
-                                                  fontWeight: FontWeight.w300),
+                                                  fontWeight: FontWeight.w300,
+                                                ),
+                                              ),
                                             ),
+                                            const SizedBox(height: 20),
+                                            Image.asset(Constants.linePath),
                                           ],
                                         ),
-                                      ),
-                                      Column(
-                                        children: [
-                                          Container(
-                                            width: 300,
-                                            margin: const EdgeInsets.only(
-                                                left: 20, top: 10),
-                                            child: Text(
-                                              cinemaName,
-                                              style: const TextStyle(
-                                                color: Constants.colorTitle,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Container(
-                                            width: 300,
-                                            margin:
-                                                const EdgeInsets.only(left: 20),
-                                            child: Text(
-                                              cinemaAddress,
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w300,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 20),
-                                          Image.asset(Constants.linePath),
-                                        ],
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 );
                               }

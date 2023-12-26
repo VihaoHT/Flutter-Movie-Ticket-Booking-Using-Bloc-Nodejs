@@ -11,6 +11,7 @@ class Constants {
   static const back2Path = 'assets/images/back2.png';
   static const locationPath = 'assets/images/location.png';
   static const linePath = 'assets/images/line.png';
+   static const line2Path = 'assets/images/line2.png';
 
   static const colorTitle = Color(0xffF74346);
   static const backgroundColor = Color(0xff130B2B);
