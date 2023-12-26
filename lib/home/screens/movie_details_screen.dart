@@ -12,7 +12,6 @@ import 'package:movie_booking_app/home/widgets/custom_textfields_rating.dart';
 import 'package:movie_booking_app/models/movie_model.dart';
 import 'package:movie_booking_app/models/review_model.dart';
 
-
 class MovieDetailsScreen extends StatefulWidget {
   final Movie movie;
 
@@ -23,12 +22,17 @@ class MovieDetailsScreen extends StatefulWidget {
 }
 
 class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
+  List<Review>? reviews;
   final TextEditingController ratingController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-    double myRating = 0;
+  void dispose() {
+    super.dispose();
+    ratingController.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: BlocProvider(
@@ -167,14 +171,17 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              CinemaScreen(id: widget.movie.id, title: widget.movie.title,),
+                          builder: (context) => CinemaScreen(
+                            id: widget.movie.id,
+                            title: widget.movie.title,
+                          ),
                         ),
                       );
-                    }, child: Image.asset(Constants.bookingPath)),
+                    },
+                    child: Image.asset(Constants.bookingPath)),
                 const SizedBox(height: 25),
                 const Text(
-                  "Đánh giá cho bộ phim này",
+                  "Rating this movie",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -184,6 +191,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 const SizedBox(height: 25),
                 BlocBuilder<ReviewBloc, ReviewState>(
                   builder: (context, state) {
+                    double myRating = 0;
                     return RatingBar.builder(
                       initialRating: myRating,
                       minRating: 1,
@@ -196,24 +204,29 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         color: Colors.yellow,
                       ),
                       onRatingUpdate: (rating) {
-                        if(ratingController.text == ""){
+                        if (ratingController.text == "") {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('Bạn quên chưa nhập suy nghĩ của bạn về bộ phim!'),
-                              duration: Duration(
-                                  seconds: 2),
+                              content: Text(
+                                  'You forgot to text your thinking this movie!'),
+                              duration: Duration(seconds: 2),
                             ),
+
                           );
-                        }else{
-                          Future.delayed(const Duration(milliseconds: 1000), () {
-                            context.read<ReviewBloc>().add(UpdateLoadReviewEvent(
-                              reviews: ratingController.text.trim(),
-                              rating: rating.toDouble(),
-                              context: context,
-                            ));
+                        } else {
+                          Future.delayed(const Duration(milliseconds: 1000),
+                              () {
+                            context
+                                .read<ReviewBloc>()
+                                .add(UpdateLoadReviewEvent(
+                                  reviews: ratingController.text.trim(),
+                                  rating: rating.toDouble(),
+                                  context: context,
+                                ));
+                            ratingController.clear(); //clear text
+                            FocusScope.of(context).unfocus(); // close keyboard
                           });
                         }
-
                       },
                     );
                   },
@@ -223,7 +236,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                   margin: const EdgeInsets.only(left: 20, right: 20),
                   child: CustomTextFieldRating(
                     controller: ratingController,
-                    hintText: 'Suy nghĩ của bạn về bộ phim này',
+                    hintText: 'Text your thinking in this movie',
                     onSendPressed: (review, rating) {},
                   ),
                 ),

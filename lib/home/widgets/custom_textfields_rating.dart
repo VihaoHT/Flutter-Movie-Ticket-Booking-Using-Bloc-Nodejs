@@ -34,32 +34,6 @@ class CustomTextFieldRating extends StatelessWidget {
         enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Color(0xffDA004E)),
         ),
-        suffixIcon: GestureDetector(
-          onTap: () {
-            // Gọi hàm callback khi nút gửi được nhấn
-            onSendPressed(controller.text, myRating); // Giả sử bạn muốn gửi rating là 3.5
-          },
-          child: Container(
-            padding: const EdgeInsets.all(8),
-            child: Image.asset(Constants.sendPath, width: 36, height: 36),
-          ),
-        ),
-        // Thêm RatingBar
-        // label:RatingBar.builder(
-        //   initialRating: myRating,
-        //   minRating: 1,
-        //   direction: Axis.horizontal,
-        //   allowHalfRating: true,
-        //   itemCount: 5,
-        //   itemPadding: const EdgeInsets.symmetric(horizontal: 4),
-        //   itemBuilder: (context, _) => const Icon(
-        //     Icons.star,
-        //     color: Colors.yellow,
-        //   ),
-        //   onRatingUpdate: (rating) {
-        //     myRating = rating; // Cập nhật giá trị myRating khi rating thay đổi
-        //   },
-        // ),
       ),
       maxLines: maxLines,
 

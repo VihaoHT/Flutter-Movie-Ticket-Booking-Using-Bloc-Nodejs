@@ -42,9 +42,7 @@ dependencies:
   video_player: ^2.8.1
   flutter_rating_bar: ^4.0.1
   intl: ^0.19.0
-  toast: ^0.3.0
-  json_annotation: ^4.8.1
-  json_serializable: ^6.7.1
+  geolocator: ^10.1.0
 
 dev_dependencies:
   flutter_test:
