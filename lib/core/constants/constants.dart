@@ -11,12 +11,19 @@ class Constants {
   static const back2Path = 'assets/images/back2.png';
   static const locationPath = 'assets/images/location.png';
   static const linePath = 'assets/images/line.png';
-   static const line2Path = 'assets/images/line2.png';
+  static const line2Path = 'assets/images/line2.png';
+  static const movieimagePath = 'assets/images/movieIconn.png';
+  static const datePath = 'assets/images/dateIcon.png';
+  static const avaiablePath = 'assets/images/white.png';
+  static const paidPath = 'assets/images/red.png';
+  static const myPath = 'assets/images/green.png';
+  static const otherPath = 'assets/images/blue.png';
+  static const cartPath = 'assets/images/cart.png';
 
   static const colorTitle = Color(0xffF74346);
   static const backgroundColor = Color(0xff130B2B);
 
-   static Shader linearGradient = const LinearGradient(
-      colors: <Color>[Color(0xffFA6900), Color(0xffDA004E)],
-    ).createShader(const Rect.fromLTWH(0.0, 0.0, 200, 70.0));
+  static Shader linearGradient = const LinearGradient(
+    colors: <Color>[Color(0xffFA6900), Color(0xffDA004E)],
+  ).createShader(const Rect.fromLTWH(0.0, 0.0, 200, 70.0));
 }

@@ -18,7 +18,6 @@ class CinemaScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future<List<dynamic>> fetchDistances(String cinemaId) async {
-
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied ||
           permission == LocationPermission.deniedForever) {
@@ -59,7 +58,7 @@ class CinemaScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     Navigator.pop(context);
                   },
@@ -119,15 +118,16 @@ class CinemaScreen extends StatelessWidget {
                                     distanceSnapshot.data?[index];
                                 var distance = distanceData['distance'];
                                 //print(distance);
-                                return GestureDetector(
+                                return InkWell(
                                   onTap: () {
-                                     Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    ShowTimeScreen(id: item['room']['cinema']['_id'],title: item['movie']['title'] ),
-                              ),
-                            );
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ShowTimeScreen(
+                                            id: item['room']['cinema']['_id'],
+                                            title: item['movie']['title']),
+                                      ),
+                                    );
                                   },
                                   child: Container(
                                     color: const Color(0xff201934),
@@ -138,14 +138,16 @@ class CinemaScreen extends StatelessWidget {
                                               left: 20, top: 5),
                                           child: Column(
                                             children: [
-                                              Image.asset(Constants.locationPath),
+                                              Image.asset(
+                                                  Constants.locationPath),
                                               const SizedBox(height: 5),
                                               Text(
                                                 "$distance km",
                                                 style: const TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 12,
-                                                    fontWeight: FontWeight.w300),
+                                                    fontWeight:
+                                                        FontWeight.w300),
                                               ),
                                             ],
                                           ),
@@ -168,8 +170,8 @@ class CinemaScreen extends StatelessWidget {
                                             const SizedBox(height: 10),
                                             Container(
                                               width: 300,
-                                              margin:
-                                                  const EdgeInsets.only(left: 20),
+                                              margin: const EdgeInsets.only(
+                                                  left: 20),
                                               child: Text(
                                                 cinemaAddress,
                                                 style: const TextStyle(

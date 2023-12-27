@@ -1,8 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:movie_booking_app/core/constants/constants.dart';
+import 'package:movie_booking_app/seat/screens/seat_screen.dart';
+
+import '../../auth/bloc/auth_bloc.dart';
 
 class ShowTimeScreen extends StatelessWidget {
   final String id;
@@ -39,10 +43,9 @@ class ShowTimeScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                GestureDetector(
+                InkWell(
                   onTap: () {
-                    // Navigator.pop(context);
-                    fetchData();
+                    Navigator.pop(context);
                   },
                   child: Container(
                     margin: const EdgeInsets.only(left: 20, top: 10),
@@ -71,7 +74,7 @@ class ShowTimeScreen extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
                       child:
-                          CircularProgressIndicator()); // Display loading for data waiting
+                      CircularProgressIndicator()); // Display loading for data waiting
                 } else if (snapshot.hasError) {
                   print(snapshot.error);
                   return Text('Error: ${snapshot.error}');
@@ -79,104 +82,132 @@ class ShowTimeScreen extends StatelessWidget {
                   List<dynamic> showtimes = snapshot.data as List<dynamic>;
                   return Expanded(
                     child: ListView.builder(
-                        itemCount: showtimes.length,
-                        itemBuilder: (context, index) {
-                          var showtime = showtimes[index];
-                          var movieTitle = showtime['movie']['title'];
-                          var startTime = showtime['start_time'];
-                          var endTime = showtime['end_time'];
-                          var price = showtime['price'];
-                          var roomName = showtime['room']['name'];
+                      itemCount: showtimes.length,
+                      itemBuilder: (context, index) {
+                        var showtime = showtimes[index];
+                        var movieTitle = showtime['movie']['title'];
+                        var startTime = showtime['start_time'];
+                        var endTime = showtime['end_time'];
+                        var price = showtime['price'];
+                        var roomName = showtime['room']['name'];
 
-                          //date format
-                          DateTime date = DateTime.parse(startTime);
-                          String formattedDate =
-                              DateFormat('yyyy-MM-dd').format(date);
+                        //date format
+                        DateTime date = DateTime.parse(startTime);
+                        String formattedDate =
+                        DateFormat('yyyy-MM-dd').format(date);
 
-                          DateTime starttime = DateTime.parse(startTime);
-                          String formattedStartTime =
-                              DateFormat('HH:mm:ss').format(starttime);
-                          DateTime endtime = DateTime.parse(endTime);
-                          String formattedEndTime =
-                              DateFormat('HH:mm:ss').format(endtime);
+                        DateTime starttime = DateTime.parse(startTime);
+                        String formattedStartTime =
+                        DateFormat('HH:mm:ss').format(starttime);
+                        DateTime endtime = DateTime.parse(endTime);
+                        String formattedEndTime =
+                        DateFormat('HH:mm:ss').format(endtime);
 
-                          //price format
-                          String formattedPrice = NumberFormat.currency(
-                                  locale: 'vi_VN', symbol: 'VND')
-                              .format(price);
+                        //price format
+                        String formattedPrice = NumberFormat.currency(
+                            locale: 'vi_VN', symbol: 'VND')
+                            .format(price);
 
-                          return Container(
-                              margin:
-                                  const EdgeInsets.only(left: 21, right: 19),
-                              decoration: BoxDecoration(
-                                color: const Color(0xff201934),
-                                borderRadius: BorderRadius.circular(5.0),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(top: 6),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          margin:
-                                              const EdgeInsets.only(left: 17),
-                                          child: Text(
-                                            "Date: $formattedDate",
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
+
+                        return BlocConsumer<AuthBloc, AuthState>(
+                          listener: (context, state) {
+                            // TODO: implement listener
+                          },
+                          builder: (context, state) {
+                           // print((state as AuthSuccess).user.id);
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            SeatScreen(item: showtime,userId: (state as AuthSuccess).user.id,)));
+                              },
+                              child: Container(
+                                  margin: const EdgeInsets.only(
+                                      left: 21, right: 19),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xff201934),
+                                    borderRadius:
+                                    BorderRadius.circular(5.0),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        margin:
+                                        const EdgeInsets.only(top: 6),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment
+                                              .spaceBetween,
+                                          children: [
+                                            Container(
+                                              margin: const EdgeInsets.only(
+                                                  left: 17),
+                                              child: Text(
+                                                "Date: $formattedDate",
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14,
+                                                  fontWeight:
+                                                  FontWeight.w400,
+                                                ),
+                                              ),
                                             ),
-                                          ),
+                                            Text(
+                                              formattedPrice,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        Text(
-                                          formattedPrice,
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Container(
+                                        margin:
+                                        const EdgeInsets.only(left: 17),
+                                        child: Text(
+                                          "Time: $formattedStartTime - $formattedEndTime",
                                           style: const TextStyle(
                                             color: Colors.white,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w300,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 17),
-                                    child: Text(
-                                      "Time: $formattedStartTime - $formattedEndTime",
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
                                       ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 17),
-                                    child: Text(
-                                      "Room: $roomName",
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
+                                      const SizedBox(height: 10),
+                                      Container(
+                                        margin:
+                                        const EdgeInsets.only(left: 17),
+                                        child: Text(
+                                          "Room: $roomName",
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  Container(
-                                      margin: const EdgeInsets.only(
-                                        top: 10,
-                                        left: 13,
-                                      ),
-                                      child: Image.asset(Constants.line2Path)),
-                                ],
-                              ));
-                        }),
+                                      Container(
+                                          margin: const EdgeInsets.only(
+                                            top: 10,
+                                            left: 13,
+                                          ),
+                                          child: Image.asset(
+                                              Constants.line2Path)),
+                                    ],
+                                  )),
+                            );
+                          },
+                        );
+                      },
+
+                    ),
                   );
                 }
               },

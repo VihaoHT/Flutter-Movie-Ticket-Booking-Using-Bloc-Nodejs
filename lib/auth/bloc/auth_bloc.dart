@@ -6,7 +6,9 @@ import 'package:http/http.dart' as http;
 import 'package:movie_booking_app/core/constants/constants.dart';
 import 'package:movie_booking_app/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 part 'auth_event.dart';
+
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -38,11 +40,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           final Map<String, dynamic> data = json.decode(response.body);
           final Map<String, dynamic> userData = data['data']['user'];
           final String token = data['token'];
+          final String id = userData['_id'];
           final String username = userData['username'];
           final String email = userData['email'];
           final String? avatar = userData['avatar'];
           final String? phoneNumber = userData['phone_number'];
-          
+          print(id);
           // final String email = data['email'];
           // final String password = data['password'];
           // Lưu token vào SharedPreferences
@@ -54,6 +57,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           await Future.delayed(const Duration(milliseconds: 100), () async {
             return emit(AuthSuccess(
                 user: User(
+                    id: id,
                     email: email,
                     username: username,
                     token: token,

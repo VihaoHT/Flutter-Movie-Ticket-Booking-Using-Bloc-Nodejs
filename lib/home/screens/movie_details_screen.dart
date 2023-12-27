@@ -58,7 +58,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                     Positioned(
                       top: 10,
                       left: 32,
-                      child: GestureDetector(
+                      child: InkWell(
                         onTap: () {
                           Navigator.pop(context);
                         },
@@ -70,7 +70,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                     Positioned(
                       top: 278,
                       left: 184,
-                      child: GestureDetector(
+                      child: InkWell(
                         onTap: () {
                           Navigator.push(context, MaterialPageRoute(
                             builder: (context) {
@@ -166,7 +166,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                   ),
                 ),
                 const SizedBox(height: 47),
-                GestureDetector(
+                InkWell(
+                  splashColor: Colors.red,
                     onTap: () {
                       Navigator.push(
                         context,
