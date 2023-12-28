@@ -1,10 +1,7 @@
-import 'dart:convert';
+
 
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:http/http.dart';
-import 'package:movie_booking_app/core/constants/constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class CustomTextFieldRating extends StatelessWidget {
 
@@ -21,7 +18,6 @@ class CustomTextFieldRating extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double myRating = 3.5; // Khai báo myRating ở đây
     return TextFormField(
       style: const TextStyle(color: Colors.white),
       controller: controller,

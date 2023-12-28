@@ -76,7 +76,7 @@ class ShowTimeScreen extends StatelessWidget {
                       child:
                       CircularProgressIndicator()); // Display loading for data waiting
                 } else if (snapshot.hasError) {
-                  print(snapshot.error);
+                  //print(snapshot.error);
                   return Text('Error: ${snapshot.error}');
                 } else {
                   List<dynamic> showtimes = snapshot.data as List<dynamic>;
@@ -85,7 +85,7 @@ class ShowTimeScreen extends StatelessWidget {
                       itemCount: showtimes.length,
                       itemBuilder: (context, index) {
                         var showtime = showtimes[index];
-                        var movieTitle = showtime['movie']['title'];
+                       // var movieTitle = showtime['movie']['title'];
                         var startTime = showtime['start_time'];
                         var endTime = showtime['end_time'];
                         var price = showtime['price'];
@@ -111,7 +111,6 @@ class ShowTimeScreen extends StatelessWidget {
 
                         return BlocConsumer<AuthBloc, AuthState>(
                           listener: (context, state) {
-                            // TODO: implement listener
                           },
                           builder: (context, state) {
                            // print((state as AuthSuccess).user.id);

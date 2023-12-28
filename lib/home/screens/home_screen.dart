@@ -14,28 +14,6 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController serachController = TextEditingController();
 
-    // Future<void> getd() async {
-    //   // String api = "$uri/api/users/652c13658f6c95d46e4c2822";
-    //   // // Define the base URL and the endpoint
-    //   // final url = Uri.parse(api);
-    //   SharedPreferences preferences = await SharedPreferences.getInstance();
-    //   // Make the HTTP GET request and await the response
-    //   // final response = await get(url);
-    //   String? token =  preferences.getString('token');
-    //   Response res = await get(Uri.parse('$uri/api/users/me'), headers: {
-    //     'Content-Type': 'application/json; charset=UTF-8',
-    //     'Authorization': 'Bearer $token',
-    //   });
-    //   // Check if the response status code is 200 (OK)
-    //   if (res.statusCode == 201) {
-    //     // Parse the response body as a map of JSON objects
-    //       final Map<String, dynamic> data = jsonDecode(res.body);
-    //     print(data);
-    //   } else {
-    //     // Throw an exception if the response status code is not 200
-    //     throw Exception(res.statusCode);
-    //   }
-    // }
 
     return BlocBuilder<MovieBloc, MovieState>(
       builder: (context, state) {
@@ -182,5 +160,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-
-

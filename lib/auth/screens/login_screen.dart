@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_booking_app/auth/bloc/auth_bloc.dart';
+import 'package:movie_booking_app/auth/screens/forgot_password_screen.dart';
+import 'package:movie_booking_app/auth/screens/signup_screen.dart';
 import 'package:movie_booking_app/auth/widgets/custom_textfield.dart';
+import 'package:movie_booking_app/bottom_navigation.dart';
 import 'package:movie_booking_app/home/screens/home_screen.dart';
-import 'package:movie_booking_app/home/screens/test.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -33,10 +35,17 @@ class _LoginScreenState extends State<LoginScreen> {
             }
 
             if (state is AuthSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text(
+                    "Login succesfully!",
+                  ),
+                ),
+              );
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const HomeScreen(),
+                  builder: (context) => const BottomNavigation(),
                 ),
                 (route) => false,
               );
@@ -108,15 +117,24 @@ class _LoginScreenState extends State<LoginScreen> {
                     CustomTextField(
                         controller: passwordController,
                         hintText: "Enter your password"),
-                    Container(
-                      alignment: Alignment.topRight,
-                      margin: const EdgeInsets.only(right: 34),
-                      child: const Text(
-                        "Forgot password",
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xffDA004E)),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const ForgotPasswordScreen()));
+                      },
+                      child: Container(
+                        alignment: Alignment.topRight,
+                        margin: const EdgeInsets.only(right: 34),
+                        child: const Text(
+                          "Forgot password",
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xffDA004E)),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 160),
@@ -132,10 +150,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               borderRadius: BorderRadius.circular(20))),
                       child: Ink(
                         decoration: BoxDecoration(
-                            gradient: const LinearGradient(colors: [
-                              Color(0xffF34C30),
-                              Color(0xffDA004E)
-                            ]),
+                            gradient: const LinearGradient(
+                                colors: [Color(0xffF34C30), Color(0xffDA004E)]),
                             borderRadius: BorderRadius.circular(20)),
                         child: Container(
                           width: 335,
@@ -152,22 +168,30 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     const SizedBox(height: 57),
-                    const Text.rich(TextSpan(
-                        text: 'Dont Have Account Yet? ',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w300),
-                        children: <InlineSpan>[
-                          TextSpan(
-                            text: 'Sign Up',
-                            style: TextStyle(
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SignUpScreen()));
+                      },
+                      child: const Text.rich(TextSpan(
+                          text: 'Dont Have Account Yet? ',
+                          style: TextStyle(
+                              color: Colors.white,
                               fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xffDA004E),
-                            ),
-                          )
-                        ])),
+                              fontWeight: FontWeight.w300),
+                          children: <InlineSpan>[
+                            TextSpan(
+                              text: 'Sign Up',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xffDA004E),
+                              ),
+                            )
+                          ])),
+                    ),
                   ],
                 ),
               ],

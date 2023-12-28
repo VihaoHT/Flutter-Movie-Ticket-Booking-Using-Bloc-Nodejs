@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:http/http.dart' as http;
@@ -45,7 +46,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           final String email = userData['email'];
           final String? avatar = userData['avatar'];
           final String? phoneNumber = userData['phone_number'];
-          print(id);
+          //  print(id);
           // final String email = data['email'];
           // final String password = data['password'];
           // Lưu token vào SharedPreferences
@@ -64,10 +65,83 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                     avatar: avatar,
                     phone_number: phoneNumber)));
           });
-        } else {
+        } else if(response.statusCode == 400){
           return emit(const AuthFailure(
               error:
-                  "Hãy chắc rằng bạn đã nhập đầy đủ thông tin hoặc chính xác tài khoản"));
+                  "Please provide email and password!"));
+        }else if(response.statusCode == 401){
+             return emit(const AuthFailure(
+              error:
+                  "Incorrect email or password"));
+        }
+      } catch (error) {
+        return emit(AuthFailure(error: error.toString()));
+      }
+    }
+    if (event is SignUpButtonPressed) {
+      emit(AuthLoading());
+
+      try {
+        final response = await http.post(
+          Uri.parse('$uri/api/users/register'),
+          body: json.encode({
+            'email': event.email,
+            'password': event.password,
+            'passwordConfirm': event.passwordConfirm,
+            'username': event.username
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        );
+
+        if (response.statusCode == 201) {
+          await Future.delayed(const Duration(milliseconds: 100), () async {
+            return emit(AuthSignUpSuccess());
+          });
+        } else if(response.statusCode == 500) {
+          return emit(const AuthFailure(
+              error:
+                  "Please provide a valid email"));
+        }else if(response.statusCode == 400){
+          return emit(const AuthFailure(
+              error:
+              "Email have been used!"));
+        }
+      } catch (error) {
+        return emit(AuthFailure(error: error.toString()));
+      }
+    }
+
+    //notice: if you dont see the email sent to inbox in gmail please check in spam or trash
+    if(event is ForgotButtonPressed){
+      emit(AuthLoading());
+
+      try {
+        final response = await http.post(
+          Uri.parse('$uri/api/users/forget-password'),
+          body: json.encode({
+            'email': event.email,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        );
+
+        if (response.statusCode == 200) {
+          await Future.delayed(const Duration(milliseconds: 100), () async {
+            return emit(AuthForgotSuccess());
+          });
+        } else if(response.statusCode == 500) {
+          return emit(const AuthFailure(
+              error:
+              "There was an error sending the email. Try again later!"));
+        }else if(response.statusCode == 404){
+          return emit(const AuthFailure(
+              error:
+              "There is no user with email address!"));
         }
       } catch (error) {
         return emit(AuthFailure(error: error.toString()));

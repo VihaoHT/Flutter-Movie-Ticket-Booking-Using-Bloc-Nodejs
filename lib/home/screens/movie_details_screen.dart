@@ -337,7 +337,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                                 ),
                                               ],
                                             ),
-                                            Container(
+                                            SizedBox(
                                               width: 300,
                                               child: Text(
                                                 reviews[index].review,
@@ -360,7 +360,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         ),
                       );
                     } else {
-                      return Text(
+                      return const Text(
                         "no data",
                         style: TextStyle(color: Colors.white),
                       );

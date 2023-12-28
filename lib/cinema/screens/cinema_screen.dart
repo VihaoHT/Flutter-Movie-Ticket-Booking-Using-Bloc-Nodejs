@@ -21,7 +21,7 @@ class CinemaScreen extends StatelessWidget {
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied ||
           permission == LocationPermission.deniedForever) {
-        print("Locationn denied");
+        //print("Locationn denied");
         permission = await Geolocator.requestPermission();
       }
       Position currenPosition = await Geolocator.getCurrentPosition(
