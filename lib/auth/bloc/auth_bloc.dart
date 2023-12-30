@@ -147,5 +147,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         return emit(AuthFailure(error: error.toString()));
       }
     }
+    if(event is LogOut){
+      emit(AuthLoading());
+      try{
+        final prefs = await SharedPreferences.getInstance();
+        prefs.remove('token');
+        emit(LoggedOutState());
+      }catch(e){
+        return emit(AuthFailure(error: e.toString()));
+      }
+    }
   }
 }

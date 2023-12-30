@@ -19,6 +19,12 @@ class Constants {
   static const myPath = 'assets/images/green.png';
   static const otherPath = 'assets/images/blue.png';
   static const cartPath = 'assets/images/cart.png';
+  static const avatarDefaultPath = 'assets/images/defaultAvatar.png';
+  static const ticketIconPath = 'assets/images/ticket.png';
+  static const editIconPath = 'assets/images/edit.png';
+  static const settingPath = 'assets/images/setting.png';
+  static const arrowLeftPath = 'assets/images/arrowleft.png';
+  static const logoutPath = 'assets/images/logout.png';
 
   static const colorTitle = Color(0xffF74346);
   static const backgroundColor = Color(0xff130B2B);

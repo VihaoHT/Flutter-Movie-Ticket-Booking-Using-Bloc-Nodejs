@@ -21,7 +21,7 @@ exports.getShowtimeByName = catchAsync(async(req, res, next) => {
   let showtimes = await Showtime.find({start_time: { $gt: req.request_time }}).populate({path: 'room', select: 'name', populate: 'cinema'}).populate({path: 'movie', select: 'title'})
   showtimes = showtimes.filter(item => item.movie.title == req.query.title)
   res.json({
-    status: 'success',
+    status: 'success',  
     data: showtimes
   })
 })

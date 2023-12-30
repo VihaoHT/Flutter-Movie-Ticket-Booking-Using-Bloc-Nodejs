@@ -38,3 +38,11 @@ class ForgotButtonPressed extends AuthEvent {
   List<Object> get props => [email];
 }
 
+class LogOut extends AuthEvent {
+
+  @override
+  List<Object> get props => [];
+}
+
+
+
