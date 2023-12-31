@@ -39,6 +39,24 @@ class LoggedOutState extends AuthState {
   List<Object> get props => [];
 }
 
+class AuthChangePasswordSuccess extends AuthState {
+  @override
+  List<Object> get props => [];
+}
+
+class AuthAvatarSuccess extends AuthState {
+  @override
+  List<Object> get props => [];
+}
+
+class AuthUpdateProfileSuccess extends AuthState {
+  @override
+  List<Object> get props => [];
+}
+
+
+
+
 
 class AuthFailure extends AuthState {
   final String error;

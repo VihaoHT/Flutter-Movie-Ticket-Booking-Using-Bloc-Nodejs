@@ -69,7 +69,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                       Container(
                         margin: const EdgeInsets.only(top: 26),
                         child: const Text(
-                          "Sign Up",
+                          "Enter your data",
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.white,

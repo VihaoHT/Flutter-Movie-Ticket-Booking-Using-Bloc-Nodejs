@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_booking_app/auth/screens/login_screen.dart';
 import 'package:movie_booking_app/core/constants/constants.dart';
 import 'package:movie_booking_app/main.dart';
+import 'package:movie_booking_app/profile/screens/change_password_screen.dart';
+import 'package:movie_booking_app/profile/screens/update_profile_screen.dart';
 
 import '../../auth/bloc/auth_bloc.dart';
 
@@ -126,7 +128,11 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 13),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const UpdateProfileScreen();
+                  },));
+                },
                 style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,
                     shape: RoundedRectangleBorder(
@@ -162,7 +168,11 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 13),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const ChangePasswordScreen();
+                  },));
+                },
                 style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,
                     shape: RoundedRectangleBorder(

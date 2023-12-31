@@ -25,6 +25,8 @@ class Constants {
   static const settingPath = 'assets/images/setting.png';
   static const arrowLeftPath = 'assets/images/arrowleft.png';
   static const logoutPath = 'assets/images/logout.png';
+  static const lockPath = 'assets/images/lock.png';
+  static const savePath = 'assets/images/saveadd.png';
 
   static const colorTitle = Color(0xffF74346);
   static const backgroundColor = Color(0xff130B2B);

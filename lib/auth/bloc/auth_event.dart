@@ -44,5 +44,45 @@ class LogOut extends AuthEvent {
   List<Object> get props => [];
 }
 
+class ChangePasswordButtonPressed extends AuthEvent {
+  final String password;
+  final String newPassword;
+  final String passwordConfirm;
+
+  const ChangePasswordButtonPressed({required this.password, required this.newPassword, required this.passwordConfirm});
+
+
+
+  @override
+  List<Object> get props => [password,newPassword,passwordConfirm];
+}
+
+class AvatarButtonPressed extends AuthEvent {
+  final File avatar;
+
+
+  const AvatarButtonPressed({required this.avatar});
+
+
+
+  @override
+  List<Object> get props => [avatar];
+}
+
+class UpdateProfileButtonPressed extends AuthEvent {
+  final String? avatar;
+  final String? username;
+  final String? phone_number;
+
+  const UpdateProfileButtonPressed(this.avatar, this.username, this.phone_number);
+
+
+
+
+  @override
+  List<Object> get props => [avatar!,username!,phone_number!];
+}
+
+
 
 
