@@ -44,17 +44,6 @@ class AuthChangePasswordSuccess extends AuthState {
   List<Object> get props => [];
 }
 
-class AuthAvatarSuccess extends AuthState {
-  @override
-  List<Object> get props => [];
-}
-
-class AuthUpdateProfileSuccess extends AuthState {
-  @override
-  List<Object> get props => [];
-}
-
-
 
 
 

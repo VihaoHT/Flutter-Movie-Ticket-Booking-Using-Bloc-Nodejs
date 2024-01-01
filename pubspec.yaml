@@ -46,6 +46,7 @@ dependencies:
   socket_io_client: 2.0.3+1
   image_picker: 0.8.6
   quickalert: 1.0.2
+  dio: 5.4.0
 
 dev_dependencies:
   flutter_test:

@@ -26,7 +26,12 @@ class CustomTextFieldUpdate extends StatelessWidget {
         readOnly: readOnly,
         decoration: InputDecoration(
           hintText: hintText,
-          label:  Text(label,style: const TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+          labelText: label,
+          labelStyle: const TextStyle(
+            color: Colors.white, // Màu sắc của label text
+            fontWeight: FontWeight.bold   // Kích thước của label text
+          ),
+          // label:  Text(label,style: const TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
           hintStyle: const TextStyle(color: Colors.white),
           border: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.black),

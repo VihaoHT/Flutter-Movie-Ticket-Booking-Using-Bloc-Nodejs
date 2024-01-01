@@ -6,7 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:movie_booking_app/auth/widgets/custom_textfield.dart';
 import 'package:movie_booking_app/bottom_navigation.dart';
 import 'package:movie_booking_app/profile/widgets/custom_text_field_update.dart';
-
+import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../auth/bloc/auth_bloc.dart';
 import '../../core/constants/constants.dart';
 
@@ -18,14 +19,62 @@ class UpdateProfileScreen extends StatefulWidget {
 }
 
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
-  File? _selecImage;
+  XFile? pickedFile;
+  String? newAvatarPath;
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
 
+  Future<void> updateImage(XFile? pickedFile) async {
+    try {
+      Dio dio = Dio();
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      String? token = preferences.getString('token');
+      if (pickedFile != null) {
+        // Use the correct Content-Type header
+        final options = Options(
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer $token',
+          },
+        );
+
+        // Use the correct field name and file name for the image
+        FormData formData = FormData.fromMap({
+          'avatar': await MultipartFile.fromFile(pickedFile.path,
+              filename: 'upload.jpg'),
+        });
+
+        Response response = await dio.post(
+          'http://192.168.2.6:3000/api/users/update-user-avatar',
+          data: formData,
+          options: options,
+        );
+        if (response.statusCode == 201) {
+          print('Image upload succesfully');
+          newAvatarPath = response.data['avatar'].toString();
+          print(newAvatarPath);
+        } else {
+          print('Image upload failed');
+          print(response.statusCode);
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    pickImageFromGallery() async {
+      final picker = ImagePicker();
+      pickedFile = await picker.pickImage(source: ImageSource.gallery);
+      print(pickedFile!.path);
+      updateImage(pickedFile);
+      setState(() {});
+    }
+
     return SafeArea(
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
@@ -37,39 +86,15 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
               ),
             );
           }
-          if(state is AuthUpdateProfileSuccess){
+          if (state is AuthSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text("Update Profile successfully!"),
               ),
             );
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const BottomNavigation(),
-              ),
-                  (route) => false,
-            );
           }
         },
         builder: (context, state) {
-
-          Future _pickImageFromGallery() async {
-            final returnedImage =
-            await ImagePicker().pickImage(source: ImageSource.gallery);
-
-            //if user don't pick image from gallery then return (if you don't have this you may get error)
-            if (returnedImage == null) return;
-
-            setState(() {
-              _selecImage = File(returnedImage.path);
-            });
-
-            context.read<AuthBloc>().add(AvatarButtonPressed(avatar: File(returnedImage.path)));
-
-
-          }
-
           if (state is AuthLoading) {
             return const Center(
               child: CircularProgressIndicator(),
@@ -108,19 +133,18 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     ],
                   ),
                   const SizedBox(height: 50),
-                  _selecImage != null
+                  pickedFile != null
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(180.0),
                           child: Image.file(
-                            _selecImage!,
+                            File(pickedFile!.path),
                             width: 180,
                             height: 180,
                             fit: BoxFit.cover,
                           ))
                       : InkWell(
                           onTap: () {
-                            _pickImageFromGallery();
-                            print(_pickImageFromGallery());
+                            pickImageFromGallery();
                           },
                           child: Column(
                             children: [
@@ -236,7 +260,19 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   const SizedBox(height: 50),
                   Center(
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.read<AuthBloc>().add(
+                              UpdateProfileButtonPressed(
+                                pickedFile != null  ? newAvatarPath : (state as AuthSuccess).user.avatar,
+                                usernameController.text.trim().isNotEmpty
+                                    ? usernameController.text.trim()
+                                    : (state as AuthSuccess).user.username,
+                                phoneNumberController.text.trim().isNotEmpty
+                                    ? phoneNumberController.text.trim()
+                                    : (state as AuthSuccess).user.phone_number,
+                              ),
+                            );
+                      },
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.zero,
                           shape: RoundedRectangleBorder(
@@ -282,6 +318,4 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       ),
     );
   }
-
-
 }

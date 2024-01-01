@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_booking_app/auth/screens/login_screen.dart';
@@ -28,6 +30,9 @@ class ProfileScreen extends StatelessWidget {
           }
         },
         builder: (context, state) {
+          if(state is AuthLoading){
+            return CircularProgressIndicator();
+          }
           return Column(
             children: [
               Container(

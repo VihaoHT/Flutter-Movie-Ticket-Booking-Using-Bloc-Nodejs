@@ -187,39 +187,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         return emit(AuthFailure(error: e.toString()));
       }
     }
-
-    if(event is AvatarButtonPressed){
-      emit(AuthLoading());
-      try {
-        SharedPreferences preferences = await SharedPreferences.getInstance();
-        String? token = preferences.getString('token');
-
-        final url = '$uri/api/users/update-user-avatar';
-        var requestBody = {
-          'avatar':event.avatar,
-        };
-        http.Response response = await http.patch(
-          Uri.parse(url),
-          body: json.encode(requestBody),
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': 'Bearer $token',
-          },
-        );
-
-        if(response.statusCode == 201){
-          await Future.delayed(const Duration(milliseconds: 100), () async {
-            return emit(AuthAvatarSuccess());
-          });
-        }else {
-          return emit(const AuthFailure(
-              error: "Something went wrong!"));
-        }
-      } catch (e) {
-        return emit(AuthFailure(error: e.toString()));
-      }
-    }
     if(event is UpdateProfileButtonPressed){
       emit(AuthLoading());
       try {
@@ -239,10 +206,30 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             'Authorization': 'Bearer $token',
           },
         );
-
         if(response.statusCode == 200){
           await Future.delayed(const Duration(milliseconds: 100), () async {
-            return emit(AuthUpdateProfileSuccess());
+            final response = await http.get(
+              Uri.parse('$uri/api/users/me'),
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer $token',
+              },
+            );
+            final Map<String, dynamic> data = json.decode(response.body);
+            final String id = data['data']['document']['_id'];
+            final String email = data['data']['document']['email'];
+
+              return emit(AuthSuccess(
+                  user: User(
+                      id: id,
+                      email: email,
+                      username: event.username!,
+                      token: token!,
+                      avatar: event.avatar,
+                      phone_number: event.phone_number)));
+
+
           });
         }else {
           return emit(const AuthFailure(

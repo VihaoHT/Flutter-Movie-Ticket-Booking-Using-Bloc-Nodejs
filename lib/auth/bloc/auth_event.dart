@@ -57,17 +57,6 @@ class ChangePasswordButtonPressed extends AuthEvent {
   List<Object> get props => [password,newPassword,passwordConfirm];
 }
 
-class AvatarButtonPressed extends AuthEvent {
-  final File avatar;
-
-
-  const AvatarButtonPressed({required this.avatar});
-
-
-
-  @override
-  List<Object> get props => [avatar];
-}
 
 class UpdateProfileButtonPressed extends AuthEvent {
   final String? avatar;
@@ -80,7 +69,7 @@ class UpdateProfileButtonPressed extends AuthEvent {
 
 
   @override
-  List<Object> get props => [avatar!,username!,phone_number!];
+  List<Object> get props => [avatar ?? "",username ?? "",phone_number ?? ""];
 }
 
 

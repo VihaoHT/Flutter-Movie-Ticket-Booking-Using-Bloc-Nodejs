@@ -11,7 +11,7 @@ router.post('/reset-password/:token', authController.resetPassword)
 // protect all routes below
 router.use(authController.protect)
 router.get('/me', userController.getMe, userController.getUser)
-router.patch('/update-user-avatar', userController.uploadUserPhoto, userController.resizeUserPhoto)
+router.post('/update-user-avatar', userController.uploadUserPhoto, userController.resizeUserPhoto)
 router.patch('/update-me', userController.updateMe)
 router.patch('/change-password', authController.changePassword)
 router.get('/my-tickets', userController.getMyTickets)
