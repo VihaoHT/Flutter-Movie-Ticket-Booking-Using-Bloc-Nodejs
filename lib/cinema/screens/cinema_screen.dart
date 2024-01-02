@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
 import 'package:movie_booking_app/core/constants/constants.dart';
 import 'package:movie_booking_app/showtime/screens/showtime_screen.dart';
+import 'package:get/get.dart' as Getx;
 
 class CinemaScreen extends StatelessWidget {
   final String id;
@@ -58,12 +59,10 @@ class CinemaScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(left: 20, top: 10),
+                Container(
+                  margin: const EdgeInsets.only(left: 20, top: 10),
+                  child: InkWell(
+                    onTap: () => Navigator.pop(context),
                     child: Image.asset(
                       Constants.back2Path,
                     ),
@@ -120,14 +119,14 @@ class CinemaScreen extends StatelessWidget {
                                 //print(distance);
                                 return InkWell(
                                   onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ShowTimeScreen(
-                                            id: item['room']['cinema']['_id'],
-                                            title: item['movie']['title']),
-                                      ),
-                                    );
+                                    Getx.Get.to(
+                                        ShowTimeScreen(
+                                          id: item['room']['cinema']['_id'],
+                                          title: item['movie']['title'],
+                                        ),
+                                        transition: Getx.Transition.fade,
+                                        duration:
+                                            const Duration(milliseconds: 1000));
                                   },
                                   child: Container(
                                     color: const Color(0xff201934),

@@ -5,7 +5,7 @@ import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:movie_booking_app/core/constants/constants.dart';
 import 'package:movie_booking_app/seat/screens/seat_screen.dart';
-
+import 'package:get/get.dart' as Getx;
 import '../../auth/bloc/auth_bloc.dart';
 
 class ShowTimeScreen extends StatelessWidget {
@@ -43,12 +43,10 @@ class ShowTimeScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(left: 20, top: 10),
+                Container(
+                  margin: const EdgeInsets.only(left: 20, top: 10),
+                  child: InkWell(
+                    onTap: () => Navigator.pop(context),
                     child: Image.asset(
                       Constants.back2Path,
                     ),
@@ -74,7 +72,7 @@ class ShowTimeScreen extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
                       child:
-                      CircularProgressIndicator()); // Display loading for data waiting
+                          CircularProgressIndicator()); // Display loading for data waiting
                 } else if (snapshot.hasError) {
                   //print(snapshot.error);
                   return Text('Error: ${snapshot.error}');
@@ -85,7 +83,7 @@ class ShowTimeScreen extends StatelessWidget {
                       itemCount: showtimes.length,
                       itemBuilder: (context, index) {
                         var showtime = showtimes[index];
-                       // var movieTitle = showtime['movie']['title'];
+                        // var movieTitle = showtime['movie']['title'];
                         var startTime = showtime['start_time'];
                         var endTime = showtime['end_time'];
                         var price = showtime['price'];
@@ -94,53 +92,51 @@ class ShowTimeScreen extends StatelessWidget {
                         //date format
                         DateTime date = DateTime.parse(startTime);
                         String formattedDate =
-                        DateFormat('yyyy-MM-dd').format(date);
+                            DateFormat('yyyy-MM-dd').format(date);
 
                         DateTime starttime = DateTime.parse(startTime);
                         String formattedStartTime =
-                        DateFormat('HH:mm:ss').format(starttime);
+                            DateFormat('HH:mm:ss').format(starttime);
                         DateTime endtime = DateTime.parse(endTime);
                         String formattedEndTime =
-                        DateFormat('HH:mm:ss').format(endtime);
+                            DateFormat('HH:mm:ss').format(endtime);
 
                         //price format
                         String formattedPrice = NumberFormat.currency(
-                            locale: 'vi_VN', symbol: 'VND')
+                                locale: 'vi_VN', symbol: 'VND')
                             .format(price);
 
-
                         return BlocConsumer<AuthBloc, AuthState>(
-                          listener: (context, state) {
-                          },
+                          listener: (context, state) {},
                           builder: (context, state) {
-                           // print((state as AuthSuccess).user.id);
+                            // print((state as AuthSuccess).user.id);
                             return GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            SeatScreen(item: showtime,userId: (state as AuthSuccess).user.id,)));
+                                Getx.Get.to(
+                                    SeatScreen(
+                                      item: showtime,
+                                      userId: (state as AuthSuccess).user.id,
+                                    ),
+                                    transition: Getx.Transition.fade,
+                                    duration:
+                                        const Duration(milliseconds: 1000));
                               },
                               child: Container(
                                   margin: const EdgeInsets.only(
                                       left: 21, right: 19),
                                   decoration: BoxDecoration(
                                     color: const Color(0xff201934),
-                                    borderRadius:
-                                    BorderRadius.circular(5.0),
+                                    borderRadius: BorderRadius.circular(5.0),
                                   ),
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        margin:
-                                        const EdgeInsets.only(top: 6),
+                                        margin: const EdgeInsets.only(top: 6),
                                         child: Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment
-                                              .spaceBetween,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Container(
                                               margin: const EdgeInsets.only(
@@ -150,8 +146,7 @@ class ShowTimeScreen extends StatelessWidget {
                                                 style: const TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 14,
-                                                  fontWeight:
-                                                  FontWeight.w400,
+                                                  fontWeight: FontWeight.w400,
                                                 ),
                                               ),
                                             ),
@@ -168,8 +163,7 @@ class ShowTimeScreen extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 10),
                                       Container(
-                                        margin:
-                                        const EdgeInsets.only(left: 17),
+                                        margin: const EdgeInsets.only(left: 17),
                                         child: Text(
                                           "Time: $formattedStartTime - $formattedEndTime",
                                           style: const TextStyle(
@@ -181,8 +175,7 @@ class ShowTimeScreen extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 10),
                                       Container(
-                                        margin:
-                                        const EdgeInsets.only(left: 17),
+                                        margin: const EdgeInsets.only(left: 17),
                                         child: Text(
                                           "Room: $roomName",
                                           style: const TextStyle(
@@ -197,15 +190,14 @@ class ShowTimeScreen extends StatelessWidget {
                                             top: 10,
                                             left: 13,
                                           ),
-                                          child: Image.asset(
-                                              Constants.line2Path)),
+                                          child:
+                                              Image.asset(Constants.line2Path)),
                                     ],
                                   )),
                             );
                           },
                         );
                       },
-
                     ),
                   );
                 }

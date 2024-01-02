@@ -53,7 +53,9 @@ class ForgotPasswordScreen extends StatelessWidget {
               children: [
                 Container(
                     margin: const EdgeInsets.only(top: 10, left: 32),
-                    child: Image.asset(Constants.backPath)),
+                    child: InkWell(onTap: () {
+                      Navigator.pop(context);
+                    },child: Image.asset(Constants.backPath))),
                 Container(
                   alignment: Alignment.center,
                   margin: const EdgeInsets.only(top: 30),

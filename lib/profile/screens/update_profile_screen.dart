@@ -40,7 +40,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           },
         );
 
-        // Use the correct field name and file name for the image
         FormData formData = FormData.fromMap({
           'avatar': await MultipartFile.fromFile(pickedFile.path,
               filename: 'upload.jpg'),
@@ -52,6 +51,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           options: options,
         );
         if (response.statusCode == 201) {
+          /// NOTICE : IN THIS API I JUST SAVE THE FILE IMAGE TO STRING TO PASTE IT INTO AVATAR IN BLOC EVENT UpdateProfileButtonPressed
+          /// NOTICE: IF IN CLIENT IS 201 AND THE SERVER SEND ERROR  Cannot set headers after they are sent to the client 403 just ignore it, IT FINE
           print('Image upload succesfully');
           newAvatarPath = response.data['avatar'].toString();
           print(newAvatarPath);
@@ -79,7 +80,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthFailure) {
-            print("dasdddddd" + state.error);
+            print(state.error);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.error),
@@ -101,7 +102,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             );
           }
           return Scaffold(
-            resizeToAvoidBottomInset: false,
             body: SingleChildScrollView(
               child: Column(
                 children: [
@@ -134,14 +134,19 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   ),
                   const SizedBox(height: 50),
                   pickedFile != null
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(180.0),
-                          child: Image.file(
-                            File(pickedFile!.path),
-                            width: 180,
-                            height: 180,
-                            fit: BoxFit.cover,
-                          ))
+                      ? InkWell(
+                          onTap: () {
+                            pickImageFromGallery();
+                          },
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(180.0),
+                              child: Image.file(
+                                File(pickedFile!.path),
+                                width: 180,
+                                height: 180,
+                                fit: BoxFit.cover,
+                              )),
+                        )
                       : InkWell(
                           onTap: () {
                             pickImageFromGallery();
@@ -263,7 +268,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       onPressed: () {
                         context.read<AuthBloc>().add(
                               UpdateProfileButtonPressed(
-                                pickedFile != null  ? newAvatarPath : (state as AuthSuccess).user.avatar,
+                                pickedFile != null
+                                    ? newAvatarPath
+                                    : (state as AuthSuccess).user.avatar,
                                 usernameController.text.trim().isNotEmpty
                                     ? usernameController.text.trim()
                                     : (state as AuthSuccess).user.username,

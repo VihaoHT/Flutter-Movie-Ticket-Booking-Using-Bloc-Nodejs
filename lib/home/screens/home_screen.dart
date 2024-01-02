@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart' as Getx;
 
 import 'package:movie_booking_app/core/constants/constants.dart';
 import 'package:movie_booking_app/home/movie_bloc/movie_bloc.dart';
@@ -82,15 +83,11 @@ class HomeScreen extends StatelessWidget {
                       itemCount: movieList.length,
                       itemBuilder: (context, index) {
                         // print(movieList[index].title);
-                        return GestureDetector(
+                        return InkWell(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    MovieDetailsScreen(movie: movieList[index]),
-                              ),
-                            );
+                            Getx.Get.to(MovieDetailsScreen(movie: movieList[index]),
+                                transition: Getx.Transition.fade,
+                                duration: const Duration(milliseconds: 1000));
                           },
                           child: GridTile(
                             child: Column(

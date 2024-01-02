@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
+import 'package:get/get.dart' as Getx;
 import 'package:intl/intl.dart';
 import 'package:movie_booking_app/cinema/screens/cinema_screen.dart';
 import 'package:movie_booking_app/core/constants/constants.dart';
@@ -72,13 +72,12 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       left: 184,
                       child: InkWell(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(
-                            builder: (context) {
-                              return MovieTrailerScreen(
+                          Getx.Get.to(
+                              MovieTrailerScreen(
                                 videoUrl: widget.movie.trailer,
-                              );
-                            },
-                          ));
+                              ),
+                              transition: Getx.Transition.fade,
+                              duration: const Duration(milliseconds: 1000));
                         },
                         child: Image.asset(
                           Constants.trailerPath,
@@ -167,17 +166,15 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 ),
                 const SizedBox(height: 47),
                 InkWell(
-                  splashColor: Colors.red,
+                    splashColor: Colors.red,
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CinemaScreen(
+                      Getx.Get.to(
+                          CinemaScreen(
                             id: widget.movie.id,
                             title: widget.movie.title,
                           ),
-                        ),
-                      );
+                          transition: Getx.Transition.fade,
+                          duration: const Duration(milliseconds: 1000));
                     },
                     child: Image.asset(Constants.bookingPath)),
                 const SizedBox(height: 25),
@@ -212,7 +209,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                   'You forgot to text your thinking this movie!'),
                               duration: Duration(seconds: 2),
                             ),
-
                           );
                         } else {
                           Future.delayed(const Duration(milliseconds: 1000),

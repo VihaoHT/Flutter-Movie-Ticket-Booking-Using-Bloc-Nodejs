@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:movie_booking_app/auth/bloc/auth_bloc.dart';
 import 'package:movie_booking_app/auth/screens/login_screen.dart';
 import 'package:movie_booking_app/auth/screens/signup_screen.dart';
@@ -24,13 +25,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xff130B2B),
-        useMaterial3: true,
-      ),
-      home: const LoginScreen()
-    );
+    return GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          scaffoldBackgroundColor: const Color(0xff130B2B),
+          useMaterial3: true,
+        ),
+        home: const LoginScreen());
   }
 }

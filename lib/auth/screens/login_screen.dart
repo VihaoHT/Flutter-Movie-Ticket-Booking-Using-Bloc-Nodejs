@@ -5,6 +5,7 @@ import 'package:movie_booking_app/auth/screens/forgot_password_screen.dart';
 import 'package:movie_booking_app/auth/screens/signup_screen.dart';
 import 'package:movie_booking_app/auth/widgets/custom_textfield.dart';
 import 'package:movie_booking_app/bottom_navigation.dart';
+import 'package:get/get.dart' as Getx;
 import 'package:movie_booking_app/home/screens/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -119,11 +120,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         hintText: "Enter your password"),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const ForgotPasswordScreen()));
+                        Getx.Get.to(const ForgotPasswordScreen(),
+                            transition: Getx.Transition.circularReveal,
+                            duration: const Duration(milliseconds: 2000));
                       },
                       child: Container(
                         alignment: Alignment.topRight,
@@ -170,10 +169,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 57),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SignUpScreen()));
+                        Getx.Get.to(const SignUpScreen(),
+                            transition: Getx.Transition.circularReveal,
+                            duration: const Duration(milliseconds: 2000));
                       },
                       child: const Text.rich(TextSpan(
                           text: 'Dont Have Account Yet? ',
