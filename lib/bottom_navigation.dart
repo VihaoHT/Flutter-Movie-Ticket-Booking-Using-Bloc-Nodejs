@@ -1,3 +1,4 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/home/screens/home_screen.dart';
@@ -22,89 +23,60 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: pageIndex,
-        children: pages,
-      ),
-      bottomNavigationBar: buildMyNavBar(context),
-    );
-  }
-
-  Container buildMyNavBar(BuildContext context) {
-    return Container(
+      bottomNavigationBar: CurvedNavigationBar(
         height: 60,
-        decoration: BoxDecoration(
-          color: Theme
-              .of(context)
-              .primaryColor,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              enableFeedback: false,
-              onPressed: () {
-                setState(() {
-                  pageIndex = 0;
-                });
-              },
-              icon: pageIndex == 0
-                  ? const Icon(
-                Icons.home_filled,
-                color: Color(0xffF74346),
-                size: 35,
-              )
-                  : const Icon(
-                Icons.home_outlined,
-                color: Color(0xff4A4B56),
-                size: 35,
-              ),
-            ),
-            IconButton(
-              enableFeedback: false,
-              onPressed: () {
-                setState(() {
-                  pageIndex = 1;
-                });
-              },
-              icon: pageIndex == 1
-                  ? const Icon(
-                Icons.movie,
-                color: Color(0xffF74346),
-                size: 35,
-              )
-                  : const Icon(
-                Icons.movie_outlined,
-                color: Color(0xff4A4B56),
-                size: 35,
-              ),
-            ),
-            IconButton(
-              enableFeedback: false,
-              onPressed: () {
-                setState(() {
-                  pageIndex = 2;
-                });
-              },
-              icon: pageIndex == 2
-                  ? const Icon(
-                Icons.person,
-                color: Color(0xffF74346),
-                size: 35,
-              )
-                  : const Icon(
-                Icons.person_outline,
-                color: Color(0xff4A4B56),
-                size: 35,
-              ),
-            ),
-
-          ],
-        )
+        backgroundColor: const Color(0xff130B2B),
+        animationCurve: Curves.easeInOutExpo,
+        animationDuration: const Duration(milliseconds: 400),
+        onTap: (index) {
+          setState(() {
+            pageIndex = index;
+          });
+        },
+        items: [
+          pageIndex == 0
+              ? const Icon(
+                  Icons.home,
+                  color: Color(0xffF74346),
+                  size: 35,
+                )
+              : const Icon(
+                  Icons.home_outlined,
+                  color: Color(0xff4A4B56),
+                  size: 35,
+                ),
+          pageIndex == 1
+              ? const Icon(
+                  Icons.map,
+                  color: Color(0xffF74346),
+                  size: 35,
+                )
+              : const Icon(
+                  Icons.map_outlined,
+                  color: Color(0xff4A4B56),
+                  size: 35,
+                ),
+          pageIndex == 2
+              ? const Icon(
+                  Icons.person,
+                  color: Color(0xffF74346),
+                  size: 35,
+                )
+              : const Icon(
+                  Icons.person_outline,
+                  color: Color(0xff4A4B56),
+                  size: 35,
+                ),
+        ],
+        letIndexChange: (index) => true,
+      ),
+      body: _pages[pageIndex],
     );
   }
+
+  final List<Widget> _pages = [
+    const HomeScreen(),
+    const MapScreen(),
+    const ProfileScreen(),
+  ];
 }

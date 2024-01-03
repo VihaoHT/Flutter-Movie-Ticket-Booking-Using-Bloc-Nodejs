@@ -146,7 +146,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         prefs.remove('token');
         emit(LoggedOutState());
       } catch (e) {
-        return emit(AuthFailure(error: e.toString()));
+        throw Exception("failed");
       }
     }
 

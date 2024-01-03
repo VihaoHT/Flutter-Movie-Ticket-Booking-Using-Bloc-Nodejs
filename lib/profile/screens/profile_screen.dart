@@ -10,6 +10,7 @@ import 'package:movie_booking_app/main.dart';
 import 'package:movie_booking_app/profile/screens/change_password_screen.dart';
 import 'package:movie_booking_app/profile/screens/my_ticket_screen.dart';
 import 'package:movie_booking_app/profile/screens/update_profile_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../auth/bloc/auth_bloc.dart';
 
@@ -21,8 +22,10 @@ class ProfileScreen extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
       body: BlocConsumer<AuthBloc, AuthState>(
-        listener: (context, state) {
+        listener: (context, state) async{
           if(state is LoggedOutState){
+            SharedPreferences prefrences = await SharedPreferences.getInstance();
+            prefrences.remove("token");
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
@@ -64,6 +67,7 @@ class ProfileScreen extends StatelessWidget {
                               state.user.avatar!,
                               width: 105,
                               height: 105,
+                              fit: BoxFit.fill,
                             ),
                           )
                         : Image.asset(

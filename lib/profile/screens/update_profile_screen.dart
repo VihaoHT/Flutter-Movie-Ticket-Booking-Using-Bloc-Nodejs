@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:movie_booking_app/auth/widgets/custom_textfield.dart';
-import 'package:movie_booking_app/bottom_navigation.dart';
 import 'package:movie_booking_app/profile/widgets/custom_text_field_update.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,7 +33,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         // Use the correct Content-Type header
         final options = Options(
           headers: {
-            'Content-Type': 'multipart/form-data',
+            'Content-Type':'application/json' 'multipart/form-data',
+            'Accept': 'application/json',
             'Authorization': 'Bearer $token',
           },
         );
@@ -71,9 +70,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     pickImageFromGallery() async {
       final picker = ImagePicker();
       pickedFile = await picker.pickImage(source: ImageSource.gallery);
-      print(pickedFile!.path);
-      updateImage(pickedFile);
-      setState(() {});
+      setState(() {
+        updateImage(pickedFile);
+      });
     }
 
     return SafeArea(
@@ -134,19 +133,14 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   ),
                   const SizedBox(height: 50),
                   pickedFile != null
-                      ? InkWell(
-                          onTap: () {
-                            pickImageFromGallery();
-                          },
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(180.0),
-                              child: Image.file(
-                                File(pickedFile!.path),
-                                width: 180,
-                                height: 180,
-                                fit: BoxFit.cover,
-                              )),
-                        )
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(180.0),
+                          child: Image.file(
+                            File(pickedFile!.path),
+                            width: 180,
+                            height: 180,
+                            fit: BoxFit.fill,
+                          ))
                       : InkWell(
                           onTap: () {
                             pickImageFromGallery();
@@ -162,7 +156,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                         state.user.avatar!,
                                         width: 180,
                                         height: 180,
-                                        fit: BoxFit.cover,
+                                        fit: BoxFit.fill,
                                       ),
                                     )
                                   : ClipRRect(

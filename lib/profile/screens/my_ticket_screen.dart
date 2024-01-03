@@ -3,10 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
+import 'package:movie_booking_app/profile/screens/detail_my_ticket_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import '../../core/constants/constants.dart';
-
+import 'package:get/get.dart' as GetX;
 class MyTicketScreen extends StatelessWidget {
   const MyTicketScreen({super.key});
 
@@ -122,7 +123,7 @@ class MyTicketScreen extends StatelessWidget {
                               padding: const EdgeInsets.only(top: 26, left: 20),
                               child: InkWell(
                                 onTap: () {
-
+                                  GetX.Get.to(()=> DetailMyTicketScreen(ticketItem: snapshot.data?[index]),transition: GetX.Transition.cupertino,duration: const Duration(seconds: 1));
                                 },
                                 child: Row(
                                   children: [
