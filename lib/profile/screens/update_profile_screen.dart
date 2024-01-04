@@ -41,7 +41,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
         FormData formData = FormData.fromMap({
           'avatar': await MultipartFile.fromFile(pickedFile.path,
-              filename: 'upload.jpg'),
+              ),
         });
 
         Response response = await dio.post(
