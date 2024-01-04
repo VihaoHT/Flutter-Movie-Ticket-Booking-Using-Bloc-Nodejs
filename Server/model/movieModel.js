@@ -10,8 +10,8 @@ const movieSchema = new mongoose.Schema({
     type: [String],
     required: [true, 'Movie genre must be provided .'],
     enum: {
-    values: ['action', 'comedy', 'science-fiction', 'drama', 'fantasy', 'tragedy', ],
-    message: 'Category phai la: action, comedy, science-fiction, drama, fantasy, tragedy'
+    values: ['action', 'comedy', 'science-fiction', 'drama', 'fantasy', 'tragedy','romance' ],
+    message: 'Category phai la: action, comedy, science-fiction, drama, fantasy, tragedy,romance'
   }},
   ratingsAverage: {
     type: Number,

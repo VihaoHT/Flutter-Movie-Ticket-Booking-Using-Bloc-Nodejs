@@ -33,15 +33,16 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         // Use the correct Content-Type header
         final options = Options(
           headers: {
-            'Content-Type':'application/json' 'multipart/form-data',
+            'Content-Type': 'application/json' 'multipart/form-data',
             'Accept': 'application/json',
             'Authorization': 'Bearer $token',
           },
         );
 
         FormData formData = FormData.fromMap({
-          'avatar': await MultipartFile.fromFile(pickedFile.path,
-              ),
+          'avatar': await MultipartFile.fromFile(
+            pickedFile.path,
+          ),
         });
 
         Response response = await dio.post(

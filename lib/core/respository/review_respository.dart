@@ -30,22 +30,19 @@ class ReviewRespository {
       final List<dynamic> reviews = data['data'];
       // print(movies);
 
-      // Map each JSON object to a Movie instance and return the list
+      // Map each JSON object to a Review instance and return the list
       return reviews.map((review) => Review.fromJson(review)).toList();
     } else {
       // Throw an exception if the response status code is not 200
-      throw Exception('Failed to load movies');
+      throw Exception('Failed to load Reviews');
     }
   }
 
   Future<List<Review>> postReviews(String review, double rating,BuildContext context) async {
-    // String api = "$uri/api/users/652c13658f6c95d46e4c2822";
-    // // Define the base URL and the endpoint
-    // final url = Uri.parse(api);
+
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    // Make the HTTP GET request and await the response
-    // final response = await get(url);
     String? token = preferences.getString('token');
+
     Response res = await post(Uri.parse(api),
         body: json.encode({
           'review': review,
@@ -55,27 +52,25 @@ class ReviewRespository {
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
         });
-    // Check if the response status code is 200 (OK)
     if (res.statusCode == 201) {
       if(context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Review posted successfully!'),
           duration: Duration(
-              seconds: 4), // Đặt thời gian hiển thị
+              seconds: 4),
         ),
       );
       }
 
       return getReview();
     } else {
-      // Throw an exception if the response status code is not 200
       if(context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('You just can review one time!'),
           duration: Duration(
-              seconds: 4), // Đặt thời gian hiển thị
+              seconds: 4),
         ),
       );
       }

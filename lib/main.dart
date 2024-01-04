@@ -5,8 +5,10 @@ import 'package:movie_booking_app/auth/bloc/auth_bloc.dart';
 import 'package:movie_booking_app/auth/screens/login_screen.dart';
 import 'package:movie_booking_app/auth/screens/signup_screen.dart';
 import 'package:movie_booking_app/core/respository/movie_respository.dart';
+import 'package:movie_booking_app/core/respository/top5_respository.dart';
 import 'package:movie_booking_app/home/movie_bloc/movie_bloc.dart';
 import 'package:movie_booking_app/home/screens/home_screen.dart';
+import 'package:movie_booking_app/home/top5_bloc/top5_bloc.dart';
 
 void main() {
   runApp(MultiBlocProvider(
@@ -14,6 +16,8 @@ void main() {
       BlocProvider<AuthBloc>(create: (_) => AuthBloc()),
       BlocProvider<MovieBloc>(
           create: (_) => MovieBloc(MovieRespository())..add(LoadMovieEvent())),
+      BlocProvider<Top5Bloc>(
+          create: (_) => Top5Bloc(Top5Respository())..add(LoadTop5Event())),
     ],
     child: const MyApp(),
   ));

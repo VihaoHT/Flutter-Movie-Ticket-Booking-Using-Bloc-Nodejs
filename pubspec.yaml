@@ -49,6 +49,8 @@ dependencies:
   get: 4.6.6
   qr_flutter: 4.1.0
   curved_navigation_bar: 1.0.3
+  carousel_slider: 4.2.1
+  expandable_text: 2.3.0
 
 dev_dependencies:
   flutter_test:

@@ -74,7 +74,7 @@ exports.TopSellingMovie = (req, res, next) => {
   req.query.limit = "5";
   req.query.sort = "-ratingsAverage";
   req.query.fields =
-    "title, category, imageCover, duration, ratingsAverage, trailer, description, release_date, ratingsQuantity, actor";
+    "title, category, imageCover, duration, ratingsAverage, trailer, description, release_date, ratingsQuantity, actor, status";
   next();
 };
 exports.getAllMovies = factory.getAll(Movie, "actor");

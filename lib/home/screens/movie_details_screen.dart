@@ -1,3 +1,4 @@
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -43,9 +44,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
               children: [
                 Stack(
                   children: [
-                    // Widget 1 (Dưới cùng)
-                    Container(
-                      color: Colors.blue,
+                    SizedBox(
                       height: 360,
                       width: double.infinity,
                       child: Image.network(
@@ -54,7 +53,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         fit: BoxFit.fill,
                       ),
                     ),
-                    // Widget 2 (Trên cùng)
                     Positioned(
                       top: 10,
                       left: 32,
@@ -86,18 +84,25 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                     ),
                   ],
                 ),
-                Text(
-                  widget.movie.title,
-                  style: const TextStyle(
-                    color: Constants.colorTitle,
-                    fontSize: 33,
-                    fontWeight: FontWeight.bold,
+                const SizedBox(height: 5),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    widget.movie.title,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Constants.colorTitle,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
+                const SizedBox(height: 5),
                 SizedBox(
                   width: double.infinity,
                   height: 40,
                   child: ListView.builder(
+                    shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemCount: widget.movie.category.length,
                     itemBuilder: (context, index) {
@@ -154,13 +159,21 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 const SizedBox(height: 23),
                 Container(
                   margin: const EdgeInsets.only(left: 20, right: 20),
-                  child: Text(
+                  child: ExpandableText(
                     widget.movie.description,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    expandText: 'show more',
+                    collapseText: 'show less',
+                    maxLines: 5,
+                    linkColor: Constants.colorTitle,
+                    linkStyle: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15
                     ),
                   ),
                 ),
@@ -189,6 +202,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 const SizedBox(height: 25),
                 BlocBuilder<ReviewBloc, ReviewState>(
                   builder: (context, state) {
+                    if(state is ReviewLoadingState){
+                      return const Center(child: CircularProgressIndicator());
+                    }
                     double myRating = 0;
                     return RatingBar.builder(
                       initialRating: myRating,
@@ -272,10 +288,10 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                             String formattedDateTime =
                                 DateFormat("HH:mm dd/MM/yyyy").format(dateTime);
 
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
+                            return Flexible(
                               child: GridTile(
-                                child: Flexible(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
                                   child: Row(
                                     children: [
                                       ClipRRect(
@@ -316,7 +332,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                                     color: Colors.yellow,
                                                   ),
                                                   onRatingUpdate: (rating) {
-                                                    // Thực hiện các hành động khi rating được cập nhật (nếu cần)
+
                                                   },
                                                 ),
                                                 Container(
