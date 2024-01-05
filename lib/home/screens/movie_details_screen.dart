@@ -278,6 +278,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: reviews.length,
+                          reverse: true,
                           itemBuilder: (context, index) {
                             String reviewTime = reviews[index].createdAt;
 

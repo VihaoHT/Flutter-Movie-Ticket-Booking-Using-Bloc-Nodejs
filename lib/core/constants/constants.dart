@@ -29,6 +29,8 @@ class Constants {
   static const savePath = 'assets/images/saveadd.png';
   static const tearLinePath = 'assets/images/tearline.png';
   static const informationPath = 'assets/images/in4.png';
+  static const filterPath = 'assets/images/filter.png';
+  static const undoPath = 'assets/images/undo.png';
 
   static const colorTitle = Color(0xffF74346);
   static const backgroundColor = Color(0xff130B2B);

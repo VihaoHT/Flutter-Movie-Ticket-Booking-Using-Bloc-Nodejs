@@ -80,7 +80,7 @@ exports.TopSellingMovie = (req, res, next) => {
 exports.getAllMovies = factory.getAll(Movie, "actor");
 exports.getMoviesByNameAndCategory = catchAsync(async (req, res, next) => {
   if (!req.query.title && !req.query.category) return next();
-  if (req.query.category) req.query.category = req.query.category.split(",");
+  if (req.query.category) req.query.category; 
   if (req.query.title)
     req.query.title = { $regex: req.query.title, $options: "i" };
   console.log(req.query);

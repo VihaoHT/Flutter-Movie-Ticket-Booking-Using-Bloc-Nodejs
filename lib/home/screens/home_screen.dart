@@ -5,12 +5,11 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart' as Getx;
-import 'package:http/http.dart';
 
 import 'package:movie_booking_app/core/constants/constants.dart';
 import 'package:movie_booking_app/home/movie_bloc/movie_bloc.dart';
 import 'package:movie_booking_app/home/screens/movie_details_screen.dart';
-import 'package:movie_booking_app/home/widgets/custom_textfileld_search.dart';
+import 'package:movie_booking_app/home/screens/movie_search_screen.dart';
 import 'package:movie_booking_app/models/movie_model.dart';
 import '../top5_bloc/top5_bloc.dart';
 
@@ -19,7 +18,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController serachController = TextEditingController();
+    final Shader linearGradient = const LinearGradient(
+      colors: <Color>[Color(0xffFA6900), Color(0xffDA004E)],
+    ).createShader(const Rect.fromLTWH(0.0, 0.0, 200, 70.0));
 
     return BlocBuilder<MovieBloc, MovieState>(
       builder: (context, state) {
@@ -41,23 +42,30 @@ class HomeScreen extends StatelessWidget {
               body: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 10),
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: Container(
                         margin: const EdgeInsets.only(left: 15, right: 25),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Image.asset(Constants.searchPath),
-                            Expanded(
-                              child: Container(
-                                margin: const EdgeInsets.only(left: 21),
-                                child: CustomTextFieldSearch(
-                                  controller: serachController,
-                                  hintText: "",
-                                ),
-                              ),
+                            Text(
+                              'Beenema',
+                              style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  foreground: Paint()..shader = linearGradient),
                             ),
+                            InkWell(
+                                onTap: () {
+                                  Getx.Get.to(()=> const MovieSearchScreen(),
+                                      transition:
+                                          Getx.Transition.circularReveal,
+                                      duration:
+                                          const Duration(milliseconds: 1000));
+                                },
+                                child: Image.asset(Constants.searchPath)),
                           ],
                         ),
                       ),
@@ -99,14 +107,16 @@ class HomeScreen extends StatelessWidget {
                             itemBuilder: (BuildContext context, int itemIndex,
                                     int pageViewIndex) =>
                                 InkWell(
-                                  onTap: () {
-                                    Getx.Get.to(
-                                        MovieDetailsScreen(movie: top5movieList[itemIndex]),
-                                        transition: Getx.Transition.circularReveal,
-                                        duration: const Duration(milliseconds: 600));
-                                  },
-                                  child: Column(
-                              children: [
+                              onTap: () {
+                                Getx.Get.to(
+                                    MovieDetailsScreen(
+                                        movie: top5movieList[itemIndex]),
+                                    transition: Getx.Transition.circularReveal,
+                                    duration:
+                                        const Duration(milliseconds: 1000));
+                              },
+                              child: Column(
+                                children: [
                                   Stack(
                                     children: [
                                       Image.network(
@@ -114,14 +124,18 @@ class HomeScreen extends StatelessWidget {
                                         height: 260,
                                         width: 300,
                                         fit: BoxFit.fill,
-                                        color: const Color.fromRGBO(255, 255, 255, 0.5555), //this color is for opacity image
+                                        color: const Color.fromRGBO(
+                                            255, 255, 255, 0.5555),
+                                        //this color is for opacity image
                                         colorBlendMode: BlendMode.modulate,
                                       ),
                                       Positioned(
                                         bottom: 10,
                                         left: 10,
                                         child: Text(
-                                          top5movieList[itemIndex].ratingsAverage.toString(),
+                                          top5movieList[itemIndex]
+                                              .ratingsAverage
+                                              .toString(),
                                           style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 18,
@@ -130,10 +144,12 @@ class HomeScreen extends StatelessWidget {
                                         ),
                                       ),
                                       const Positioned(
-                                        bottom: 13,
-                                        left: 40,
-                                        child: Icon(Icons.star,color: Colors.yellow,)
-                                      ),
+                                          bottom: 13,
+                                          left: 40,
+                                          child: Icon(
+                                            Icons.star,
+                                            color: Colors.yellow,
+                                          )),
                                     ],
                                   ),
                                   const SizedBox(height: 20),
@@ -147,9 +163,9 @@ class HomeScreen extends StatelessWidget {
                                         fontSize: 14,
                                         fontWeight: FontWeight.w700),
                                   ),
-                              ],
+                                ],
+                              ),
                             ),
-                                ),
                           );
                         }
                         return const SizedBox(
@@ -190,7 +206,7 @@ class HomeScreen extends StatelessWidget {
                             Getx.Get.to(
                                 MovieDetailsScreen(movie: movieList[index]),
                                 transition: Getx.Transition.circularReveal,
-                                duration: const Duration(milliseconds: 600));
+                                duration: const Duration(milliseconds: 1000));
                           },
                           child: GridTile(
                             child: Column(
@@ -200,6 +216,7 @@ class HomeScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(14.0),
                                     child: Image.network(
                                       movieList[index].imageCover,
+                                      fit: BoxFit.fill,
                                     ),
                                   ),
                                 ),
@@ -238,16 +255,13 @@ class HomeScreen extends StatelessWidget {
                     margin: const EdgeInsets.only(left: 15, right: 25),
                     child: Row(
                       children: [
-                        Image.asset(Constants.searchPath),
-                        Expanded(
-                          child: Container(
-                            margin: const EdgeInsets.only(left: 21),
-                            child: CustomTextFieldSearch(
-                              controller: serachController,
-                              hintText: "",
-                            ),
+                        const Text(
+                          "BEENEMA",
+                          style: TextStyle(
+                            color: Constants.colorTitle,
                           ),
                         ),
+                        Image.asset(Constants.searchPath),
                       ],
                     ),
                   ),

@@ -8,6 +8,7 @@ import 'package:movie_booking_app/core/respository/movie_respository.dart';
 import 'package:movie_booking_app/core/respository/top5_respository.dart';
 import 'package:movie_booking_app/home/movie_bloc/movie_bloc.dart';
 import 'package:movie_booking_app/home/screens/home_screen.dart';
+import 'package:movie_booking_app/home/search_bloc/search_bloc.dart';
 import 'package:movie_booking_app/home/top5_bloc/top5_bloc.dart';
 
 void main() {
@@ -18,6 +19,8 @@ void main() {
           create: (_) => MovieBloc(MovieRespository())..add(LoadMovieEvent())),
       BlocProvider<Top5Bloc>(
           create: (_) => Top5Bloc(Top5Respository())..add(LoadTop5Event())),
+      BlocProvider<SearchBloc>(
+          create: (_) => SearchBloc(MovieRespository())..add(LoadSearchEvent())),
     ],
     child: const MyApp(),
   ));
