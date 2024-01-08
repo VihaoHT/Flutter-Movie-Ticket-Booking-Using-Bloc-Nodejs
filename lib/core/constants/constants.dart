@@ -31,6 +31,9 @@ class Constants {
   static const informationPath = 'assets/images/in4.png';
   static const filterPath = 'assets/images/filter.png';
   static const undoPath = 'assets/images/undo.png';
+  static const cinemaMarkerPath = 'assets/images/cinema3.png';
+  static const userMarkerPath = 'assets/images/userlocation.png';
+
 
   static const colorTitle = Color(0xffF74346);
   static const backgroundColor = Color(0xff130B2B);
@@ -39,3 +42,5 @@ class Constants {
     colors: <Color>[Color(0xffFA6900), Color(0xffDA004E)],
   ).createShader(const Rect.fromLTWH(0.0, 0.0, 200, 70.0));
 }
+
+            
