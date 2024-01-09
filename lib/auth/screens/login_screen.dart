@@ -6,7 +6,6 @@ import 'package:movie_booking_app/auth/screens/signup_screen.dart';
 import 'package:movie_booking_app/auth/widgets/custom_textfield.dart';
 import 'package:movie_booking_app/bottom_navigation.dart';
 import 'package:get/get.dart' as Getx;
-import 'package:movie_booking_app/home/screens/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -24,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
-
+    
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,

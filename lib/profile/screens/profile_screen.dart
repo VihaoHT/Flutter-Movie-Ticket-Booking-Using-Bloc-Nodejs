@@ -22,10 +22,8 @@ class ProfileScreen extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
       body: BlocConsumer<AuthBloc, AuthState>(
-        listener: (context, state) async{
+        listener: (context, state) {
           if(state is LoggedOutState){
-            SharedPreferences prefrences = await SharedPreferences.getInstance();
-            prefrences.remove("token");
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(

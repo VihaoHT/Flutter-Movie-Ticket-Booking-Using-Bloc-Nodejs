@@ -5,11 +5,11 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:lottie/lottie.dart' as Lottie;
 import 'package:movie_booking_app/core/constants/constants.dart';
 import 'package:movie_booking_app/map/widgets/custom_text_field_map.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../home/widgets/custom_textfileld_search.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -95,8 +95,8 @@ class _MapScreenState extends State<MapScreen> {
 
         markers.add(
           Marker(
-            width: 70.0,
-            height: 70.0,
+            width: 500.0,
+            height: 500.0,
             point: coordinates,
             child: GestureDetector(
               onTap: () {
@@ -104,159 +104,10 @@ class _MapScreenState extends State<MapScreen> {
                   selectedMarkerIndex = index;
                 });
 
-                showDialog<void>(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return FutureBuilder(
-                      future: fetchCinema(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          print((snapshot.error.toString()));
-                          return Center(child: Text(snapshot.error.toString()));
-                        }
-                        return SimpleDialog(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: RichText(
-                                text: TextSpan(
-                                  children: [
-                                    const TextSpan(
-                                      text: 'Cinema Name: ',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Constants.colorTitle,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: (snapshot.data![selectedMarkerIndex]
-                                          ['name']),
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        color: Constants.colorTitle,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: RichText(
-                                text: TextSpan(
-                                  children: [
-                                    const TextSpan(
-                                      text: 'Cinema Address: ',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Constants.colorTitle,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: (snapshot.data![selectedMarkerIndex]
-                                          ['location']['address']),
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        color: Constants.colorTitle,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            FutureBuilder(
-                              future: fetchDistances(
-                                  snapshot.data![selectedMarkerIndex]['_id']),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const Center(
-                                      child: Column(
-                                    children: [
-                                      Text(
-                                        "Distance is loading... pls wait",
-                                        style: TextStyle(
-                                            color: Constants.colorTitle,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                      CircularProgressIndicator(),
-                                    ],
-                                  ));
-                                } else if (snapshot.hasError) {
-                                  print((snapshot.error.toString()));
-                                  return Center(
-                                      child: Text(snapshot.error.toString()));
-                                }
-                                var distanceData = snapshot.data?[index];
-                                var distance = distanceData['distance'];
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: RichText(
-                                    text: TextSpan(
-                                      children: [
-                                        const TextSpan(
-                                          text: 'Distance: ',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Constants.colorTitle,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text: "$distance km",
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            color: Constants.colorTitle,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: InkWell(
-                                  onTap: () {
-                                    openGoogleMaps(
-                                        cinemas[index]['location']
-                                            ['coordinates'][1],
-                                        cinemas[index]['location']
-                                            ['coordinates'][0]);
-                                  },
-                                  child: const Text(
-                                    "Click here to see correct way to go cinema",
-                                    style: TextStyle(
-                                        color: Constants.colorTitle,
-                                        fontSize: 14,
-                                        decoration: TextDecoration.underline,
-                                        decorationColor: Colors.black,
-                                        decorationThickness: 2,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                )),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                );
+                _showDialogCinema(index, cinemas);
               },
-              child: Image.asset(
-                Constants.cinemaMarkerPath,
-                height: 100,
-                width: 100,
+              child: Lottie.LottieBuilder.asset(
+                Constants.cinemamarkerAnimation,
               ),
             ),
           ),
@@ -268,6 +119,8 @@ class _MapScreenState extends State<MapScreen> {
       throw Exception('Failed to load data');
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -290,10 +143,17 @@ class _MapScreenState extends State<MapScreen> {
                     MarkerLayer(
                       markers: [
                         Marker(
-                          width: 50.0,
-                          height: 50.0,
+                          width: 500.0,
+                          height: 500.0,
                           point: _currentLocation!,
-                          child: Image.asset(Constants.userMarkerPath),
+                          child: InkWell(
+                            onTap: () {
+                              print("Your current location");
+                            },
+                            child: Lottie.LottieBuilder.asset(
+                              Constants.userMarkerAnimation,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -307,6 +167,7 @@ class _MapScreenState extends State<MapScreen> {
                             margin: const EdgeInsets.only(left: 20),
                             child: InkWell(
                                 onTap: () {
+                                  
                                 },
                                 child: Image.asset(Constants.searchPath))),
                         Expanded(
@@ -329,6 +190,157 @@ class _MapScreenState extends State<MapScreen> {
                 ),
               ),
       ),
+    );
+  }
+
+  Future<void> _showDialogCinema(int index, List<dynamic> cinemas) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return FutureBuilder(
+          future: fetchCinema(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState ==
+                ConnectionState.waiting) {
+              return const Center(
+                  child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              print((snapshot.error.toString()));
+              return Center(child: Text(snapshot.error.toString()));
+            }
+            return SimpleDialog(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        const TextSpan(
+                          text: 'Cinema Name: ',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Constants.colorTitle,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        TextSpan(
+                          text: (snapshot.data![selectedMarkerIndex]
+                          ['name']),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Constants.colorTitle,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        const TextSpan(
+                          text: 'Cinema Address: ',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Constants.colorTitle,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        TextSpan(
+                          text: (snapshot.data![selectedMarkerIndex]
+                          ['location']['address']),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Constants.colorTitle,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                FutureBuilder(
+                  future: fetchDistances(
+                      snapshot.data![selectedMarkerIndex]['_id']),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return const Center(
+                          child: Column(
+                            children: [
+                              Text(
+                                "Distance is loading... pls wait",
+                                style: TextStyle(
+                                    color: Constants.colorTitle,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              CircularProgressIndicator(),
+                            ],
+                          ));
+                    } else if (snapshot.hasError) {
+                      print((snapshot.error.toString()));
+                      return Center(
+                          child: Text(snapshot.error.toString()));
+                    }
+                    var distanceData = snapshot.data?[index];
+                    var distance = distanceData['distance'];
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            const TextSpan(
+                              text: 'Distance: ',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Constants.colorTitle,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            TextSpan(
+                              text: "$distance km",
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Constants.colorTitle,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                      onTap: () {
+                        openGoogleMaps(
+                            cinemas[index]['location']
+                            ['coordinates'][1],
+                            cinemas[index]['location']
+                            ['coordinates'][0]);
+                      },
+                      child: const Text(
+                        "Click here to see correct way to go cinema",
+                        style: TextStyle(
+                            color: Constants.colorTitle,
+                            fontSize: 14,
+                            decoration: TextDecoration.underline,
+                            decorationColor: Colors.black,
+                            decorationThickness: 2,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    )),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 }

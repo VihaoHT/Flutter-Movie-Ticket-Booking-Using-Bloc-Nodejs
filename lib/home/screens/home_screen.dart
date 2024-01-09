@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart' as Getx;
@@ -10,6 +9,7 @@ import 'package:movie_booking_app/core/constants/constants.dart';
 import 'package:movie_booking_app/home/movie_bloc/movie_bloc.dart';
 import 'package:movie_booking_app/home/screens/movie_details_screen.dart';
 import 'package:movie_booking_app/home/screens/movie_search_screen.dart';
+import 'package:movie_booking_app/home/widgets/shimmer_top5_item.dart';
 import 'package:movie_booking_app/models/movie_model.dart';
 import '../top5_bloc/top5_bloc.dart';
 
@@ -85,6 +85,30 @@ class HomeScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     BlocBuilder<Top5Bloc, Top5State>(
                       builder: (context, state) {
+                        if(state is Top5LoadingState){
+                          return CarouselSlider.builder(
+                            options: CarouselOptions(
+                              height: 370,
+                              viewportFraction: 0.8,
+                              initialPage: 0,
+                              enableInfiniteScroll: true,
+                              reverse: false,
+                              autoPlay: true,
+                              autoPlayInterval: const Duration(seconds: 3),
+                              autoPlayAnimationDuration:
+                              const Duration(milliseconds: 800),
+                              autoPlayCurve: Curves.fastOutSlowIn,
+                              enlargeCenterPage: true,
+                              enlargeFactor: 0.3,
+                              scrollDirection: Axis.horizontal,
+
+                            ),
+                            itemCount: 5,
+                            itemBuilder: (BuildContext context, int itemIndex,
+                                int pageViewIndex) =>
+                                const ShimmerTop5Item()
+                          );
+                        }
                         if (state is Top5LoadedState) {
                           List<Movie> top5movieList = state.movies;
                           return CarouselSlider.builder(

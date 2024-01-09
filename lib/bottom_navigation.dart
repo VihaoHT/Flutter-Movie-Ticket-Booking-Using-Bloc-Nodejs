@@ -1,6 +1,8 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+import 'package:movie_booking_app/core/constants/constants.dart';
 import 'package:movie_booking_app/home/screens/home_screen.dart';
 import 'package:movie_booking_app/map/screens/map_screen.dart';
 import 'package:movie_booking_app/profile/screens/profile_screen.dart';
@@ -35,21 +37,37 @@ class _BottomNavigationState extends State<BottomNavigation> {
         },
         items: [
           pageIndex == 0
-              ? const Icon(
-                  Icons.home,
-                  color: Color(0xffF74346),
-                  size: 35,
-                )
+              ? Column(
+            children: [
+              LottieBuilder.asset(
+                Constants.homeAnimation,
+                width: 50,
+                height: 40,
+              ),
+              const Text("Home",style: TextStyle(color: Constants.colorTitle,fontSize: 14,fontWeight: FontWeight.bold),),
+            ],
+          )
               : const Icon(
                   Icons.home_outlined,
                   color: Color(0xff4A4B56),
                   size: 35,
                 ),
           pageIndex == 1
-              ? const Icon(
-                  Icons.map,
-                  color: Color(0xffF74346),
-                  size: 35,
+              ? Column(
+                  children: [
+                    LottieBuilder.asset(
+                      Constants.mapAnimation,
+                      width: 50,
+                      height: 40,
+                    ),
+                    const Text(
+                      "Map",
+                      style: TextStyle(
+                          color: Constants.colorTitle,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 )
               : const Icon(
                   Icons.map_outlined,
@@ -57,10 +75,21 @@ class _BottomNavigationState extends State<BottomNavigation> {
                   size: 35,
                 ),
           pageIndex == 2
-              ? const Icon(
-                  Icons.person,
-                  color: Color(0xffF74346),
-                  size: 35,
+              ? Column(
+                  children: [
+                    LottieBuilder.asset(
+                      Constants.profileAnimation,
+                      width: 50,
+                      height: 40,
+                    ),
+                    const Text(
+                      "Profile",
+                      style: TextStyle(
+                          color: Constants.colorTitle,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 )
               : const Icon(
                   Icons.person_outline,

@@ -35,6 +35,14 @@ class Constants {
   static const userMarkerPath = 'assets/images/userlocation.png';
 
 
+  static const homeAnimation = 'assets/animation/home_animation.json';
+  static const mapAnimation = 'assets/animation/map_animation.json';
+  static const profileAnimation = 'assets/animation/profile_animation.json';
+  static const cinemamarkerAnimation = 'assets/animation/markerpin_animation.json';
+  static const userMarkerAnimation = 'assets/animation/location_animation.json';
+
+
+
   static const colorTitle = Color(0xffF74346);
   static const backgroundColor = Color(0xff130B2B);
 
