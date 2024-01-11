@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:movie_booking_app/auth/bloc/auth_bloc.dart';
 import 'package:movie_booking_app/auth/screens/login_screen.dart';
 import 'package:movie_booking_app/auth/screens/signup_screen.dart';
+import 'package:movie_booking_app/bottom_navigation.dart';
 import 'package:movie_booking_app/core/respository/movie_respository.dart';
 import 'package:movie_booking_app/core/respository/top5_respository.dart';
 import 'package:movie_booking_app/home/movie_bloc/movie_bloc.dart';
@@ -20,16 +21,27 @@ void main() {
       BlocProvider<Top5Bloc>(
           create: (_) => Top5Bloc(Top5Respository())..add(LoadTop5Event())),
       BlocProvider<SearchBloc>(
-          create: (_) => SearchBloc(MovieRespository())..add(LoadSearchEvent())),
+          create: (_) =>
+              SearchBloc(MovieRespository())..add(LoadSearchEvent())),
     ],
     child: const MyApp(),
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<AuthBloc>().add(AppStarted());
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -38,6 +50,23 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: const Color(0xff130B2B),
           useMaterial3: true,
         ),
-        home: const LoginScreen());
+        home: BlocConsumer<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state is AuthSuccess) {
+              const BottomNavigation();
+            }
+            if (state is AuthInitial) {
+              const LoginScreen();
+            }
+          },
+          builder: (context, state) {
+            if (state is AuthLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return const LoginScreen();
+          },
+        ));
   }
 }

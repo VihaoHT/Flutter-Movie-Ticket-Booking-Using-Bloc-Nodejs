@@ -20,6 +20,46 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   FutureOr<void> mapEventToState(
       AuthEvent event, Emitter<AuthState> emit) async {
+
+    // this is for skip login if have token
+    if (event is AppStarted) {
+
+      final bool hasToken = await _hasToken();
+
+      if (hasToken) {
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        String? token = preferences.getString('token');
+
+        // the reason why i call api get info of user here is to save user information
+        final response = await http.get(
+          Uri.parse('$uri/api/users/me'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        );
+        final Map<String, dynamic> data = json.decode(response.body);
+        final String id = data['data']['document']['_id'];
+        final String email = data['data']['document']['email'];
+        final String username = data['data']['document']['username'];
+        final String avatar = data['data']['document']['avatar'];
+        final String phoneNumber = data['data']['document']['phone_number'];
+
+        return emit(AuthSuccess(
+            user: User(
+                id: id,
+                email: email,
+                username: username,
+                token: token!,
+                avatar: avatar,
+                phone_number: phoneNumber)));
+      } else {
+        emit(AuthInitial());
+      }
+    }
+
+    // this is for Login event
     if (event is LoginButtonPressed) {
       emit(AuthLoading());
 
@@ -47,14 +87,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           final String email = userData['email'];
           final String? avatar = userData['avatar'];
           final String? phoneNumber = userData['phone_number'];
-          //  print(id);
-          // final String email = data['email'];
-          // final String password = data['password'];
-          // Lưu token vào SharedPreferences
+
           await preferences.setString("token", token);
-          // print(token);
-          // print('Username: $username, Email: $email');
-          // print(password);
 
           await Future.delayed(const Duration(milliseconds: 100), () async {
             return emit(AuthSuccess(
@@ -76,6 +110,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         return emit(AuthFailure(error: error.toString()));
       }
     }
+
+    // this is for register event
     if (event is SignUpButtonPressed) {
       emit(AuthLoading());
 
@@ -108,6 +144,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     }
 
+    // this is for Forgot password event
     //notice: if you dont see the email sent to inbox in gmail please check in spam or trash
     if (event is ForgotButtonPressed) {
       emit(AuthLoading());
@@ -139,17 +176,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         return emit(AuthFailure(error: error.toString()));
       }
     }
+
+    // this is for logout event
     if (event is LogOut) {
       emit(AuthLoading());
       try {
         final prefs = await SharedPreferences.getInstance();
         prefs.remove('token');
-        emit(LoggedOutState());
+        return emit(LoggedOutState());
+
       } catch (e) {
-        throw Exception("failed");
+        throw Exception(e.toString());
       }
     }
 
+    // this is for change password event
     if (event is ChangePasswordButtonPressed) {
       emit(AuthLoading());
       try {
@@ -187,6 +228,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         return emit(AuthFailure(error: e.toString()));
       }
     }
+
+    //this is for update profile event
     if(event is UpdateProfileButtonPressed){
       emit(AuthLoading());
       try {
@@ -239,5 +282,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         return emit(AuthFailure(error: e.toString()));
       }
     }
+
+
+  }
+  Future<bool> _hasToken() async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    final String token = preferences.getString('token') ?? '';
+    return token.isNotEmpty;
   }
 }
