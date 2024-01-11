@@ -20,10 +20,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   FutureOr<void> mapEventToState(
       AuthEvent event, Emitter<AuthState> emit) async {
-
     // this is for skip login if have token
     if (event is AppStarted) {
-
       final bool hasToken = await _hasToken();
 
       if (hasToken) {
@@ -183,8 +181,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         final prefs = await SharedPreferences.getInstance();
         prefs.remove('token');
-        return emit(LoggedOutState());
 
+        // you can also return it into AuthInitial but it will catch error so that why i will return it to AuthSuccess with all null
+        return emit(AuthSuccess(
+            user: User(id: "", email: "", username: "", token: "")));
       } catch (e) {
         throw Exception(e.toString());
       }
@@ -210,17 +210,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           },
         );
 
-        if(response.statusCode == 200){
+        if (response.statusCode == 200) {
           await Future.delayed(const Duration(milliseconds: 100), () async {
             final prefs = await SharedPreferences.getInstance();
             prefs.remove('token');
             return emit(AuthChangePasswordSuccess());
           });
-        }else if (response.statusCode == 401) {
-          return emit(const AuthFailure(
-              error: "Current password is not correct!"));
-        }
-        else if (response.statusCode == 500) {
+        } else if (response.statusCode == 401) {
+          return emit(
+              const AuthFailure(error: "Current password is not correct!"));
+        } else if (response.statusCode == 500) {
           return emit(const AuthFailure(
               error: "Password and Confirm password should be the same!"));
         }
@@ -230,7 +229,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
 
     //this is for update profile event
-    if(event is UpdateProfileButtonPressed){
+    if (event is UpdateProfileButtonPressed) {
       emit(AuthLoading());
       try {
         SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -241,7 +240,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             'avatar': event.avatar,
             'username': event.username,
             'phone_number': event.phone_number,
-
           }),
           headers: {
             'Content-Type': 'application/json',
@@ -249,7 +247,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             'Authorization': 'Bearer $token',
           },
         );
-        if(response.statusCode == 200){
+        if (response.statusCode == 200) {
           await Future.delayed(const Duration(milliseconds: 100), () async {
             final response = await http.get(
               Uri.parse('$uri/api/users/me'),
@@ -263,28 +261,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             final String id = data['data']['document']['_id'];
             final String email = data['data']['document']['email'];
 
-              return emit(AuthSuccess(
-                  user: User(
-                      id: id,
-                      email: email,
-                      username: event.username!,
-                      token: token!,
-                      avatar: event.avatar,
-                      phone_number: event.phone_number)));
-
-
+            return emit(AuthSuccess(
+                user: User(
+                    id: id,
+                    email: email,
+                    username: event.username!,
+                    token: token!,
+                    avatar: event.avatar,
+                    phone_number: event.phone_number)));
           });
-        }else {
-          return emit(const AuthFailure(
-              error: "Something went wrong!"));
+        } else {
+          return emit(const AuthFailure(error: "Something went wrong!"));
         }
       } catch (e) {
         return emit(AuthFailure(error: e.toString()));
       }
     }
-
-
   }
+
   Future<bool> _hasToken() async {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
     final String token = preferences.getString('token') ?? '';

@@ -1,3 +1,5 @@
+import 'package:cherry_toast/cherry_toast.dart';
+import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/material.dart';
 
 String uri = 'http://192.168.2.6:3000';
@@ -34,14 +36,12 @@ class Constants {
   static const cinemaMarkerPath = 'assets/images/cinema3.png';
   static const userMarkerPath = 'assets/images/userlocation.png';
 
-
   static const homeAnimation = 'assets/animation/home_animation.json';
   static const mapAnimation = 'assets/animation/map_animation.json';
   static const profileAnimation = 'assets/animation/profile_animation.json';
-  static const cinemamarkerAnimation = 'assets/animation/markerpin_animation.json';
+  static const cinemamarkerAnimation =
+      'assets/animation/markerpin_animation.json';
   static const userMarkerAnimation = 'assets/animation/location_animation.json';
-
-
 
   static const colorTitle = Color(0xffF74346);
   static const backgroundColor = Color(0xff130B2B);
@@ -49,6 +49,8 @@ class Constants {
   static Shader linearGradient = const LinearGradient(
     colors: <Color>[Color(0xffFA6900), Color(0xffDA004E)],
   ).createShader(const Rect.fromLTWH(0.0, 0.0, 200, 70.0));
-}
 
-            
+  static CherryToast toastSuccess = CherryToast.success(
+      title: const Text("Login successfully",
+          style: TextStyle(color: Colors.black)));
+}

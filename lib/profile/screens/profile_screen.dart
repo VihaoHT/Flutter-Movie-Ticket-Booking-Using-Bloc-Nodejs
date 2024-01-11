@@ -23,7 +23,9 @@ class ProfileScreen extends StatelessWidget {
         child: Scaffold(
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
-          if(state is LoggedOutState){
+
+          // this is for Logout event
+          if(state is AuthSuccess){
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(

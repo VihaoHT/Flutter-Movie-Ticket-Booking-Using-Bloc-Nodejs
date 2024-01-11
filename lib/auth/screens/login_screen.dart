@@ -1,3 +1,5 @@
+import 'package:cherry_toast/cherry_toast.dart';
+import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_booking_app/auth/bloc/auth_bloc.dart';
@@ -6,6 +8,7 @@ import 'package:movie_booking_app/auth/screens/signup_screen.dart';
 import 'package:movie_booking_app/auth/widgets/custom_textfield.dart';
 import 'package:movie_booking_app/bottom_navigation.dart';
 import 'package:get/get.dart' as Getx;
+import 'package:movie_booking_app/core/constants/constants.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -23,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
-    
+
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -35,13 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
             }
 
             if (state is AuthSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text(
-                    "Login succesfully!",
-                  ),
-                ),
-              );
+             Constants.toastSuccess.show(context);
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
@@ -61,6 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   alignment: Alignment.center,
                   margin: const EdgeInsets.only(top: 45),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
                         'Beenema',
