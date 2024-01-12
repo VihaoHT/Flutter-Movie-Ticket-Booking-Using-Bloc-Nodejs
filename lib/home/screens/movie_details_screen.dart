@@ -12,6 +12,7 @@ import 'package:movie_booking_app/home/screens/movie_trailer_Screen.dart';
 import 'package:movie_booking_app/home/widgets/custom_textfields_rating.dart';
 import 'package:movie_booking_app/models/movie_model.dart';
 import 'package:movie_booking_app/models/review_model.dart';
+import 'package:movie_booking_app/core/constants/ultis.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
   final Movie movie;
@@ -172,9 +173,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                     maxLines: 5,
                     linkColor: Constants.colorTitle,
                     linkStyle: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15
-                    ),
+                        fontWeight: FontWeight.bold, fontSize: 15),
                   ),
                 ),
                 const SizedBox(height: 47),
@@ -202,7 +201,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 const SizedBox(height: 25),
                 BlocBuilder<ReviewBloc, ReviewState>(
                   builder: (context, state) {
-                    if(state is ReviewLoadingState){
+                    if (state is ReviewLoadingState) {
                       return const Center(child: CircularProgressIndicator());
                     }
                     double myRating = 0;
@@ -219,12 +218,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       ),
                       onRatingUpdate: (rating) {
                         if (ratingController.text == "") {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                  'You forgot to text your thinking this movie!'),
-                              duration: Duration(seconds: 2),
-                            ),
+                          showToastInformation(
+                            context,
+                            'You forgot to text your thinking in this movie!',
                           );
                         } else {
                           Future.delayed(const Duration(milliseconds: 1000),
@@ -332,9 +328,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                                     Icons.star,
                                                     color: Colors.yellow,
                                                   ),
-                                                  onRatingUpdate: (rating) {
-
-                                                  },
+                                                  onRatingUpdate: (rating) {},
                                                 ),
                                                 Container(
                                                   margin: const EdgeInsets.only(

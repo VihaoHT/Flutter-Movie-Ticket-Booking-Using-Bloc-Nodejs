@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:movie_booking_app/core/constants/ultis.dart';
 import 'package:movie_booking_app/profile/widgets/custom_text_field_update.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -81,18 +82,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         listener: (context, state) {
           if (state is AuthFailure) {
             print(state.error);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.error),
-              ),
-            );
+            showToastFailed(context, state.error);
           }
           if (state is AuthSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Update Profile successfully!"),
-              ),
-            );
+            showToastSuccess(context, "Update Profile successfully! Pls login again");
           }
         },
         builder: (context, state) {

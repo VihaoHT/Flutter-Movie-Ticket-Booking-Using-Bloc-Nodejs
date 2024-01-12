@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:movie_booking_app/core/constants/ultis.dart';
 import 'package:movie_booking_app/models/review_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -54,25 +55,13 @@ class ReviewRespository {
         });
     if (res.statusCode == 201) {
       if(context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Review posted successfully!'),
-          duration: Duration(
-              seconds: 4),
-        ),
-      );
+        showToastSuccess(context, 'Review posted successfully!');
       }
 
       return getReview();
     } else {
       if(context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('You just can review one time!'),
-          duration: Duration(
-              seconds: 4),
-        ),
-      );
+       showToastWarning(context, "You can just review only one time!");
       }
 
       return getReview();

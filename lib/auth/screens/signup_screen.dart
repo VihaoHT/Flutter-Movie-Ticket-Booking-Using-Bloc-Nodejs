@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_booking_app/auth/screens/login_screen.dart';
 import 'package:movie_booking_app/auth/widgets/custom_textfield.dart';
 import 'package:movie_booking_app/core/constants/constants.dart';
+import 'package:movie_booking_app/core/constants/ultis.dart';
 
 import '../bloc/auth_bloc.dart';
 
@@ -28,18 +29,11 @@ class SignUpScreen extends StatelessWidget {
           body: BlocConsumer<AuthBloc, AuthState>(
             listener: (context, state) {
               if (state is AuthFailure) {
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text(state.error)));
+               showToastFailed(context, state.error);
               }
 
               if (state is AuthSignUpSuccess) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text(
-                      "Sign up succesfully!",
-                    ),
-                  ),
-                );
+              showToastSuccess(context, "Sign up successfully!");
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(

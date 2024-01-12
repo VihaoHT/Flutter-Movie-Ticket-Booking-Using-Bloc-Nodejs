@@ -149,7 +149,7 @@ class HomeScreen extends StatelessWidget {
                                         width: 300,
                                         fit: BoxFit.fill,
                                         color: const Color.fromRGBO(
-                                            255, 255, 255, 0.5555),
+                                            255, 255, 255, 0.6),
                                         //this color is for opacity image
                                         colorBlendMode: BlendMode.modulate,
                                       ),
@@ -238,9 +238,40 @@ class HomeScreen extends StatelessWidget {
                                 Expanded(
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(14.0),
-                                    child: Image.network(
-                                      movieList[index].imageCover,
-                                      fit: BoxFit.fill,
+                                    child: Stack(
+                                      children: [
+                                        Image.network(
+                                          movieList[index].imageCover,
+                                          fit: BoxFit.fill,
+                                          width: 185,
+                                          height: 300,
+                                          color: const Color.fromRGBO(
+                                              255, 255, 255, 0.75),
+                                          //this color is for opacity image
+                                          colorBlendMode: BlendMode.modulate,
+                                        ),
+                                        Positioned(
+                                          bottom: 10,
+                                          left: 10,
+                                          child: Text(
+                                            movieList[index]
+                                                .ratingsAverage
+                                                .toString(),
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        const Positioned(
+                                            bottom: 13,
+                                            left: 40,
+                                            child: Icon(
+                                              Icons.star,
+                                              color: Colors.yellow,
+                                            )),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -261,7 +292,7 @@ class HomeScreen extends StatelessWidget {
                         );
                       },
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 50),
                   ],
                 ),
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_booking_app/core/constants/ultis.dart';
 import 'package:movie_booking_app/models/movie_model.dart';
 import 'package:get/get.dart' as Getx;
 import '../../core/constants/constants.dart';
@@ -27,11 +28,7 @@ class _MovieSearchScreenState extends State<MovieSearchScreen> {
             listener: (context, state) {
               if (state is SearchErrorState) {
                 print("search movie error : ${state.error}");
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text("search movie error : ${state.error}"),
-                  ),
-                );
+                showToastFailed(context, "search movie error : ${state.error}");
               }
             },
             builder: (context, state) {

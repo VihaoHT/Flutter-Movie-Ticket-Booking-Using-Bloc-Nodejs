@@ -9,6 +9,7 @@ import 'package:movie_booking_app/auth/widgets/custom_textfield.dart';
 import 'package:movie_booking_app/bottom_navigation.dart';
 import 'package:get/get.dart' as Getx;
 import 'package:movie_booking_app/core/constants/constants.dart';
+import 'package:movie_booking_app/core/constants/ultis.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -33,12 +34,11 @@ class _LoginScreenState extends State<LoginScreen> {
         body: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthFailure) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(state.error)));
+              showToastFailed(context, state.error);
             }
 
             if (state is AuthSuccess) {
-             Constants.toastSuccess.show(context);
+              showToastSuccess(context,"Login successful");
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(

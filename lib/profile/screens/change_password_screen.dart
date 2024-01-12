@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_booking_app/auth/screens/login_screen.dart';
 import 'package:movie_booking_app/auth/widgets/custom_textfield.dart';
 import 'package:movie_booking_app/core/constants/constants.dart';
+import 'package:movie_booking_app/core/constants/ultis.dart';
 
 import '../../auth/bloc/auth_bloc.dart';
 
@@ -19,20 +20,24 @@ class ChangePasswordScreen extends StatelessWidget {
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthChangePasswordSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content:
-                    Text("Change password succesful! now try to login again")));
+
+            showToastSuccess(
+              context,
+              "Change password succesful! now try to login again",
+            );
+
             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
               builder: (context) {
                 return const LoginScreen();
               },
             ), (route) => false);
           }
+
           if (state is AuthFailure) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.error)));
+           showToastFailed(context, state.error);
           }
         },
+
         builder: (context, state) {
           if (state is AuthLoading) {
             return const Center(

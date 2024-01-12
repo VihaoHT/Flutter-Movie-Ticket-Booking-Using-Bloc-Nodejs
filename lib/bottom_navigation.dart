@@ -37,60 +37,69 @@ class _BottomNavigationState extends State<BottomNavigation> {
         },
         items: [
           pageIndex == 0
-              ? Column(
+              ? Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Column(
             children: [
-              LottieBuilder.asset(
-                Constants.homeAnimation,
-                width: 50,
-                height: 40,
-              ),
-              const Text("Home",style: TextStyle(color: Constants.colorTitle,fontSize: 14,fontWeight: FontWeight.bold),),
+                LottieBuilder.asset(
+                  Constants.homeAnimation,
+                  width: 30,
+                  height: 30,
+                ),
+                const Text("Home",style: TextStyle(color: Constants.colorTitle,fontSize: 14,fontWeight: FontWeight.bold),),
             ],
-          )
+          ),
+              )
               : const Icon(
                   Icons.home_outlined,
                   color: Color(0xff4A4B56),
                   size: 35,
                 ),
           pageIndex == 1
-              ? Column(
-                  children: [
-                    LottieBuilder.asset(
-                      Constants.mapAnimation,
-                      width: 50,
-                      height: 40,
-                    ),
-                    const Text(
-                      "Map",
-                      style: TextStyle(
-                          color: Constants.colorTitle,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                )
+              ? Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Column(
+                    children: [
+                      LottieBuilder.asset(
+                        Constants.mapAnimation,
+                        width: 30,
+                        height: 30,
+                      ),
+                      const Text(
+                        "Map",
+                        style: TextStyle(
+                            color: Constants.colorTitle,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+              )
               : const Icon(
                   Icons.map_outlined,
                   color: Color(0xff4A4B56),
                   size: 35,
                 ),
           pageIndex == 2
-              ? Column(
-                  children: [
-                    LottieBuilder.asset(
-                      Constants.profileAnimation,
-                      width: 50,
-                      height: 40,
-                    ),
-                    const Text(
-                      "Profile",
-                      style: TextStyle(
-                          color: Constants.colorTitle,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                )
+              ? Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Column(
+                    children: [
+                      LottieBuilder.asset(
+                        Constants.profileAnimation,
+                        width: 30,
+                        height: 30,
+                      ),
+                      const Text(
+                        "Profile",
+                        style: TextStyle(
+                            color: Constants.colorTitle,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+              )
               : const Icon(
                   Icons.person_outline,
                   color: Color(0xff4A4B56),
