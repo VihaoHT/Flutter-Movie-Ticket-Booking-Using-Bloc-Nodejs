@@ -7,7 +7,8 @@ class User {
   final String token;
   final String? phone_number;
   final String? avatar;
-  User({required this.id,required this.email, required this.username, required this.token, this.phone_number, this.avatar,});
+  final String role;
+  User({required this.id,required this.email, required this.username, required this.token, required this.role, this.phone_number, this.avatar,});
 
   Map<String, dynamic> toMap() {
     return {
@@ -17,6 +18,7 @@ class User {
       'token': token,
       'phone_number': phone_number,
       'avatar': avatar,
+      'role': role,
     };
   }
 
@@ -26,6 +28,7 @@ class User {
       email: map['email'] ?? '',
       username: map['username'] ?? '',
       token: map['token'] ?? '',
+      role: map['role'] ?? '',
       phone_number: map['phone_number'],
       avatar: map['avatar'],
     );

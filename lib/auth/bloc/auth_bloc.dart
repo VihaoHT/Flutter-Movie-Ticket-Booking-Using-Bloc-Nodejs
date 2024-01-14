@@ -41,8 +41,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final String id = data['data']['document']['_id'];
         final String email = data['data']['document']['email'];
         final String username = data['data']['document']['username'];
-        final String avatar = data['data']['document']['avatar'];
-        final String phoneNumber = data['data']['document']['phone_number'];
+        final String? avatar = data['data']['document']['avatar'];
+        final String? phoneNumber = data['data']['document']['phone_number'];
+        final String role = data['data']['document']['role'];
+        print(role);
 
         return emit(AuthSuccess(
             user: User(
@@ -50,6 +52,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                 email: email,
                 username: username,
                 token: token!,
+                role: role,
                 avatar: avatar,
                 phone_number: phoneNumber)));
       } else {
@@ -85,6 +88,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           final String email = userData['email'];
           final String? avatar = userData['avatar'];
           final String? phoneNumber = userData['phone_number'];
+          final String role = userData['role'];
+          print(role);
 
           await preferences.setString("token", token);
 
@@ -95,6 +100,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                     email: email,
                     username: username,
                     token: token,
+                    role: role,
                     avatar: avatar,
                     phone_number: phoneNumber)));
           });
@@ -184,7 +190,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
         // you can also return it into AuthInitial but it will catch error so that why i will return it to AuthSuccess with all null
         return emit(AuthSuccess(
-            user: User(id: "", email: "", username: "", token: "")));
+            user: User(id: "", email: "", username: "", token: "",role: "")));
       } catch (e) {
         throw Exception(e.toString());
       }
@@ -260,6 +266,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             final Map<String, dynamic> data = json.decode(response.body);
             final String id = data['data']['document']['_id'];
             final String email = data['data']['document']['email'];
+            final String role = data['data']['document']['role'];
 
             return emit(AuthSuccess(
                 user: User(
@@ -267,6 +274,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                     email: email,
                     username: event.username!,
                     token: token!,
+                    role: role,
                     avatar: event.avatar,
                     phone_number: event.phone_number)));
           });

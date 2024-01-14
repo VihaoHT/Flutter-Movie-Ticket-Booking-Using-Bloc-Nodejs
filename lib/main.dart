@@ -9,6 +9,7 @@ import 'package:movie_booking_app/core/respository/movie_respository.dart';
 import 'package:movie_booking_app/core/respository/top5_respository.dart';
 import 'package:movie_booking_app/home/movie_bloc/movie_bloc.dart';
 import 'package:movie_booking_app/home/screens/home_screen.dart';
+import 'package:movie_booking_app/home/screens/test.dart';
 import 'package:movie_booking_app/home/search_bloc/search_bloc.dart';
 import 'package:movie_booking_app/home/top5_bloc/top5_bloc.dart';
 
@@ -53,7 +54,9 @@ class _MyAppState extends State<MyApp> {
         home: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthSuccess) {
-              const BottomNavigation();
+              if(state.user.role == "user"){
+                const BottomNavigation();
+              }
             }
             if (state is AuthInitial) {
               const LoginScreen();

@@ -6,7 +6,7 @@ import 'package:movie_booking_app/core/constants/constants.dart';
 import 'package:movie_booking_app/showtime/screens/showtime_screen.dart';
 import 'package:get/get.dart' as Getx;
 
-class CinemaScreen extends StatelessWidget {
+class CinemaScreen extends StatefulWidget {
   final String id;
   final String title;
 
@@ -17,41 +17,52 @@ class CinemaScreen extends StatelessWidget {
   });
 
   @override
+  State<CinemaScreen> createState() => _CinemaScreenState();
+}
+
+class _CinemaScreenState extends State<CinemaScreen> {
+  @override
+  void initState() {
+    super.initState();
+    fetchDistances("");
+  }
+  Future<List<dynamic>> fetchDistances(String cinemaId) async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      //print("Locationn denied");
+      permission = await Geolocator.requestPermission();
+    }
+    Position currenPosition = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best);
+    //print("Latitude=${currenPosition.latitude.toString()}");
+    // print("Longtitude=${currenPosition.longitude.toString()}");
+
+    final response = await get(Uri.parse(
+        '$uri/api/cinemas/distances/${currenPosition.latitude.toString()}, ${currenPosition.longitude.toString()}'));
+
+    if (response.statusCode == 200) {
+      //print(json.decode(response.body)['data']['distances']);
+      return json.decode(response.body)['data']['distances'];
+    } else {
+      throw Exception('Failed to load distances');
+    }
+  }
+
+  Future<List<dynamic>> fetchData() async {
+    final response = await get(Uri.parse("$uri/api/showtimes?title=${widget.title}"));
+
+    if (response.statusCode == 200) {
+      // print( json.decode(response.body)['data']);
+      return json.decode(response.body)['data'];
+    } else {
+      // Nếu không thành công, ném một ngoại lệ
+      throw Exception('Failed to load data');
+    }
+  }
+  @override
   Widget build(BuildContext context) {
-    Future<List<dynamic>> fetchDistances(String cinemaId) async {
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever) {
-        //print("Locationn denied");
-        permission = await Geolocator.requestPermission();
-      }
-      Position currenPosition = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.best);
-      //print("Latitude=${currenPosition.latitude.toString()}");
-      // print("Longtitude=${currenPosition.longitude.toString()}");
 
-      final response = await get(Uri.parse(
-          '$uri/api/cinemas/distances/${currenPosition.latitude.toString()}, ${currenPosition.longitude.toString()}'));
-
-      if (response.statusCode == 200) {
-        //print(json.decode(response.body)['data']['distances']);
-        return json.decode(response.body)['data']['distances'];
-      } else {
-        throw Exception('Failed to load distances');
-      }
-    }
-
-    Future<List<dynamic>> fetchData() async {
-      final response = await get(Uri.parse("$uri/api/showtimes?title=$title"));
-
-      if (response.statusCode == 200) {
-        // print( json.decode(response.body)['data']);
-        return json.decode(response.body)['data'];
-      } else {
-        // Nếu không thành công, ném một ngoại lệ
-        throw Exception('Failed to load data');
-      }
-    }
 
     return SafeArea(
       child: Scaffold(
@@ -201,4 +212,5 @@ class CinemaScreen extends StatelessWidget {
       ),
     );
   }
+
 }
