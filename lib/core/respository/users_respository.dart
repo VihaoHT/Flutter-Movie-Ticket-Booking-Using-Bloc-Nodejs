@@ -23,11 +23,11 @@ class UserRepository {
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
       final List<dynamic> tickets = data['data']['tickets'];
-      print(tickets);
+      //print(tickets);
 
       return tickets;
     } else if (response.statusCode == 401) {
-      print(response.statusCode);
+      //print(response.statusCode);
       throw Exception('Failed to load tickets');
     } else {
       throw Exception('Failed to load tickets');

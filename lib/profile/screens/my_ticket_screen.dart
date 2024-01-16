@@ -115,7 +115,6 @@ class MyTicketScreen extends StatelessWidget {
                                     .format(dateTime);
 
                             //format time
-                            DateTime dateTime2 = DateTime.parse(date);
                             String formattedTime =
                                 DateFormat.jm('vi_VN').format(dateTime);
 

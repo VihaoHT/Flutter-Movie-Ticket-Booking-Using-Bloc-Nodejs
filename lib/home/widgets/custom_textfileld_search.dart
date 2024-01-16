@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movie_booking_app/core/constants/constants.dart';
 
 class CustomTextFieldSearch extends StatelessWidget {
   final TextEditingController controller;

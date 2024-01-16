@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_booking_app/admin_main.dart';
 import 'package:movie_booking_app/auth/bloc/auth_bloc.dart';
 import 'package:movie_booking_app/auth/screens/forgot_password_screen.dart';
 import 'package:movie_booking_app/auth/screens/signup_screen.dart';
@@ -49,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const Test(),
+                  builder: (context) => const AdminMain(),
                 ),
                     (route) => false,
               );

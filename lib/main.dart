@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:movie_booking_app/admin_main.dart';
 import 'package:movie_booking_app/auth/bloc/auth_bloc.dart';
 import 'package:movie_booking_app/auth/screens/login_screen.dart';
-import 'package:movie_booking_app/auth/screens/signup_screen.dart';
 import 'package:movie_booking_app/bottom_navigation.dart';
 import 'package:movie_booking_app/core/respository/movie_respository.dart';
 import 'package:movie_booking_app/core/respository/top5_respository.dart';
 import 'package:movie_booking_app/home/movie_bloc/movie_bloc.dart';
-import 'package:movie_booking_app/home/screens/home_screen.dart';
-import 'package:movie_booking_app/home/screens/test.dart';
 import 'package:movie_booking_app/home/search_bloc/search_bloc.dart';
 import 'package:movie_booking_app/home/top5_bloc/top5_bloc.dart';
 
@@ -23,7 +21,7 @@ void main() {
           create: (_) => Top5Bloc(Top5Respository())..add(LoadTop5Event())),
       BlocProvider<SearchBloc>(
           create: (_) =>
-              SearchBloc(MovieRespository())..add(LoadSearchEvent())),
+              SearchBloc(MovieRespository())..add(const LoadSearchEvent())),
     ],
     child: const MyApp(),
   ));
@@ -49,13 +47,29 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           scaffoldBackgroundColor: const Color(0xff130B2B),
+
           useMaterial3: true,
         ),
         home: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthSuccess) {
               if(state.user.role == "user"){
-                const BottomNavigation();
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const BottomNavigation(),
+                  ),
+                      (route) => false,
+                );
+              }
+              else{
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AdminMain(),
+                  ),
+                      (route) => false,
+                );
               }
             }
             if (state is AuthInitial) {

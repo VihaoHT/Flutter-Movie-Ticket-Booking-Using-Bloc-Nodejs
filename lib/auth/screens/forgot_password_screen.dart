@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_booking_app/auth/bloc/auth_bloc.dart';
-import 'package:movie_booking_app/auth/bloc/auth_bloc.dart';
 import 'package:movie_booking_app/core/constants/ultis.dart';
 
 import '../../core/constants/constants.dart';

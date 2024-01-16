@@ -20,7 +20,6 @@ class DetailMyTicketScreen extends StatelessWidget {
         DateFormat('EEEE dd-MM-yyyy', 'vi_VN').format(dateTime);
 
     //format Time
-    DateTime dateTime2 = DateTime.parse(date);
     String formattedTime = DateFormat.jm('vi_VN').format(dateTime);
 
     var cost = ticketItem['showtime']['price'];

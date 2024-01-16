@@ -5,12 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart' as GetX;
 import 'package:movie_booking_app/auth/screens/login_screen.dart';
 import 'package:movie_booking_app/core/constants/constants.dart';
-import 'package:movie_booking_app/home/screens/home_screen.dart';
-import 'package:movie_booking_app/main.dart';
 import 'package:movie_booking_app/profile/screens/change_password_screen.dart';
 import 'package:movie_booking_app/profile/screens/my_ticket_screen.dart';
 import 'package:movie_booking_app/profile/screens/update_profile_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../auth/bloc/auth_bloc.dart';
 
