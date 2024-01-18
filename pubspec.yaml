@@ -58,6 +58,7 @@ dependencies:
   shimmer: 3.0.0
   cherry_toast: 1.6.4
   fl_chart: 0.64.0
+  data_table_2: 2.5.10
 
 dev_dependencies:
   flutter_test:
