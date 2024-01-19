@@ -41,6 +41,7 @@ class Constants {
   static const moviePath = 'assets/images/film.png';
   static const statisticPath = 'assets/images/statistic.png';
   static const line3Path = 'assets/images/line3.png';
+  static const addImagePath = 'assets/images/addimage.png';
 
   // animation
   static const homeAnimation = 'assets/animation/home_animation.json';
@@ -53,6 +54,7 @@ class Constants {
   // color
   static const colorTitle = Color(0xffF74346);
   static const backgroundColor = Color(0xff130B2B);
+  static const bgColorAdmin = Color(0xFF212332);
   static Shader linearGradient = const LinearGradient(
     colors: <Color>[Color(0xffFA6900), Color(0xffDA004E)],
   ).createShader(const Rect.fromLTWH(0.0, 0.0, 200, 70.0));

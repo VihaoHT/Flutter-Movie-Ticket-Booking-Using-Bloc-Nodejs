@@ -17,7 +17,7 @@ class _AdminMainState extends State<AdminMain> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xFF212332),
+        backgroundColor: Constants.bgColorAdmin,
         body: Row(
           children: [
             Expanded(

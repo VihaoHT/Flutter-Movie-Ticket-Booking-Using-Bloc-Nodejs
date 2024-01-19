@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_booking_app/core/constants/constants.dart';
+import 'package:movie_booking_app/admin/movie/screens/add_new_movie_admin.dart';
 import 'package:movie_booking_app/core/constants/ultis.dart';
-
 import '../../../core/components/header_admin.dart';
+import '../../../core/constants/constants.dart';
 import '../../../home/movie_bloc/movie_bloc.dart';
 import '../../../models/movie_model.dart';
-
+import 'package:get/get.dart' as Getx;
 class MovieAdminScreen extends StatelessWidget {
   const MovieAdminScreen({super.key});
 
@@ -15,22 +15,27 @@ class MovieAdminScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HeaderAdmin(title: "Movie Manager"),
+              const HeaderAdmin(title: "Movie Manager"),
               const SizedBox(height: 50),
               InkWell(
                 splashColor: Colors.red,
                 hoverColor: Colors.white54,
-                onTap: () {},
+                onTap: () {
+                  Getx.Get.to(
+                      const AddNewMovieAdmin(),
+                      transition: Getx.Transition.cupertino,
+                      duration: const Duration(milliseconds: 1000));
+                },
                 child: Container(
                   width: 195,
                   height: 50,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: const Color(0xFF212332),
+                    color:  Constants.bgColorAdmin,
                   ),
                   child: const ListTile(
                     title: Text(
@@ -142,7 +147,8 @@ class MovieAdminScreen extends StatelessWidget {
                                           child: InkWell(
                                             splashColor: Colors.red,
                                             hoverColor: Colors.white54,
-                                            onTap: () {},
+                                            onTap: () {
+                                            },
                                             child: Container(
                                               width: 100,
                                               height: 50,
@@ -164,75 +170,51 @@ class MovieAdminScreen extends StatelessWidget {
                                             ),
                                           ),
                                         ),
-                                        movieList[index].status == false
-                                            ? InkWell(
-                                                splashColor: Colors.red,
-                                                hoverColor: Colors.white54,
-                                                onTap: () {},
-                                                child: Container(
-                                                  width: 100,
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    color: Colors.green,
-                                                  ),
-                                                  child: const ListTile(
-                                                      title: Text(
-                                                    "Active",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white),
-                                                  )),
-                                                ),
-                                              )
-                                            : InkWell(
-                                                splashColor: Colors.red,
-                                                hoverColor: Colors.white54,
-                                                onTap: () {},
-                                                child: Container(
-                                                  width: 110,
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    color: Colors.red,
-                                                  ),
-                                                  child: const ListTile(
-                                                      title: Text(
-                                                    "Inactive",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white),
-                                                  )),
-                                                ),
-                                              )
+                                        InkWell(
+                                          splashColor: Colors.red,
+                                          hoverColor: Colors.white54,
+                                          onTap: () {},
+                                          child: Container(
+                                            width: 100,
+                                            height: 50,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                              BorderRadius.circular(
+                                                  10),
+                                              color: Colors.deepPurple,
+                                            ),
+                                            child: const ListTile(
+                                                title: Text(
+                                                  "Details",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                      color: Colors.white),
+                                                )),
+                                          ),
+                                        ),
+
                                       ],
                                     ),
-                                    InkWell(
+                                    movieList[index].status == true
+                                        ? InkWell(
                                       splashColor: Colors.red,
                                       hoverColor: Colors.white54,
                                       onTap: () {},
                                       child: Container(
-                                        width: 100,
-                                        height: 65,
+                                        width: 200,
+                                        height: 60,
                                         decoration: BoxDecoration(
                                           borderRadius:
                                           BorderRadius.circular(
                                               10),
-                                          color: Colors.deepPurple,
+                                          color: Colors.green,
                                         ),
                                         child: const ListTile(
                                             title: Text(
-                                              "More Details",
+                                              "The film is currently Active",
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                   fontSize: 16,
@@ -241,6 +223,26 @@ class MovieAdminScreen extends StatelessWidget {
                                                   color: Colors.white),
                                             )),
                                       ),
+                                    )
+                                        : Container(
+                                      width: 200,
+                                      height: 60,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius.circular(
+                                            10),
+                                        color: Colors.red,
+                                      ),
+                                      child: const ListTile(
+                                          title: Text(
+                                            "The film is currently Inactive",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                color: Colors.white),
+                                          )),
                                     )
                                   ],
                                 ),
