@@ -1,19 +1,24 @@
 import 'dart:convert';
+import 'dart:io';
 
-import 'package:http/http.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:get/get_navigation/get_navigation.dart';
+import 'package:http/http.dart' as http;
 import 'package:movie_booking_app/core/constants/constants.dart';
+import 'package:movie_booking_app/core/constants/ultis.dart';
 import 'package:movie_booking_app/models/movie_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MovieRespository {
   String api = "$uri/api/movies";
-
 
   Future<List<Movie>> getMovies() async {
     // Define the base URL and the endpoint
     final url = Uri.parse(api);
 
     // Make the HTTP GET request and await the response
-    final response = await get(url);
+    final response = await http.get(url);
 
     // Check if the response status code is 200 (OK)
     if (response.statusCode == 200) {
@@ -33,9 +38,11 @@ class MovieRespository {
     }
   }
 
-  Future<List<Movie>> getMoviesByNameAndCategory(String category, String title) async {
+  Future<List<Movie>> getMoviesByNameAndCategory(
+      String category, String title) async {
     // check if category and title is null
-    if ((category == null || category.isEmpty) && (title == null || title.isEmpty)) {
+    if ((category == null || category.isEmpty) &&
+        (title == null || title.isEmpty)) {
       // return [] if category and title is null;
       return [];
     }
@@ -54,7 +61,7 @@ class MovieRespository {
     final url = Uri.parse(apiSearch);
 
     // Make the HTTP GET request and await the response
-    final response = await get(url);
+    final response = await http.get(url);
 
     // Check if the response status code is 200 (OK)
     if (response.statusCode == 200) {
@@ -73,6 +80,62 @@ class MovieRespository {
     }
   }
 
+  Future<List<Movie>> postNewMovie(
+      File image,
+      File video,
+      String title,
+      String release_date,
+      String duration,
+      String category,
+      String actor,
+      String description,BuildContext context) async {
+    try {
+      Dio dio = Dio();
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      String? token = preferences.getString('token');
 
+      // Use the correct Content-Type header
+      final options = Options(
+        headers: {
+          'Content-Type': 'application/json' 'multipart/form-data',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
 
+      FormData formData = FormData.fromMap({
+        'imageCover': await MultipartFile.fromFile(
+          image.path,
+        ),
+        'trailer': await MultipartFile.fromFile(
+          video.path,
+        ),
+        'title': title,
+        'release_date': release_date,
+        'duration': duration,
+        'category': category,
+        'actor': actor,
+        'description': description
+      });
+
+      Response response = await dio.post(
+        api,
+        data: formData,
+        options: options,
+      );
+      if (response.statusCode == 201) {
+        if(context.mounted) {
+          navigator!.pop(context);
+          showToastSuccess(context, "Movie added succesfully!");
+        }
+        return getMovies();
+      } else {
+        print("sai cmm roiiiiiiiiiiii ${response.statusCode}");
+        return getMovies();
+      }
+    } catch (e) {
+      print(e.toString());
+      throw Exception("failed");
+    }
+  }
 }

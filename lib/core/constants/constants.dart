@@ -42,6 +42,7 @@ class Constants {
   static const statisticPath = 'assets/images/statistic.png';
   static const line3Path = 'assets/images/line3.png';
   static const addImagePath = 'assets/images/addimage.png';
+  static const addVideoPath = 'assets/images/addvideo.png';
 
   // animation
   static const homeAnimation = 'assets/animation/home_animation.json';
