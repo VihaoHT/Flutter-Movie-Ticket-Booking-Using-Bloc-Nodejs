@@ -35,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
           listener: (context, state) {
             if (state is AuthFailure) {
               showToastFailed(context, state.error);
+
             }
 
             if (state is AuthSuccess) {

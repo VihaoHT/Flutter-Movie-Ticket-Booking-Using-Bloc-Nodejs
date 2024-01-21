@@ -2,8 +2,11 @@ import 'dart:convert';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
+import 'package:movie_booking_app/auth/bloc/auth_bloc.dart';
 import 'package:movie_booking_app/core/components/header_admin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,6 +20,12 @@ class StatisticsAdminScreen extends StatefulWidget {
 }
 
 class _StatisticsAdminScreenState extends State<StatisticsAdminScreen> {
+  @override
+  void initState() {
+    fetchData();
+    super.initState();
+  }
+
   Future fetchData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? token = preferences.getString('token');
@@ -33,12 +42,6 @@ class _StatisticsAdminScreenState extends State<StatisticsAdminScreen> {
     } else {
       throw Exception(response.statusCode);
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    fetchData();
   }
 
   @override
@@ -134,40 +137,40 @@ class _StatisticsAdminScreenState extends State<StatisticsAdminScreen> {
                               } else {
                                 //price format
                                 String formattedMonth1 = NumberFormat.currency(
-                                    locale: 'vi_VN', symbol: 'VND')
+                                        locale: 'vi_VN', symbol: 'VND')
                                     .format(snapshot.data[0]);
                                 String formattedMonth2 = NumberFormat.currency(
-                                    locale: 'vi_VN', symbol: 'VND')
+                                        locale: 'vi_VN', symbol: 'VND')
                                     .format(snapshot.data[1]);
                                 String formattedMonth3 = NumberFormat.currency(
-                                    locale: 'vi_VN', symbol: 'VND')
+                                        locale: 'vi_VN', symbol: 'VND')
                                     .format(snapshot.data[2]);
                                 String formattedMonth4 = NumberFormat.currency(
-                                    locale: 'vi_VN', symbol: 'VND')
+                                        locale: 'vi_VN', symbol: 'VND')
                                     .format(snapshot.data[3]);
                                 String formattedMonth5 = NumberFormat.currency(
-                                    locale: 'vi_VN', symbol: 'VND')
+                                        locale: 'vi_VN', symbol: 'VND')
                                     .format(snapshot.data[4]);
                                 String formattedMonth6 = NumberFormat.currency(
-                                    locale: 'vi_VN', symbol: 'VND')
+                                        locale: 'vi_VN', symbol: 'VND')
                                     .format(snapshot.data[5]);
                                 String formattedMonth7 = NumberFormat.currency(
-                                    locale: 'vi_VN', symbol: 'VND')
+                                        locale: 'vi_VN', symbol: 'VND')
                                     .format(snapshot.data[6]);
                                 String formattedMonth8 = NumberFormat.currency(
-                                    locale: 'vi_VN', symbol: 'VND')
+                                        locale: 'vi_VN', symbol: 'VND')
                                     .format(snapshot.data[7]);
                                 String formattedMonth9 = NumberFormat.currency(
-                                    locale: 'vi_VN', symbol: 'VND')
+                                        locale: 'vi_VN', symbol: 'VND')
                                     .format(snapshot.data[8]);
                                 String formattedMonth10 = NumberFormat.currency(
-                                    locale: 'vi_VN', symbol: 'VND')
+                                        locale: 'vi_VN', symbol: 'VND')
                                     .format(snapshot.data[9]);
                                 String formattedMonth11 = NumberFormat.currency(
-                                    locale: 'vi_VN', symbol: 'VND')
+                                        locale: 'vi_VN', symbol: 'VND')
                                     .format(snapshot.data[10]);
                                 String formattedMonth12 = NumberFormat.currency(
-                                    locale: 'vi_VN', symbol: 'VND')
+                                        locale: 'vi_VN', symbol: 'VND')
                                     .format(snapshot.data[11]);
                                 return PieChart(
                                     swapAnimationCurve: Curves.easeInOutQuint,
@@ -176,134 +179,122 @@ class _StatisticsAdminScreenState extends State<StatisticsAdminScreen> {
                                     PieChartData(sections: [
                                       PieChartSectionData(
                                         value: snapshot.data[0].toDouble(),
-                                        title:  formattedMonth1 ,
+                                        title: formattedMonth1,
                                         radius: 100,
                                         titleStyle: const TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 12
-                                        ),
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 12),
                                         color: Colors.blue,
                                       ),
                                       PieChartSectionData(
                                         value: snapshot.data[1].toDouble(),
-                                        title:  formattedMonth2,
+                                        title: formattedMonth2,
                                         radius: 100,
                                         titleStyle: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 12
-                                        ),
+                                            fontSize: 12),
                                         color: Colors.red,
                                       ),
                                       PieChartSectionData(
                                         value: snapshot.data[2].toDouble(),
-                                        title:  formattedMonth3,
+                                        title: formattedMonth3,
                                         radius: 100,
                                         titleStyle: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 12
-                                        ),
+                                            fontSize: 12),
                                         color: Colors.yellow,
                                       ),
                                       PieChartSectionData(
                                         value: snapshot.data[3].toDouble(),
-                                        title:  formattedMonth4,
+                                        title: formattedMonth4,
                                         radius: 100,
                                         titleStyle: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 12
-                                        ),
+                                            fontSize: 12),
                                         color: Colors.green,
                                       ),
                                       PieChartSectionData(
                                         value: snapshot.data[4].toDouble(),
-                                        title:  formattedMonth5,
+                                        title: formattedMonth5,
                                         radius: 100,
                                         titleStyle: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 12
-                                        ),
+                                            fontSize: 12),
                                         color: Colors.cyanAccent,
                                       ),
                                       PieChartSectionData(
                                         value: snapshot.data[5].toDouble(),
-                                        title:  formattedMonth6,
+                                        title: formattedMonth6,
                                         radius: 100,
                                         titleStyle: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 12
-                                        ),
+                                            fontSize: 12),
                                         color: Colors.pinkAccent,
                                       ),
                                       PieChartSectionData(
                                         value: snapshot.data[6].toDouble(),
-                                        title:  formattedMonth7,
+                                        title: formattedMonth7,
                                         radius: 100,
                                         titleStyle: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 12
-                                        ),
+                                            fontSize: 12),
                                         color: Colors.purple,
                                       ),
                                       PieChartSectionData(
                                         value: snapshot.data[7].toDouble(),
-                                        title:  formattedMonth8,
+                                        title: formattedMonth8,
                                         radius: 100,
                                         titleStyle: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 12
-                                        ),
+                                            fontSize: 12),
                                         color: Colors.teal,
                                       ),
                                       PieChartSectionData(
                                         value: snapshot.data[8].toDouble(),
-                                        title:  formattedMonth9,
+                                        title: formattedMonth9,
                                         radius: 100,
                                         titleStyle: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 12
-                                        ),
+                                            fontSize: 12),
                                         color: Colors.grey,
                                       ),
                                       PieChartSectionData(
                                         value: snapshot.data[9].toDouble(),
-                                        title:  formattedMonth10,
+                                        title: formattedMonth10,
                                         radius: 100,
                                         titleStyle: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 12
-                                        ),
+                                            fontSize: 12),
                                         color: Colors.blueGrey,
                                       ),
                                       PieChartSectionData(
                                         value: snapshot.data[10].toDouble(),
-                                        title:  formattedMonth11,
+                                        title: formattedMonth11,
                                         radius: 100,
                                         titleStyle: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 12
-                                        ),
+                                            fontSize: 12),
                                         color: Colors.amber,
                                       ),
                                       PieChartSectionData(
                                         value: snapshot.data[11].toDouble(),
-                                        title:  formattedMonth12,
+                                        title: formattedMonth12,
                                         radius: 100,
                                         titleStyle: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 12
-                                        ),
+                                            fontSize: 12),
                                         color: Colors.orange,
                                       ),
                                     ]));

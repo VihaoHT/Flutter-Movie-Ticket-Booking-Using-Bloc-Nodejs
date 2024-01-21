@@ -15,6 +15,11 @@ class HeaderAdmin extends StatefulWidget {
 
 class _HeaderAdminState extends State<HeaderAdmin> {
   @override
+  void initState() {
+  context.read<AuthBloc>();
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return  Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -55,8 +60,9 @@ class _HeaderAdminState extends State<HeaderAdmin> {
                   child: CircularProgressIndicator(),
                 );
               }
-              return ListTile(
-                leading:  (state is AuthSuccess && state.user.avatar != null)
+              if(state is AuthSuccess) {
+                return ListTile(
+                leading:  (state.user.avatar != null)
                     ? ClipRRect(
                   borderRadius: BorderRadius.circular(27.0),
                   child: Image.network(
@@ -98,6 +104,8 @@ class _HeaderAdminState extends State<HeaderAdmin> {
                   },
                 ),
               );
+              }
+              return SizedBox();
             },
           ),
         ),

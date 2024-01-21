@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
         home: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthSuccess) {
-              if(state.user.role == "user"){
+              if(state.user.role == "user") {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
@@ -73,7 +73,9 @@ class _MyAppState extends State<MyApp> {
               }
             }
             if (state is AuthInitial) {
-              const LoginScreen();
+               const Center(
+                child: CircularProgressIndicator(),
+              );
             }
           },
           builder: (context, state) {

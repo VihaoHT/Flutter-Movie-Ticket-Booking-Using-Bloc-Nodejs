@@ -7,8 +7,19 @@ import '../../../core/constants/constants.dart';
 import '../../../home/movie_bloc/movie_bloc.dart';
 import '../../../models/movie_model.dart';
 import 'package:get/get.dart' as Getx;
-class MovieAdminScreen extends StatelessWidget {
+class MovieAdminScreen extends StatefulWidget {
   const MovieAdminScreen({super.key});
+
+  @override
+  State<MovieAdminScreen> createState() => _MovieAdminScreenState();
+}
+
+class _MovieAdminScreenState extends State<MovieAdminScreen> {
+  @override
+  void initState() {
+   context.read<MovieBloc>().add(LoadMovieEvent());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
