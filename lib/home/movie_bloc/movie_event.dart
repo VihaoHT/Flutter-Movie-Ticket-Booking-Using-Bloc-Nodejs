@@ -29,3 +29,13 @@ class PostNewMovieEvent extends MovieEvent{
   @override
   List<Object> get props => [image,video,title,release_date,duration,category,actor,description,context];
 }
+
+class UpdateStatusMovieEvent extends MovieEvent{
+  final bool status;
+  final String movieId;
+  final BuildContext context;
+
+  const UpdateStatusMovieEvent({required this.status, required this.movieId, required this.context});
+  @override
+  List<Object> get props => [status,movieId,context];
+}

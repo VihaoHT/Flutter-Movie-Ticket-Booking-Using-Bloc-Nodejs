@@ -12,7 +12,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class MovieRespository {
   String api = "$uri/api/movies";
-
   Future<List<Movie>> getMovies() async {
     // Define the base URL and the endpoint
     final url = Uri.parse(api);
@@ -136,6 +135,31 @@ class MovieRespository {
     } catch (e) {
       print(e.toString());
       throw Exception("failed");
+    }
+  }
+
+
+  Future<List<Movie>> updateStatusMovie(bool status,String movieId,BuildContext context) async {
+    String api = "$uri/api/movies/id/$movieId";
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? token = preferences.getString('token');
+
+    final res = (await http.patch(Uri.parse(api),
+        body: json.encode({
+          'status': status,
+        }),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        }));
+    if (res.statusCode == 200) {
+        print( "Update status successfully!");
+      return getMovies();
+    } else {
+      if(context.mounted){
+        showToastFailed(context, "Update status failed! ${res.statusCode}");
+      }
+      return getMovies();
     }
   }
 }
