@@ -130,7 +130,7 @@ class _CinemaScreenState extends State<CinemaScreen> {
                                 //print(distance);
                                 return InkWell(
                                   onTap: () {
-                                    Getx.Get.to(
+                                    Getx.Get.to(()=>
                                         ShowTimeScreen(
                                           id: item['room']['cinema']['_id'],
                                           title: item['movie']['title'],

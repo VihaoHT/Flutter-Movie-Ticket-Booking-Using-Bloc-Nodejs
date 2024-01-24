@@ -127,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           hintText: "Enter your password"),
                       GestureDetector(
                         onTap: () {
-                          Getx.Get.to(const ForgotPasswordScreen(),
+                          Getx.Get.to(()=>const ForgotPasswordScreen(),
                               transition: Getx.Transition.circularReveal,
                               duration: const Duration(milliseconds: 2000));
                         },

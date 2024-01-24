@@ -112,7 +112,7 @@ class ShowTimeScreen extends StatelessWidget {
                             // print((state as AuthSuccess).user.id);
                             return GestureDetector(
                               onTap: () {
-                                Getx.Get.to(
+                                Getx.Get.to(()=>
                                     SeatScreen(
                                       item: showtime,
                                       userId: (state as AuthSuccess).user.id,

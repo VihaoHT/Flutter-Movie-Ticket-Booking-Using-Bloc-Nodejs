@@ -170,7 +170,7 @@ class _MovieSearchScreenState extends State<MovieSearchScreen> {
                         // print(movieList[index].title);
                         return InkWell(
                           onTap: () {
-                            Getx.Get.to(
+                            Getx.Get.to(()=>
                                 MovieDetailsScreen(movie: movieList[index]),
                                 transition: Getx.Transition.circularReveal,
                                 duration: const Duration(milliseconds: 1000));

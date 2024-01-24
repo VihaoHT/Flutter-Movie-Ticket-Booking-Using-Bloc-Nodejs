@@ -29,9 +29,14 @@ class MovieRespository {
       // Get the list of movies from the data map
       final List<dynamic> movies = data['data']['data'];
       // print(movies);
-
       // Map each JSON object to a Movie instance and return the list
-      return movies.map((movie) => Movie.fromJson(movie)).toList();
+      //only status == true can be in List
+      final List<Movie> filteredMovies = movies
+          .where((movie) => movie['status'] == true)
+          .map((filteredMovie) => Movie.fromJson(filteredMovie))
+          .toList();
+
+      return filteredMovies;
     } else {
       // Throw an exception if the response status code is not 200
       throw Exception('Failed to load movies');
@@ -70,10 +75,14 @@ class MovieRespository {
 
       // Get the list of movies from the data map
       final List<dynamic> movies = data['data'];
-      //print(movies);
+      //same as  getMovies()
+      final List<Movie> filteredMovies = movies
+          .where((movie) => movie['status'] == true)
+          .map((filteredMovie) => Movie.fromJson(filteredMovie))
+          .toList();
 
-      // Map each JSON object to a Movie instance and return the list
-      return movies.map((movie) => Movie.fromJson(movie)).toList();
+      return filteredMovies;
+      //print(movies);
     } else {
       // Throw an exception if the response status code is not 200
       throw Exception('Failed to load movies ${response.statusCode}');

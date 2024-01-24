@@ -140,7 +140,7 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 13),
               ElevatedButton(
                 onPressed: () {
-                  GetX.Get.to(const UpdateProfileScreen(),transition: GetX.Transition.cupertino,duration: const Duration(seconds: 1));
+                  GetX.Get.to(()=> const UpdateProfileScreen(),transition: GetX.Transition.cupertino,duration: const Duration(seconds: 1));
                 },
                 style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,
@@ -178,7 +178,7 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 13),
               ElevatedButton(
                 onPressed: () {
-                  GetX.Get.to(const ChangePasswordScreen(),transition: GetX.Transition.cupertino,duration: const Duration(seconds: 1));
+                  GetX.Get.to(()=>const ChangePasswordScreen(),transition: GetX.Transition.cupertino,duration: const Duration(seconds: 1));
                 },
                 style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,

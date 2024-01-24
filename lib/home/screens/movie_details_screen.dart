@@ -71,7 +71,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       left: 184,
                       child: InkWell(
                         onTap: () {
-                          Getx.Get.to(
+                          Getx.Get.to(()=>
                               MovieTrailerScreen(
                                 videoUrl: widget.movie.trailer,
                               ),
@@ -180,7 +180,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 InkWell(
                     splashColor: Colors.red,
                     onTap: () {
-                      Getx.Get.to(
+                      Getx.Get.to(()=>
                           CinemaScreen(
                             id: widget.movie.id,
                             title: widget.movie.title,
@@ -285,81 +285,79 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                             String formattedDateTime =
                                 DateFormat("HH:mm dd/MM/yyyy").format(dateTime);
 
-                            return Flexible(
-                              child: GridTile(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    children: [
-                                      ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(40.0),
-                                          child: Image.network(
-                                            reviews[index].user.avatar,
-                                            width: 50,
-                                            height: 50,
-                                            fit: BoxFit.cover,
-                                          )),
-                                      Container(
-                                        margin: const EdgeInsets.only(left: 10),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              reviews[index].user.username,
+                            return GridTile(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(40.0),
+                                        child: Image.network(
+                                          reviews[index].user.avatar,
+                                          width: 50,
+                                          height: 50,
+                                          fit: BoxFit.cover,
+                                        )),
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 10),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            reviews[index].user.username,
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          Row(
+                                            children: [
+                                              RatingBar.builder(
+                                                initialRating:
+                                                    reviews[index].rating!,
+                                                minRating: 1,
+                                                direction: Axis.horizontal,
+                                                allowHalfRating: true,
+                                                itemCount: 5,
+                                                itemSize: 16,
+                                                itemBuilder: (context, _) =>
+                                                    const Icon(
+                                                  Icons.star,
+                                                  color: Colors.yellow,
+                                                ),
+                                                onRatingUpdate: (rating) {},
+                                              ),
+                                              Container(
+                                                margin: const EdgeInsets.only(
+                                                    left: 50),
+                                                child: Text(
+                                                  formattedDateTime,
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w300),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            width: 300,
+                                            child: Text(
+                                              reviews[index].review,
                                               style: const TextStyle(
                                                   color: Colors.white,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500),
+                                                  fontSize: 12,
+                                                  fontWeight:
+                                                      FontWeight.w300),
                                             ),
-                                            Row(
-                                              children: [
-                                                RatingBar.builder(
-                                                  initialRating:
-                                                      reviews[index].rating!,
-                                                  minRating: 1,
-                                                  direction: Axis.horizontal,
-                                                  allowHalfRating: true,
-                                                  itemCount: 5,
-                                                  itemSize: 16,
-                                                  itemBuilder: (context, _) =>
-                                                      const Icon(
-                                                    Icons.star,
-                                                    color: Colors.yellow,
-                                                  ),
-                                                  onRatingUpdate: (rating) {},
-                                                ),
-                                                Container(
-                                                  margin: const EdgeInsets.only(
-                                                      left: 50),
-                                                  child: Text(
-                                                    formattedDateTime,
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w300),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              width: 300,
-                                              child: Text(
-                                                reviews[index].review,
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 12,
-                                                    fontWeight:
-                                                        FontWeight.w300),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             );

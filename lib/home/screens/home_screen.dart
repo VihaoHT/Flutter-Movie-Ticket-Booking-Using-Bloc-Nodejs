@@ -20,7 +20,9 @@ class HomeScreen extends StatelessWidget {
       colors: <Color>[Color(0xffFA6900), Color(0xffDA004E)],
     ).createShader(const Rect.fromLTWH(0.0, 0.0, 200, 70.0));
 
+    //this is for reload list
     Future<void> handleRefesher() async {
+      context.read<MovieBloc>().add(LoadMovieEvent());
       return await Future.delayed(const Duration(seconds: 2));
     }
 
@@ -141,7 +143,7 @@ class HomeScreen extends StatelessWidget {
                                       int pageViewIndex) =>
                                   InkWell(
                                 onTap: () {
-                                  Getx.Get.to(
+                                  Getx.Get.to(()=>
                                       MovieDetailsScreen(
                                           movie: top5movieList[itemIndex]),
                                       transition:
@@ -237,7 +239,7 @@ class HomeScreen extends StatelessWidget {
                           // print(movieList[index].title);
                           return InkWell(
                             onTap: () {
-                              Getx.Get.to(
+                              Getx.Get.to(()=>
                                   MovieDetailsScreen(movie: movieList[index]),
                                   transition: Getx.Transition.circularReveal,
                                   duration: const Duration(milliseconds: 1000));
