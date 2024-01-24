@@ -217,6 +217,7 @@ class _AddNewMovieAdminState extends State<AddNewMovieAdmin> {
                             .split(',')
                             .map((e) => e.trim())
                             .toList();
+
                         context.read<MovieBloc>().add(PostNewMovieEvent(
                               image: pickedImage!,
                               video: pickedVideo!,

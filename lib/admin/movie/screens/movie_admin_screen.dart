@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_booking_app/admin/movie/screens/add_new_movie_admin.dart';
+import 'package:movie_booking_app/admin/movie/screens/update_movie_admin.dart';
 import 'package:movie_booking_app/core/constants/ultis.dart';
 import '../../../core/components/header_admin.dart';
 import '../../../core/constants/constants.dart';
@@ -158,7 +159,13 @@ class _MovieAdminScreenState extends State<MovieAdminScreen> {
                                           child: InkWell(
                                             splashColor: Colors.red,
                                             hoverColor: Colors.white54,
-                                            onTap: () {},
+                                            onTap: () {
+                                              Getx.Get.to(() => ( UpdateMovieAdmin(
+                                                movie: movieList[index],
+                                              )),
+                                                  transition: Getx.Transition.cupertino,
+                                                  duration: const Duration(seconds: 2));
+                                            },
                                             child: Container(
                                               width: 100,
                                               height: 50,

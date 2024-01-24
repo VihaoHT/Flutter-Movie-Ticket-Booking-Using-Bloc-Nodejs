@@ -39,3 +39,20 @@ class UpdateStatusMovieEvent extends MovieEvent{
   @override
   List<Object> get props => [status,movieId,context];
 }
+
+class UpdateMovieEvent extends MovieEvent{
+  final String title;
+  final String release_date;
+  final String duration;
+  final  List<String> category;
+  final List<Object> actor;
+  final String description;
+  final String movieId;
+  final BuildContext context;
+
+  const UpdateMovieEvent({required this.actor,required this.category,required this.title, required this.release_date, required this.duration, required this.description, required this.movieId, required this.context});
+
+
+  @override
+  List<Object> get props => [title,release_date,duration,category,actor,description,context,movieId];
+}

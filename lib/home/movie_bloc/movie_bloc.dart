@@ -34,7 +34,8 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
             event.duration,
             event.category,
             event.actor,
-            event.description,event.context);
+            event.description,
+            event.context);
         emit(MovieLoadedState(newMovies));
       } catch (e) {
         emit(MovieErrorState(e.toString()));
@@ -43,14 +44,30 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
     on<UpdateStatusMovieEvent>((event, emit) async {
       emit(MovieLoadingState());
       try {
-        final updateStatusMovies = await _movieRespository.updateStatusMovie(event.status, event.movieId, event.context);
+        final updateStatusMovies = await _movieRespository.updateStatusMovie(
+            event.status, event.movieId, event.context);
         emit(MovieLoadedState(updateStatusMovies));
       } catch (e) {
         emit(MovieErrorState(e.toString()));
       }
     });
 
+    on<UpdateMovieEvent>((event, emit) async {
+      emit(MovieLoadingState());
+      try {
+        final updateMovies = await _movieRespository.updateMovie(
+            event.title,
+            event.release_date,
+            event.duration,
+            event.category!,
+            event.actor!,
+            event.description,
+            event.movieId,
+            event.context);
+        emit(MovieLoadedState(updateMovies));
+      } catch (e) {
+        emit(MovieErrorState(e.toString()));
+      }
+    });
   }
-
-
 }

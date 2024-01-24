@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class MovieRespository {
   String api = "$uri/api/movies";
+
   Future<List<Movie>> getMovies() async {
     // Define the base URL and the endpoint
     final url = Uri.parse(api);
@@ -87,7 +88,8 @@ class MovieRespository {
       String duration,
       List<String> category,
       List<String> actor,
-      String description,BuildContext context) async {
+      String description,
+      BuildContext context) async {
     try {
       Dio dio = Dio();
       SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -123,7 +125,7 @@ class MovieRespository {
         options: options,
       );
       if (response.statusCode == 201) {
-        if(context.mounted) {
+        if (context.mounted) {
           navigator!.pop(context);
           showToastSuccess(context, "Movie added succesfully!");
         }
@@ -138,8 +140,8 @@ class MovieRespository {
     }
   }
 
-
-  Future<List<Movie>> updateStatusMovie(bool status,String movieId,BuildContext context) async {
+  Future<List<Movie>> updateStatusMovie(
+      bool status, String movieId, BuildContext context) async {
     String api = "$uri/api/movies/id/$movieId";
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? token = preferences.getString('token');
@@ -153,13 +155,55 @@ class MovieRespository {
           'Authorization': 'Bearer $token',
         }));
     if (res.statusCode == 200) {
-        print( "Update status successfully!");
+      print("Update status successfully!");
       return getMovies();
     } else {
-      if(context.mounted){
+      if (context.mounted) {
         showToastFailed(context, "Update status failed! ${res.statusCode}");
       }
       return getMovies();
     }
+  }
+
+  Future<List<Movie>> updateMovie(
+      String title,
+      String release_date,
+      String duration,
+      List<String> category,
+      List<Object> actor,
+      String description,
+      String movieId,
+      BuildContext context) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? token = preferences.getString('token');
+    String api = "$uri/api/movies/id/$movieId";
+    final res = await http.patch(Uri.parse(api),
+        body: json.encode({
+          'title': title,
+          'release_date': release_date,
+          'duration': duration,
+          'category': category,
+          'actor': actor,
+          'description': description
+        }),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        });
+    if (res.statusCode == 200) {
+      if (context.mounted) {
+        navigator!.pop(context);
+        showToastSuccess(context, 'Movie update successfully!');
+      }
+
+      return getMovies();
+    }
+    else if(res.statusCode == 500){
+      if (context.mounted) {
+        showToastWarning(context, "Movie update failed! ${res.reasonPhrase}");
+      }
+      return getMovies();
+    }
+    return getMovies();
   }
 }
