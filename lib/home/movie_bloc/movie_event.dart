@@ -19,8 +19,8 @@ class PostNewMovieEvent extends MovieEvent{
   final String title;
   final String release_date;
   final String duration;
-  final String category;
-  final String actor;
+  final  List<String> category;
+  final List<String> actor;
   final String description;
   final BuildContext context;
 

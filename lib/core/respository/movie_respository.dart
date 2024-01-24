@@ -85,8 +85,8 @@ class MovieRespository {
       String title,
       String release_date,
       String duration,
-      String category,
-      String actor,
+      List<String> category,
+      List<String> actor,
       String description,BuildContext context) async {
     try {
       Dio dio = Dio();

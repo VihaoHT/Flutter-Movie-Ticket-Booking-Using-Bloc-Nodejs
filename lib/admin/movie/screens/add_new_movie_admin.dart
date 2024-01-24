@@ -197,16 +197,36 @@ class _AddNewMovieAdminState extends State<AddNewMovieAdmin> {
                   if (state is MovieLoadedState) {
                     return ElevatedButton(
                       onPressed: () {
+                        String actorString =
+                            "[6596fa7bb733b079b18f2dd2 ,  6596fc06b733b079b18f2de0]";
+                        String categoryString =
+                            "[romance ,  action]";
+                        actorString = actorController.text
+                            .trim()
+                            .replaceAll("[", "")
+                            .replaceAll("]", "");
+                        categoryString = categoryController.text
+                            .trim()
+                            .replaceAll("[", "")
+                            .replaceAll("]", "");
+                        List<String> actorList = actorString
+                            .split(',')
+                            .map((e) => e.trim())
+                            .toList();
+                        List<String> categoryList = categoryString
+                            .split(',')
+                            .map((e) => e.trim())
+                            .toList();
                         context.read<MovieBloc>().add(PostNewMovieEvent(
                               image: pickedImage!,
                               video: pickedVideo!,
                               title: titleController.text.trim(),
                               release_date: releaseDateController.text.trim(),
                               duration: durationController.text.trim(),
-                              category: categoryController.text.trim(),
-                              actor: actorController.text.trim(),
+                              category: categoryList,
+                              actor: actorList,
                               description: descriptionController.text.trim(),
-                          context: context,
+                              context: context,
                             ));
                       },
                       style: ElevatedButton.styleFrom(
