@@ -44,15 +44,41 @@ class UpdateMovieEvent extends MovieEvent{
   final String title;
   final String release_date;
   final String duration;
-  final  List<String> category;
-  final List<Object> actor;
   final String description;
   final String movieId;
   final BuildContext context;
 
-  const UpdateMovieEvent({required this.actor,required this.category,required this.title, required this.release_date, required this.duration, required this.description, required this.movieId, required this.context});
+  const UpdateMovieEvent({required this.title, required this.release_date, required this.duration, required this.description, required this.movieId, required this.context});
 
 
   @override
-  List<Object> get props => [title,release_date,duration,category,actor,description,context,movieId];
+  List<Object> get props => [title,release_date,duration,description,context,movieId];
+}
+
+class UpdateCategoryMovieEvent extends MovieEvent{
+  final List<String> category;
+  final String movieId;
+  final BuildContext context;
+
+  const UpdateCategoryMovieEvent({required this.category, required this.movieId, required this.context});
+
+
+
+  @override
+  List<Object> get props => [category,context,movieId];
+}
+
+class UpdateActorMovieEvent extends MovieEvent{
+  final List<Object> actor;
+  final String movieId;
+  final BuildContext context;
+
+  const UpdateActorMovieEvent({required this.actor, required this.movieId, required this.context});
+
+
+
+
+
+  @override
+  List<Object> get props => [actor,context,movieId];
 }

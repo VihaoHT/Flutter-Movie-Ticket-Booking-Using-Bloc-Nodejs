@@ -178,8 +178,6 @@ class MovieRespository {
       String title,
       String release_date,
       String duration,
-      List<String> category,
-      List<Object> actor,
       String description,
       String movieId,
       BuildContext context) async {
@@ -191,9 +189,71 @@ class MovieRespository {
           'title': title,
           'release_date': release_date,
           'duration': duration,
-          'category': category,
-          'actor': actor,
           'description': description
+        }),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        });
+    if (res.statusCode == 200) {
+      if (context.mounted) {
+        navigator!.pop(context);
+        showToastSuccess(context, 'Movie update successfully!');
+      }
+
+      return getMovies();
+    }
+    else if(res.statusCode == 500){
+      if (context.mounted) {
+        showToastWarning(context, "Movie update failed! ${res.reasonPhrase}");
+      }
+      return getMovies();
+    }
+    return getMovies();
+  }
+
+  Future<List<Movie>> updateCategory(
+      List<String> category,
+      String movieId,
+      BuildContext context) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? token = preferences.getString('token');
+    String api = "$uri/api/movies/id/$movieId";
+    final res = await http.patch(Uri.parse(api),
+        body: json.encode({
+          'category': category,
+        }),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        });
+    if (res.statusCode == 200) {
+      if (context.mounted) {
+        navigator!.pop(context);
+        showToastSuccess(context, 'Movie update successfully!');
+      }
+
+      return getMovies();
+    }
+    else if(res.statusCode == 500){
+      if (context.mounted) {
+        showToastWarning(context, "Movie update failed! ${res.reasonPhrase}");
+      }
+      return getMovies();
+    }
+    return getMovies();
+  }
+
+  Future<List<Movie>> updateActor(
+      List<Object> actor,
+      String movieId,
+      BuildContext context) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? token = preferences.getString('token');
+    String api = "$uri/api/movies/id/$movieId";
+    final res = await http.patch(Uri.parse(api),
+        body: json.encode({
+          'actor': actor,
         }),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
