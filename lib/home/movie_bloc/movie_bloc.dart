@@ -96,5 +96,15 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
         emit(MovieErrorState(e.toString()));
       }
     });
+
+    on<DeleteMovieEvent>((event, emit) async {
+      emit(MovieLoadingState());
+      try {
+        final deleteMovie = await _movieRespository.deleteMovie(event.movieId, event.context);
+        emit(MovieLoadedState(deleteMovie));
+      } catch (e) {
+        emit(MovieErrorState(e.toString()));
+      }
+    });
   }
 }

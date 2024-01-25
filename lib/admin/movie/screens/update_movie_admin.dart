@@ -29,33 +29,11 @@ class UpdateMovieAdmin extends StatelessWidget {
     // format time
     String formattedDateTime = DateFormat("yyyy/MM/dd HH:mm").format(dateTime);
 
-
     return Scaffold(
       appBar: AppBar(
         foregroundColor: Colors.white54,
         backgroundColor: Constants.bgColorAdmin,
         title: Text("Update the movie ${movie.title}"),
-        actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 50),
-            child: InkWell(
-                onTap: () {
-                  Getx.Get.defaultDialog(
-                    title: "INFORMATION!",
-                    titleStyle: const TextStyle(fontWeight: FontWeight.bold),
-                    middleText: "Category and actor cant be null",
-                    middleTextStyle: const TextStyle(
-                        color: Constants.colorTitle,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700),
-                  );
-                },
-                child: Image.asset(
-                  Constants.informationPath,
-                  color: Colors.white54,
-                )),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -144,60 +122,7 @@ class UpdateMovieAdmin extends StatelessWidget {
                     splashColor: Colors.red,
                     hoverColor: Colors.white54,
                     onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title:
-                                const Text('Update new category for the movie'),
-                            content: TextField(
-                              controller: categoryController,
-                              decoration: const InputDecoration(
-                                  hintText: "Example : romance, action"),
-                            ),
-                            actions: <Widget>[
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Constants.bgColorAdmin),
-                                child: const Text(
-                                  'CANCEL',
-                                  style: TextStyle(color: Colors.white54),
-                                ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  String actorString =
-                                      "[6596fa7bb733b079b18f2dd2 ,  6596fc06b733b079b18f2de0]";
-                                  String categoryString = "[romance ,  action]";
-
-                                  actorString =
-                                      actorController.text.trim().replaceAll("[", "").replaceAll("]", "");
-                                  categoryString =
-                                      categoryController.text.trim().replaceAll("[", "").replaceAll("]", "");
-
-                                  List<Object> actorList =
-                                  actorString.split(',').map((e) => e.trim()).toList();
-                                  List<String> categoryList =
-                                  categoryString.split(',').map((e) => e.trim()).toList();
-
-                                  context.read<MovieBloc>().add(
-                                      UpdateCategoryMovieEvent(
-                                          category: categoryList,
-                                          movieId: movie.id,
-                                          context: context));
-                                  Navigator.pop(context);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Constants.bgColorAdmin),
-                                child: Text('OK'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                      _diaLogUpdateCategory(context, categoryController);
                     },
                     child: Container(
                       width: 195,
@@ -222,53 +147,7 @@ class UpdateMovieAdmin extends StatelessWidget {
                     splashColor: Colors.red,
                     hoverColor: Colors.white54,
                     onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title:
-                            const Text('Update new actors for the movie'),
-                            content: TextField(
-                              controller: actorController,
-                              decoration: const InputDecoration(
-                                  hintText: "Example id actors : 6596fc06b733b079b18f2de0, 6596fc06b733b079b18f2de0"),
-                            ),
-                            actions: <Widget>[
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Constants.bgColorAdmin),
-                                child: const Text(
-                                  'CANCEL',
-                                  style: TextStyle(color: Colors.white54),
-                                ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  String actorString =
-                                      "[6596fa7bb733b079b18f2dd2 ,  6596fc06b733b079b18f2de0]";
-                                  actorString =
-                                      actorController.text.trim().replaceAll("[", "").replaceAll("]", "");
-                                  List<Object> actorList =
-                                  actorString.split(',').map((e) => e.trim()).toList();
-
-                                  context.read<MovieBloc>().add(
-                                      UpdateActorMovieEvent(
-                                          actor: actorList,
-                                          movieId: movie.id,
-                                          context: context));
-                                  Navigator.pop(context);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Constants.bgColorAdmin),
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                      _diaLogUpdateActors(context, actorController);
                     },
                     child: Container(
                       width: 195,
@@ -383,6 +262,106 @@ class UpdateMovieAdmin extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Future<dynamic> _diaLogUpdateActors(
+      BuildContext context, TextEditingController actorController) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Update new actors for the movie'),
+          content: TextField(
+            controller: actorController,
+            decoration: const InputDecoration(
+                hintText:
+                    "Example id actors : 6596fc06b733b079b18f2de0, 6596fc06b733b079b18f2de0"),
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Constants.bgColorAdmin),
+              child: const Text(
+                'CANCEL',
+                style: TextStyle(color: Colors.white54),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                String actorString =
+                    "[6596fa7bb733b079b18f2dd2 ,  6596fc06b733b079b18f2de0]";
+                actorString = actorController.text
+                    .trim()
+                    .replaceAll("[", "")
+                    .replaceAll("]", "");
+                List<Object> actorList =
+                    actorString.split(',').map((e) => e.trim()).toList();
+
+                context.read<MovieBloc>().add(UpdateActorMovieEvent(
+                    actor: actorList, movieId: movie.id, context: context));
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Constants.bgColorAdmin),
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<dynamic> _diaLogUpdateCategory(
+      BuildContext context, TextEditingController categoryController) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Update new category for the movie'),
+          content: TextField(
+            controller: categoryController,
+            decoration:
+                const InputDecoration(hintText: "Example : romance, action"),
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Constants.bgColorAdmin),
+              child: const Text(
+                'CANCEL',
+                style: TextStyle(color: Colors.white54),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                String categoryString = "[romance ,  action]";
+                categoryString = categoryController.text
+                    .trim()
+                    .replaceAll("[", "")
+                    .replaceAll("]", "");
+                List<String> categoryList =
+                    categoryString.split(',').map((e) => e.trim()).toList();
+
+                context.read<MovieBloc>().add(UpdateCategoryMovieEvent(
+                    category: categoryList,
+                    movieId: movie.id,
+                    context: context));
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Constants.bgColorAdmin),
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

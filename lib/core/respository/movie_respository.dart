@@ -64,7 +64,7 @@ class MovieRespository {
       // print(movies);
       // Map each JSON object to a Movie instance and return the list
       //only status == true can be in List
-      return movies.map((review) => Movie.fromJson(review)).toList();
+      return movies.map((movie) => Movie.fromJson(movie)).toList();
     } else {
       // Throw an exception if the response status code is not 200
       throw Exception('Failed to load movies');
@@ -168,10 +168,10 @@ class MovieRespository {
           navigator!.pop(context);
           showToastSuccess(context, "Movie added succesfully!");
         }
-        return getMoviesAdmin();
+        return getMovies();
       } else {
         print("sai cmm roiiiiiiiiiiii ${response.statusCode}");
-        return getMoviesAdmin();
+        return getMovies();
       }
     } catch (e) {
       print(e.toString());
@@ -310,5 +310,33 @@ class MovieRespository {
       return getMoviesAdmin();
     }
     return getMoviesAdmin();
+  }
+
+  // Admin
+  Future deleteMovie(
+      String movieId,
+      BuildContext context) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? token = preferences.getString('token');
+    String api = "$uri/api/movies/id/$movieId";
+    final res = await http.delete(Uri.parse(api),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        });
+    if (res.statusCode == 204) {
+      if (context.mounted) {
+        navigator!.pop(context);
+        showToastSuccess(context, 'The movie have been deleted!');
+      }
+
+      return getMoviesAdmin();
+    }
+    else{
+      if (context.mounted) {
+        showToastWarning(context, "The movie cannot be delete! cuz: ${res.reasonPhrase}");
+      }
+      return getMoviesAdmin();
+    }
   }
 }

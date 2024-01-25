@@ -86,3 +86,12 @@ class UpdateActorMovieEvent extends MovieEvent{
   @override
   List<Object> get props => [actor,context,movieId];
 }
+
+class DeleteMovieEvent extends MovieEvent{
+  final String movieId;
+  final BuildContext context;
+
+  const DeleteMovieEvent({required this.movieId, required this.context});
+  @override
+  List<Object> get props => [context,movieId];
+}
