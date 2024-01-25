@@ -22,6 +22,15 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
         emit(MovieErrorState(e.toString()));
       }
     });
+    on<LoadMovieAdminEvent>((event, emit) async {
+      emit(MovieLoadingState());
+      try {
+        final movies = await _movieRespository.getMoviesAdmin();
+        emit(MovieLoadedState(movies));
+      } catch (e) {
+        emit(MovieErrorState(e.toString()));
+      }
+    });
 
     on<PostNewMovieEvent>((event, emit) async {
       emit(MovieLoadingState());

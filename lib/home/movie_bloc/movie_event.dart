@@ -12,6 +12,10 @@ class LoadMovieEvent extends MovieEvent{
    @override
   List<Object> get props => [];
 }
+class LoadMovieAdminEvent extends MovieEvent{
+  @override
+  List<Object> get props => [];
+}
 
 class PostNewMovieEvent extends MovieEvent{
   final File image;

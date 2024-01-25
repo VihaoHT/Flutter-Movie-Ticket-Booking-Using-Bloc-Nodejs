@@ -20,6 +20,7 @@ class MovieLoadedState extends MovieState {
   List<Object> get props => [movies];
 }
 
+
 class MovieErrorState extends MovieState {
   final String error;
 

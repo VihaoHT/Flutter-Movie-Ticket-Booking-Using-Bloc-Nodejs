@@ -13,6 +13,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class MovieRespository {
   String api = "$uri/api/movies";
 
+
+  // Client
   Future<List<Movie>> getMovies() async {
     // Define the base URL and the endpoint
     final url = Uri.parse(api);
@@ -43,6 +45,33 @@ class MovieRespository {
     }
   }
 
+  // Admin
+  Future<List<Movie>> getMoviesAdmin() async {
+    // Define the base URL and the endpoint
+    final url = Uri.parse(api);
+
+    // Make the HTTP GET request and await the response
+    final response = await http.get(url);
+
+    // Check if the response status code is 200 (OK)
+    if (response.statusCode == 200) {
+      // Parse the response body as a map of JSON objects
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      //print(data);
+
+      // Get the list of movies from the data map
+      final List<dynamic> movies = data['data']['data'];
+      // print(movies);
+      // Map each JSON object to a Movie instance and return the list
+      //only status == true can be in List
+      return movies.map((review) => Movie.fromJson(review)).toList();
+    } else {
+      // Throw an exception if the response status code is not 200
+      throw Exception('Failed to load movies');
+    }
+  }
+
+  // Client
   Future<List<Movie>> getMoviesByNameAndCategory(
       String category, String title) async {
     // check if category and title is null
@@ -89,6 +118,7 @@ class MovieRespository {
     }
   }
 
+  // Admin
   Future<List<Movie>> postNewMovie(
       File image,
       File video,
@@ -138,10 +168,10 @@ class MovieRespository {
           navigator!.pop(context);
           showToastSuccess(context, "Movie added succesfully!");
         }
-        return getMovies();
+        return getMoviesAdmin();
       } else {
         print("sai cmm roiiiiiiiiiiii ${response.statusCode}");
-        return getMovies();
+        return getMoviesAdmin();
       }
     } catch (e) {
       print(e.toString());
@@ -149,6 +179,8 @@ class MovieRespository {
     }
   }
 
+
+  // Admin
   Future<List<Movie>> updateStatusMovie(
       bool status, String movieId, BuildContext context) async {
     String api = "$uri/api/movies/id/$movieId";
@@ -165,15 +197,17 @@ class MovieRespository {
         }));
     if (res.statusCode == 200) {
       print("Update status successfully!");
-      return getMovies();
+      return getMoviesAdmin();
     } else {
       if (context.mounted) {
         showToastFailed(context, "Update status failed! ${res.statusCode}");
       }
-      return getMovies();
+      return getMoviesAdmin();
     }
   }
 
+
+  //Admin
   Future<List<Movie>> updateMovie(
       String title,
       String release_date,
@@ -201,17 +235,18 @@ class MovieRespository {
         showToastSuccess(context, 'Movie update successfully!');
       }
 
-      return getMovies();
+      return getMoviesAdmin();
     }
     else if(res.statusCode == 500){
       if (context.mounted) {
         showToastWarning(context, "Movie update failed! ${res.reasonPhrase}");
       }
-      return getMovies();
+      return getMoviesAdmin();
     }
-    return getMovies();
+    return getMoviesAdmin();
   }
 
+  //Admin
   Future<List<Movie>> updateCategory(
       List<String> category,
       String movieId,
@@ -233,17 +268,18 @@ class MovieRespository {
         showToastSuccess(context, 'Movie update successfully!');
       }
 
-      return getMovies();
+      return getMoviesAdmin();
     }
     else if(res.statusCode == 500){
       if (context.mounted) {
         showToastWarning(context, "Movie update failed! ${res.reasonPhrase}");
       }
-      return getMovies();
+      return getMoviesAdmin();
     }
-    return getMovies();
+    return getMoviesAdmin();
   }
 
+  //Admin
   Future<List<Movie>> updateActor(
       List<Object> actor,
       String movieId,
@@ -265,14 +301,14 @@ class MovieRespository {
         showToastSuccess(context, 'Movie update successfully!');
       }
 
-      return getMovies();
+      return getMoviesAdmin();
     }
     else if(res.statusCode == 500){
       if (context.mounted) {
         showToastWarning(context, "Movie update failed! ${res.reasonPhrase}");
       }
-      return getMovies();
+      return getMoviesAdmin();
     }
-    return getMovies();
+    return getMoviesAdmin();
   }
 }
