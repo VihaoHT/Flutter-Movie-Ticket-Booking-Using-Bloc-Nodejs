@@ -33,12 +33,19 @@ class MovieRespository {
       // print(movies);
       // Map each JSON object to a Movie instance and return the list
       //only status == true can be in List
-      final List<Movie> filteredMovies = movies
-          .where((movie) => movie['status'] == true)
-          .map((filteredMovie) => Movie.fromJson(filteredMovie))
-          .toList();
+      // here i check device for admin panel if mobile the status will be true
+      // you can also do other way if u want
+      if (Platform.isAndroid || Platform.isIOS) {
+        final List<Movie> filteredMovies = movies
+            .where((movie) => movie['status'] == true)
+            .map((filteredMovie) => Movie.fromJson(filteredMovie))
+            .toList();
 
-      return filteredMovies;
+        return filteredMovies;
+      }else{
+        return movies.map((movie) => Movie.fromJson(movie)).toList();
+      }
+
     } else {
       // Throw an exception if the response status code is not 200
       throw Exception('Failed to load movies');
@@ -46,30 +53,30 @@ class MovieRespository {
   }
 
   // Admin
-  Future<List<Movie>> getMoviesAdmin() async {
-    // Define the base URL and the endpoint
-    final url = Uri.parse(api);
-
-    // Make the HTTP GET request and await the response
-    final response = await http.get(url);
-
-    // Check if the response status code is 200 (OK)
-    if (response.statusCode == 200) {
-      // Parse the response body as a map of JSON objects
-      final Map<String, dynamic> data = jsonDecode(response.body);
-      //print(data);
-
-      // Get the list of movies from the data map
-      final List<dynamic> movies = data['data']['data'];
-      // print(movies);
-      // Map each JSON object to a Movie instance and return the list
-      //only status == true can be in List
-      return movies.map((movie) => Movie.fromJson(movie)).toList();
-    } else {
-      // Throw an exception if the response status code is not 200
-      throw Exception('Failed to load movies');
-    }
-  }
+  // Future<List<Movie>> getMoviesAdmin() async {
+  //   // Define the base URL and the endpoint
+  //   final url = Uri.parse(api);
+  //
+  //   // Make the HTTP GET request and await the response
+  //   final response = await http.get(url);
+  //
+  //   // Check if the response status code is 200 (OK)
+  //   if (response.statusCode == 200) {
+  //     // Parse the response body as a map of JSON objects
+  //     final Map<String, dynamic> data = jsonDecode(response.body);
+  //     //print(data);
+  //
+  //     // Get the list of movies from the data map
+  //     final List<dynamic> movies = data['data']['data'];
+  //     // print(movies);
+  //     // Map each JSON object to a Movie instance and return the list
+  //     //only status == true can be in List
+  //     return movies.map((movie) => Movie.fromJson(movie)).toList();
+  //   } else {
+  //     // Throw an exception if the response status code is not 200
+  //     throw Exception('Failed to load movies');
+  //   }
+  // }
 
   // Client
   Future<List<Movie>> getMoviesByNameAndCategory(
@@ -197,12 +204,12 @@ class MovieRespository {
         }));
     if (res.statusCode == 200) {
       print("Update status successfully!");
-      return getMoviesAdmin();
+      return getMovies();
     } else {
       if (context.mounted) {
         showToastFailed(context, "Update status failed! ${res.statusCode}");
       }
-      return getMoviesAdmin();
+      return getMovies();
     }
   }
 
@@ -235,15 +242,15 @@ class MovieRespository {
         showToastSuccess(context, 'Movie update successfully!');
       }
 
-      return getMoviesAdmin();
+      return getMovies();
     }
     else if(res.statusCode == 500){
       if (context.mounted) {
         showToastWarning(context, "Movie update failed! ${res.reasonPhrase}");
       }
-      return getMoviesAdmin();
+      return getMovies();
     }
-    return getMoviesAdmin();
+    return getMovies();
   }
 
   //Admin
@@ -268,15 +275,15 @@ class MovieRespository {
         showToastSuccess(context, 'Movie update successfully!');
       }
 
-      return getMoviesAdmin();
+      return getMovies();
     }
     else if(res.statusCode == 500){
       if (context.mounted) {
         showToastWarning(context, "Movie update failed! ${res.reasonPhrase}");
       }
-      return getMoviesAdmin();
+      return getMovies();
     }
-    return getMoviesAdmin();
+    return getMovies();
   }
 
   //Admin
@@ -301,15 +308,15 @@ class MovieRespository {
         showToastSuccess(context, 'Movie update successfully!');
       }
 
-      return getMoviesAdmin();
+      return getMovies();
     }
     else if(res.statusCode == 500){
       if (context.mounted) {
         showToastWarning(context, "Movie update failed! ${res.reasonPhrase}");
       }
-      return getMoviesAdmin();
+      return getMovies();
     }
-    return getMoviesAdmin();
+    return getMovies();
   }
 
   // Admin
@@ -330,13 +337,13 @@ class MovieRespository {
         showToastSuccess(context, 'The movie have been deleted!');
       }
 
-      return getMoviesAdmin();
+      return getMovies();
     }
     else{
       if (context.mounted) {
         showToastWarning(context, "The movie cannot be delete! cuz: ${res.reasonPhrase}");
       }
-      return getMoviesAdmin();
+      return getMovies();
     }
   }
 }
