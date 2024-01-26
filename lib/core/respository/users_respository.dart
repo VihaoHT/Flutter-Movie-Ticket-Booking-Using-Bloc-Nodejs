@@ -51,7 +51,12 @@ class UserRepository {
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
       final List<dynamic> users = data['user'];
-      return users.map((user) => User.fromMap(user)).toList();
+      if(name != null){
+        return users.map((user) => User.fromMap(user)).toList();
+      }else{
+        return getUsers();
+      }
+
     } else if (response.statusCode == 401) {
       throw Exception('Failed to load users ${response.statusCode}');
     } else {

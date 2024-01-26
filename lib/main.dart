@@ -26,7 +26,7 @@ void main() {
               SearchBloc(MovieRespository())..add(const LoadSearchEvent())),
       BlocProvider<UsersBloc>(
           create: (_) =>
-          UsersBloc(UserRepository())..add( LoadUserEvent())),
+          UsersBloc(UserRepository())..add( SearchLoadUserEvent(name: ""))),
     ],
     child: const MyApp(),
   ));

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart';
 import 'package:movie_booking_app/core/constants/ultis.dart';
 import 'package:movie_booking_app/core/respository/users_respository.dart';
 import 'package:movie_booking_app/models/user_model.dart';
@@ -18,6 +19,8 @@ class UserAdminScreen extends StatefulWidget {
 }
 
 class _UserAdminScreenState extends State<UserAdminScreen> {
+  TextEditingController searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -29,6 +32,25 @@ class _UserAdminScreenState extends State<UserAdminScreen> {
         children: [
           const HeaderAdmin(title: "All User"),
           const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: TextField(
+              onChanged: (value) async {
+
+                if(context.mounted) {
+                 context.read<UsersBloc>().add(SearchLoadUserEvent(name: value));
+                }
+              },
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: "Write username u wanna find",
+                labelStyle: const TextStyle(color: Colors.white),
+                suffixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20)),
+              ),
+            ),
+          ),
           BlocConsumer<UsersBloc, UsersState>(
             listener: (context, state) {
               if (state is UserErrorState) {
@@ -37,30 +59,35 @@ class _UserAdminScreenState extends State<UserAdminScreen> {
               }
             },
             builder: (context, state) {
-              if (state is UserLoadingState) {
-                return const Center(child: CircularProgressIndicator());
-              }
               if (state is UserLoadedState) {
                 List<User> userList = state.users;
                 return Expanded(
                   flex: 1,
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: TextField(
-                          onChanged: (query) {
-                          },
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            labelText: "Write username u wanna find",
-                            labelStyle: const TextStyle(color: Colors.white),
-                            suffixIcon: const Icon(Icons.search),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                          ),
-                        ),
-                      ),
+                      // TextFormField(
+                      //   style: const TextStyle(
+                      //       color: Colors.white
+                      //   ),
+                      //   controller: searchController,
+                      //   decoration:  InputDecoration(
+                      //     hintText: "",
+                      //     labelText: "",
+                      //     labelStyle: const TextStyle(
+                      //         color: Colors.white, // Màu sắc của label text
+                      //         fontWeight: FontWeight.bold   // Kích thước của label text
+                      //     ),
+                      //     // label:  Text(label,style: const TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                      //     hintStyle: const TextStyle(color: Colors.white),
+                      //     border: const OutlineInputBorder(
+                      //       borderSide: BorderSide(color: Colors.black),
+                      //       borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      //     ),
+                      //     suffixIcon: InkWell(onTap: () {
+                      //       context.read<UsersBloc>().add(SearchLoadUserEvent(name: searchController.text.trim()));
+                      //     },child: const Icon(Icons.search))
+                      //   ),
+                      // ),
                       Expanded(
                         child: ListView.builder(
                           itemCount: userList.length,

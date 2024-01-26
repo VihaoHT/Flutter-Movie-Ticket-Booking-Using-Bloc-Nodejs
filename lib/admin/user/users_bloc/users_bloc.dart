@@ -10,10 +10,10 @@ part 'users_state.dart';
 class UsersBloc extends Bloc<UsersEvent, UsersState> {
   final UserRepository _userRepository;
   UsersBloc(this._userRepository) : super(UserLoadingState()) {
-    on<UsersEvent>((event, emit) async{
+    on<SearchLoadUserEvent>((event, emit) async{
       emit(UserLoadingState());
       try {
-        final users = await _userRepository.getUsers();
+        final users = await _userRepository.getUsersByName(event.name);
         emit(UserLoadedState(users));
       }
       catch (e) {
