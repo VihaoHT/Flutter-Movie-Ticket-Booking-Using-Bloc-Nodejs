@@ -89,86 +89,128 @@ class _MovieAdminScreenState extends State<MovieAdminScreen> {
                         itemCount: movieList.length,
                         itemBuilder: (context, index) {
                           return Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Row(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(
-                                    movieList[index].imageCover,
-                                    width: 200,
-                                    height: 200,
-                                    fit: BoxFit.fill,
+                            padding: const EdgeInsets.all(10),
+                            child: Container(
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: Constants.bgColorAdmin,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.network(
+                                      movieList[index].imageCover,
+                                      width: 200,
+                                      height: 200,
+                                      fit: BoxFit.fill,
+                                    ),
                                   ),
-                                ),
-                                Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        const Padding(
-                                          padding: EdgeInsets.all(14.0),
-                                          child: Text(
-                                            "title :",
-                                            style: TextStyle(
-                                                color: Colors.white54,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w500),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          const Padding(
+                                            padding: EdgeInsets.all(14.0),
+                                            child: Text(
+                                              "title :",
+                                              style: TextStyle(
+                                                  color: Colors.white54,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          movieList[index].title,
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Padding(
-                                          padding: EdgeInsets.all(14.0),
-                                          child: Text(
-                                            "Ratings Average  :",
-                                            style: TextStyle(
-                                                color: Colors.white54,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w500),
+                                          Text(
+                                            movieList[index].title,
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w700),
                                           ),
-                                        ),
-                                        Text(
-                                          movieList[index]
-                                              .ratingsAverage
-                                              .toString(),
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                const Spacer(),
-                                Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.center,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: InkWell(
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Padding(
+                                            padding: EdgeInsets.all(14.0),
+                                            child: Text(
+                                              "Ratings Average  :",
+                                              style: TextStyle(
+                                                  color: Colors.white54,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ),
+                                          Text(
+                                            movieList[index]
+                                                .ratingsAverage
+                                                .toString(),
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: InkWell(
+                                              splashColor: Colors.red,
+                                              hoverColor: Colors.white54,
+                                              onTap: () {
+                                                Getx.Get.to(
+                                                    () => (UpdateMovieAdmin(
+                                                          movie:
+                                                              movieList[index],
+                                                        )),
+                                                    transition: Getx
+                                                        .Transition.cupertino,
+                                                    duration: const Duration(
+                                                        seconds: 2));
+                                              },
+                                              child: Container(
+                                                width: 100,
+                                                height: 50,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  color: Colors.blue,
+                                                ),
+                                                child: const ListTile(
+                                                  title: Text(
+                                                    "Update",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          InkWell(
                                             splashColor: Colors.red,
                                             hoverColor: Colors.white54,
                                             onTap: () {
                                               Getx.Get.to(
-                                                  () => (UpdateMovieAdmin(
-                                                        movie:
-                                                            movieList[index],
-                                                      )),
+                                                      () => (DetailsMovieAdmin(
+                                                    movie:
+                                                    movieList[index],
+                                                  )),
                                                   transition: Getx
                                                       .Transition.cupertino,
                                                   duration: const Duration(
@@ -180,131 +222,96 @@ class _MovieAdminScreenState extends State<MovieAdminScreen> {
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(10),
-                                                color: Colors.blue,
+                                                color: Colors.deepPurple,
                                               ),
                                               child: const ListTile(
-                                                title: Text(
-                                                  "Update",
+                                                  title: Text(
+                                                "Details",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white),
+                                              )),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      movieList[index].status == true
+                                          ? InkWell(
+                                              splashColor: Colors.red,
+                                              hoverColor: Colors.white54,
+                                              onTap: () {
+                                                showToastSuccess(context,
+                                                    "The movie ${movieList[index].title} is now InActive");
+                                                context.read<MovieBloc>().add(
+                                                    UpdateStatusMovieEvent(
+                                                        status: movieList[index]
+                                                                .status ==
+                                                            false,
+                                                        movieId:
+                                                            movieList[index].id,
+                                                        context: context));
+                                              },
+                                              child: Container(
+                                                width: 200,
+                                                height: 60,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  color: Colors.green,
+                                                ),
+                                                child: const ListTile(
+                                                    title: Text(
+                                                  "The film is currently Active",
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                       color: Colors.white),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        InkWell(
-                                          splashColor: Colors.red,
-                                          hoverColor: Colors.white54,
-                                          onTap: () {
-                                            Getx.Get.to(
-                                                    () => (DetailsMovieAdmin(
-                                                  movie:
-                                                  movieList[index],
                                                 )),
-                                                transition: Getx
-                                                    .Transition.cupertino,
-                                                duration: const Duration(
-                                                    seconds: 2));
-                                          },
-                                          child: Container(
-                                            width: 100,
-                                            height: 50,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              color: Colors.deepPurple,
-                                            ),
-                                            child: const ListTile(
-                                                title: Text(
-                                              "Details",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white),
-                                            )),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    movieList[index].status == true
-                                        ? InkWell(
-                                            splashColor: Colors.red,
-                                            hoverColor: Colors.white54,
-                                            onTap: () {
-                                              showToastSuccess(context,
-                                                  "The movie ${movieList[index].title} is now InActive");
-                                              context.read<MovieBloc>().add(
-                                                  UpdateStatusMovieEvent(
-                                                      status: movieList[index]
-                                                              .status ==
-                                                          false,
-                                                      movieId:
-                                                          movieList[index].id,
-                                                      context: context));
-                                            },
-                                            child: Container(
-                                              width: 200,
-                                              height: 60,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                color: Colors.green,
                                               ),
-                                              child: const ListTile(
-                                                  title: Text(
-                                                "The film is currently Active",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.bold,
-                                                    color: Colors.white),
-                                              )),
-                                            ),
-                                          )
-                                        : InkWell(
-                                            splashColor: Colors.red,
-                                            hoverColor: Colors.white54,
-                                            onTap: () {
-                                              showToastSuccess(context,
-                                                  "The movie ${movieList[index].title} is now Active");
-                                              context.read<MovieBloc>().add(
-                                                  UpdateStatusMovieEvent(
-                                                      status: movieList[index]
-                                                              .status ==
-                                                          false,
-                                                      movieId:
-                                                          movieList[index].id,
-                                                      context: context));
-                                            },
-                                            child: Container(
-                                              width: 200,
-                                              height: 60,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                color: Colors.red,
+                                            )
+                                          : InkWell(
+                                              splashColor: Colors.red,
+                                              hoverColor: Colors.white54,
+                                              onTap: () {
+                                                showToastSuccess(context,
+                                                    "The movie ${movieList[index].title} is now Active");
+                                                context.read<MovieBloc>().add(
+                                                    UpdateStatusMovieEvent(
+                                                        status: movieList[index]
+                                                                .status ==
+                                                            false,
+                                                        movieId:
+                                                            movieList[index].id,
+                                                        context: context));
+                                              },
+                                              child: Container(
+                                                width: 200,
+                                                height: 60,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  color: Colors.red,
+                                                ),
+                                                child: const ListTile(
+                                                    title: Text(
+                                                  "The film is currently Inactive",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white),
+                                                )),
                                               ),
-                                              child: const ListTile(
-                                                  title: Text(
-                                                "The film is currently Inactive",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.bold,
-                                                    color: Colors.white),
-                                              )),
-                                            ),
-                                          )
-                                  ],
-                                ),
-                              ],
+                                            )
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           );
                         },
