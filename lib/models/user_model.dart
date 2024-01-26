@@ -5,7 +5,7 @@ class User {
   final String email;
   final String username;
   final String token;
-  final String? phone_number;
+  final String? phone_number; // avatar and phone_number can be update later
   final String? avatar;
   final String role;
   User({required this.id,required this.email, required this.username, required this.token, required this.role, this.phone_number, this.avatar,});

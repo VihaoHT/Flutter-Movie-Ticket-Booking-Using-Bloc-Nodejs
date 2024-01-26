@@ -108,6 +108,16 @@ exports.getMyTickets = catchAsync(async (req, res, next) => {
 });
 exports.getAllUsers = factory.getAll(User);
 exports.getUser = factory.getOne(User);
+exports.getUserByName = catchAsync(async (req, res, next) => {
+  const username = req.query.username;
+  const user = await User.find({
+    username: { $regex: username, $options: "i" },
+  });
+  res.status(200).json({
+    status: "success",
+    user,
+  });
+});
 exports.updateMe = catchAsync(async (req, res, next) => {
   // 1) Create error if user POSTs password data
   if (req.body.password || req.body.passwordConfirm) {

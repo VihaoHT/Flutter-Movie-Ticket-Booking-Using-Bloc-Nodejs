@@ -19,5 +19,5 @@ router.post('/voucher', userController.generateVoucher)
 router.delete('/voucher', userController.deleteVoucher)
 router.use(authController.restrictTo('admin'))
 router.route('/').get(userController.getAllUsers)
-router.route('/:id').get(userController.getUser).patch(authController.restrictTo('admin'), userController.updateUser)
+router.route('/search').get(userController.getUserByName).patch(authController.restrictTo('admin'), userController.updateUser)
 module.exports = router

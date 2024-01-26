@@ -19,11 +19,6 @@ class MovieAdminScreen extends StatefulWidget {
 }
 
 class _MovieAdminScreenState extends State<MovieAdminScreen> {
-  @override
-  void initState() {
-    context.read<MovieBloc>().add(LoadMovieEvent());
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

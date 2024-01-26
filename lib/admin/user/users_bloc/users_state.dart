@@ -19,6 +19,13 @@ class UserLoadedState extends UsersState {
   @override
   List<Object> get props => [users];
 }
+class SearchUserLoadedState extends UsersState {
+  final List<User> users;
+
+  const SearchUserLoadedState(this.users);
+  @override
+  List<Object> get props => [users];
+}
 
 class UserErrorState extends UsersState {
   final String error;
