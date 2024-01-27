@@ -119,6 +119,7 @@ class _AddNewMovieAdminState extends State<AddNewMovieAdmin> {
                         )
                       : Expanded(
                           child: CustomTextFieldAdd(
+                              labelText: "",
                               controller: imageController,
                               hintText: "Pick a image",
                               readOnly: true),
@@ -139,11 +140,13 @@ class _AddNewMovieAdminState extends State<AddNewMovieAdmin> {
                   pickedVideo != null
                       ? Expanded(
                           child: CustomTextFieldAdd(
+                              labelText: "",
                               controller: videoController,
                               hintText: pickedVideo!.path,
                               readOnly: true))
                       : Expanded(
                           child: CustomTextFieldAdd(
+                              labelText: "",
                               controller: videoController,
                               hintText: "Pick a video",
                               readOnly: true),
@@ -152,33 +155,39 @@ class _AddNewMovieAdminState extends State<AddNewMovieAdmin> {
               ),
               const SizedBox(height: 20),
               CustomTextFieldAdd(
+                  labelText: "Write title",
                   controller: titleController,
-                  hintText: "Write title",
+                  hintText: "",
                   readOnly: false),
               const SizedBox(height: 20),
               CustomTextFieldAdd(
+                  labelText: "Write release date",
                   controller: releaseDateController,
-                  hintText: "Write release date",
+                  hintText: "",
                   readOnly: false),
               const SizedBox(height: 20),
               CustomTextFieldAdd(
+                  labelText: "Write duration",
                   controller: durationController,
-                  hintText: "Write duration",
+                  hintText: "",
                   readOnly: false),
               const SizedBox(height: 20),
               CustomTextFieldAdd(
+                  labelText: "Write category",
                   controller: categoryController,
-                  hintText: "Write category",
+                  hintText: "",
                   readOnly: false),
               const SizedBox(height: 20),
               CustomTextFieldAdd(
+                  labelText: "Write actor",
                   controller: actorController,
-                  hintText: "Write actor",
+                  hintText: "",
                   readOnly: false),
               const SizedBox(height: 20),
               CustomTextFieldAdd(
+                  labelText: "Write description",
                   controller: descriptionController,
-                  hintText: "Write description",
+                  hintText: "",
                   readOnly: false),
               const SizedBox(height: 20),
               BlocConsumer<MovieBloc, MovieState>(
@@ -199,8 +208,7 @@ class _AddNewMovieAdminState extends State<AddNewMovieAdmin> {
                       onPressed: () {
                         String actorString =
                             "[6596fa7bb733b079b18f2dd2 ,  6596fc06b733b079b18f2de0]";
-                        String categoryString =
-                            "[romance ,  action]";
+                        String categoryString = "[romance ,  action]";
                         actorString = actorController.text
                             .trim()
                             .replaceAll("[", "")

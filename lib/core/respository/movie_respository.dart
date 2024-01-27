@@ -13,7 +13,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class MovieRespository {
   String api = "$uri/api/movies";
 
-
   // Client
   Future<List<Movie>> getMovies() async {
     // Define the base URL and the endpoint
@@ -42,10 +41,9 @@ class MovieRespository {
             .toList();
 
         return filteredMovies;
-      }else{
+      } else {
         return movies.map((movie) => Movie.fromJson(movie)).toList();
       }
-
     } else {
       // Throw an exception if the response status code is not 200
       throw Exception('Failed to load movies');
@@ -85,7 +83,7 @@ class MovieRespository {
     if ((category == null || category.isEmpty) &&
         (title == null || title.isEmpty)) {
       // return [] if category and title is null;
-      return [];
+      return getMovies();
     }
 
     String apiSearch = "$uri/api/movies?";
@@ -110,7 +108,7 @@ class MovieRespository {
       final Map<String, dynamic> data = jsonDecode(response.body);
 
       // Get the list of movies from the data map
-      final List<dynamic> movies = data['data'];
+      final List<dynamic> movies = data['data']['data'];
       //same as  getMovies()
       final List<Movie> filteredMovies = movies
           .where((movie) => movie['status'] == true)
@@ -118,6 +116,52 @@ class MovieRespository {
           .toList();
 
       return filteredMovies;
+
+      //print(movies);
+    } else {
+      // Throw an exception if the response status code is not 200
+      throw Exception('Failed to load movies ${response.statusCode}');
+    }
+  }
+
+  Future<List<Movie>> getMoviesByNameAdmin(String title) async {
+    if (title.isEmpty) {
+      // return [] if category and title is null;
+      return getMovies();
+    }
+
+    String apiSearch = "$uri/api/movies?title=$title";
+
+    // Define the base URL and the endpoint
+    final url = Uri.parse(apiSearch);
+
+    // Make the HTTP GET request and await the response
+    final response = await http.get(url);
+
+    // Check if the response status code is 200 (OK)
+    if (response.statusCode == 200) {
+      // Parse the response body as a map of JSON objects
+      final Map<String, dynamic> data = jsonDecode(response.body);
+
+      // Get the list of movies from the data map
+      final List<dynamic> movies = data['data']['data'];
+      //same as  getMovies()
+      // final List<Movie> filteredMovies = movies
+      //     .where((movie) => movie['status'] == true)
+      //     .map((filteredMovie) => Movie.fromJson(filteredMovie))
+      //     .toList();
+      //
+      // return filteredMovies;
+      if (Platform.isAndroid || Platform.isIOS) {
+        final List<Movie> filteredMovies = movies
+            .where((movie) => movie['status'] == true)
+            .map((filteredMovie) => Movie.fromJson(filteredMovie))
+            .toList();
+
+        return filteredMovies;
+      } else {
+        return movies.map((movie) => Movie.fromJson(movie)).toList();
+      }
       //print(movies);
     } else {
       // Throw an exception if the response status code is not 200
@@ -186,7 +230,6 @@ class MovieRespository {
     }
   }
 
-
   // Admin
   Future<List<Movie>> updateStatusMovie(
       bool status, String movieId, BuildContext context) async {
@@ -212,7 +255,6 @@ class MovieRespository {
       return getMovies();
     }
   }
-
 
   //Admin
   Future<List<Movie>> updateMovie(
@@ -243,8 +285,7 @@ class MovieRespository {
       }
 
       return getMovies();
-    }
-    else if(res.statusCode == 500){
+    } else if (res.statusCode == 500) {
       if (context.mounted) {
         showToastWarning(context, "Movie update failed! ${res.reasonPhrase}");
       }
@@ -255,9 +296,7 @@ class MovieRespository {
 
   //Admin
   Future<List<Movie>> updateCategory(
-      List<String> category,
-      String movieId,
-      BuildContext context) async {
+      List<String> category, String movieId, BuildContext context) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? token = preferences.getString('token');
     String api = "$uri/api/movies/id/$movieId";
@@ -276,8 +315,7 @@ class MovieRespository {
       }
 
       return getMovies();
-    }
-    else if(res.statusCode == 500){
+    } else if (res.statusCode == 500) {
       if (context.mounted) {
         showToastWarning(context, "Movie update failed! ${res.reasonPhrase}");
       }
@@ -288,9 +326,7 @@ class MovieRespository {
 
   //Admin
   Future<List<Movie>> updateActor(
-      List<Object> actor,
-      String movieId,
-      BuildContext context) async {
+      List<Object> actor, String movieId, BuildContext context) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? token = preferences.getString('token');
     String api = "$uri/api/movies/id/$movieId";
@@ -309,8 +345,7 @@ class MovieRespository {
       }
 
       return getMovies();
-    }
-    else if(res.statusCode == 500){
+    } else if (res.statusCode == 500) {
       if (context.mounted) {
         showToastWarning(context, "Movie update failed! ${res.reasonPhrase}");
       }
@@ -320,17 +355,14 @@ class MovieRespository {
   }
 
   // Admin
-  Future deleteMovie(
-      String movieId,
-      BuildContext context) async {
+  Future deleteMovie(String movieId, BuildContext context) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? token = preferences.getString('token');
     String api = "$uri/api/movies/id/$movieId";
-    final res = await http.delete(Uri.parse(api),
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $token',
-        });
+    final res = await http.delete(Uri.parse(api), headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer $token',
+    });
     if (res.statusCode == 204) {
       if (context.mounted) {
         navigator!.pop(context);
@@ -338,10 +370,10 @@ class MovieRespository {
       }
 
       return getMovies();
-    }
-    else{
+    } else {
       if (context.mounted) {
-        showToastWarning(context, "The movie cannot be delete! cuz: ${res.reasonPhrase}");
+        showToastWarning(
+            context, "The movie cannot be delete! cuz: ${res.reasonPhrase}");
       }
       return getMovies();
     }

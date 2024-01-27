@@ -19,7 +19,6 @@ class MovieAdminScreen extends StatefulWidget {
 }
 
 class _MovieAdminScreenState extends State<MovieAdminScreen> {
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -31,32 +30,61 @@ class _MovieAdminScreenState extends State<MovieAdminScreen> {
             children: [
               const HeaderAdmin(title: "Movie Manager"),
               const SizedBox(height: 50),
-              InkWell(
-                splashColor: Colors.red,
-                hoverColor: Colors.white54,
-                onTap: () {
-                  Getx.Get.to(() => (const AddNewMovieAdmin()),
-                      transition: Getx.Transition.cupertino,
-                      duration: const Duration(seconds: 2));
-                },
-                child: Container(
-                  width: 195,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Constants.bgColorAdmin,
-                  ),
-                  child: const ListTile(
-                    title: Text(
-                      "Add new Movie",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    splashColor: Colors.red,
+                    hoverColor: Colors.white54,
+                    onTap: () {
+                      Getx.Get.to(() => (const AddNewMovieAdmin()),
+                          transition: Getx.Transition.cupertino,
+                          duration: const Duration(seconds: 2));
+                    },
+                    child: Container(
+                      width: 195,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Constants.bgColorAdmin,
+                      ),
+                      child: const ListTile(
+                        title: Text(
+                          "Add new Movie",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Container(
+                      width: 500,
+                      color: Constants.bgColorAdmin,
+                      child: TextField(
+                        onChanged: (value) async {
+                          if (context.mounted) {
+                            context
+                                .read<MovieBloc>()
+                                .add(SearchAdminMovieEvent(title: value));
+                          }
+                        },
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          labelText: "Write the movie name u wanna find",
+                          labelStyle: const TextStyle(color: Colors.white),
+                          suffixIcon: const Icon(Icons.search),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               BlocConsumer<MovieBloc, MovieState>(
                 listener: (context, state) {
@@ -83,6 +111,10 @@ class _MovieAdminScreenState extends State<MovieAdminScreen> {
                       child: ListView.builder(
                         itemCount: movieList.length,
                         itemBuilder: (context, index) {
+                          String categories = movieList[index]
+                              .category
+                              .toString()
+                              .replaceAll(RegExp(r'[\[\]]'), '');
                           return Padding(
                             padding: const EdgeInsets.all(10),
                             child: Container(
@@ -150,6 +182,27 @@ class _MovieAdminScreenState extends State<MovieAdminScreen> {
                                           ),
                                         ],
                                       ),
+                                      Row(
+                                        children: [
+                                          const Padding(
+                                            padding: EdgeInsets.all(14.0),
+                                            child: Text(
+                                              "Category  :",
+                                              style: TextStyle(
+                                                  color: Colors.white54,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ),
+                                          Text(
+                                           categories,
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                   const Spacer(),
@@ -202,12 +255,11 @@ class _MovieAdminScreenState extends State<MovieAdminScreen> {
                                             hoverColor: Colors.white54,
                                             onTap: () {
                                               Getx.Get.to(
-                                                      () => (DetailsMovieAdmin(
-                                                    movie:
-                                                    movieList[index],
-                                                  )),
-                                                  transition: Getx
-                                                      .Transition.cupertino,
+                                                  () => (DetailsMovieAdmin(
+                                                        movie: movieList[index],
+                                                      )),
+                                                  transition:
+                                                      Getx.Transition.cupertino,
                                                   duration: const Duration(
                                                       seconds: 2));
                                             },

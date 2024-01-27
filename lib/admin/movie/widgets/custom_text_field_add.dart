@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 class CustomTextFieldAdd extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
-final bool readOnly;
+  final String labelText;
+  final bool readOnly;
+
   const CustomTextFieldAdd({
     super.key,
     required this.controller,
-    required this.hintText, required this.readOnly,
+    required this.hintText,
+    required this.readOnly,
+    required this.labelText,
   });
 
   @override
@@ -24,6 +28,8 @@ final bool readOnly;
         controller: controller,
         decoration: InputDecoration(
           hintText: hintText,
+          labelText: labelText,
+          labelStyle: const TextStyle(color: Colors.white54),
           hintStyle: const TextStyle(color: Colors.white54),
           border: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.black),

@@ -34,20 +34,24 @@ class _UserAdminScreenState extends State<UserAdminScreen> {
           const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              onChanged: (value) async {
+            child: Container(
+              width: 500,
+              color: Constants.bgColorAdmin,
+              child: TextField(
+                onChanged: (value) async {
 
-                if(context.mounted) {
-                 context.read<UsersBloc>().add(SearchLoadUserEvent(name: value));
-                }
-              },
-              style: const TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                labelText: "Write username u wanna find",
-                labelStyle: const TextStyle(color: Colors.white),
-                suffixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20)),
+                  if(context.mounted) {
+                   context.read<UsersBloc>().add(SearchLoadUserEvent(name: value));
+                  }
+                },
+                style: const TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: "Write username u wanna find",
+                  labelStyle: const TextStyle(color: Colors.white),
+                  suffixIcon: const Icon(Icons.search),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                ),
               ),
             ),
           ),

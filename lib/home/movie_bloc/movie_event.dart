@@ -95,3 +95,13 @@ class DeleteMovieEvent extends MovieEvent{
   @override
   List<Object> get props => [context,movieId];
 }
+
+class SearchAdminMovieEvent extends MovieEvent{
+  final String? title;
+
+  const SearchAdminMovieEvent({required this.title});
+
+
+  @override
+  List<Object> get props => [title!];
+}

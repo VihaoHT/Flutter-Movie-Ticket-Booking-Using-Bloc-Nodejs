@@ -88,7 +88,9 @@ exports.getMoviesByNameAndCategory = catchAsync(async (req, res, next) => {
   res.json({
     status: "success",
     results: data.length,
-    data,
+    data: {
+      data
+    },
   });
 });
 //Get product by _id
