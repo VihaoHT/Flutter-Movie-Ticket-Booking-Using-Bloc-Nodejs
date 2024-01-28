@@ -54,16 +54,16 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         if (response.statusCode == 201) {
           /// NOTICE : IN THIS API I JUST SAVE THE FILE IMAGE TO STRING TO PASTE IT INTO AVATAR IN BLOC EVENT UpdateProfileButtonPressed
           /// NOTICE: IF IN CLIENT IS 201 AND THE SERVER SEND ERROR  Cannot set headers after they are sent to the client 403 just ignore it, IT FINE
-          print('Image upload succesfully');
+          //print('Image upload succesfully');
           newAvatarPath = response.data['avatar'].toString();
-          print(newAvatarPath);
+          //print(newAvatarPath);
         } else {
-          print('Image upload failed');
-          print(response.statusCode);
+          //print('Image upload failed');
+          //print(response.statusCode);
         }
       }
     } catch (e) {
-      print(e.toString());
+      //print(e.toString());
     }
   }
 
@@ -81,7 +81,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthFailure) {
-            print(state.error);
+            //print(state.error);
             showToastFailed(context, state.error);
           }
           if (state is AuthSuccess) {

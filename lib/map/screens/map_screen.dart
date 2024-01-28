@@ -38,7 +38,7 @@ class _MapScreenState extends State<MapScreen> {
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {
-      print('Cannot launch Google Maps');
+      //print('Cannot launch Google Maps');
     }
   }
 
@@ -69,7 +69,7 @@ class _MapScreenState extends State<MapScreen> {
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied ||
         permission == LocationPermission.deniedForever) {
-      print("Locationn denied");
+      //print("Locationn denied");
       permission = await Geolocator.requestPermission();
     }
     Position currenPosition = await Geolocator.getCurrentPosition(
@@ -128,67 +128,65 @@ class _MapScreenState extends State<MapScreen> {
       child: Scaffold(
         body: _currentLocation == null
             ? const Center(child: CircularProgressIndicator())
-            : Container(
-                child: FlutterMap(
-                  options: MapOptions(
-                    initialCenter: _currentLocation!,
-                    initialZoom: 18,
-                  ),
-                  children: [
-                    TileLayer(
-                      urlTemplate:
-                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                      userAgentPackageName: 'com.example.app',
-                    ),
-                    MarkerLayer(
-                      markers: [
-                        Marker(
-                          width: 500.0,
-                          height: 500.0,
-                          point: _currentLocation!,
-                          child: InkWell(
-                            onTap: () {
-                              print("Your current location");
-                            },
-                            child: Lottie.LottieBuilder.asset(
-                              Constants.userMarkerAnimation,
-                            ),
-                          ),
+            : FlutterMap(
+              options: MapOptions(
+                initialCenter: _currentLocation!,
+                initialZoom: 18,
+              ),
+              children: [
+                TileLayer(
+                  urlTemplate:
+                      'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  userAgentPackageName: 'com.example.app',
+                ),
+                MarkerLayer(
+                  markers: [
+                    Marker(
+                      width: 500.0,
+                      height: 500.0,
+                      point: _currentLocation!,
+                      child: InkWell(
+                        onTap: () {
+                          //print("Your current location");
+                        },
+                        child: Lottie.LottieBuilder.asset(
+                          Constants.userMarkerAnimation,
                         ),
-                      ],
-                    ),
-                    MarkerLayer(
-                      markers: markers,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                            margin: const EdgeInsets.only(left: 20),
-                            child: InkWell(
-                                onTap: () {
-                                  
-                                },
-                                child: Image.asset(Constants.searchPath))),
-                        Expanded(
-                          child: Container(
-                            margin: const EdgeInsets.only(left: 10, right: 10),
-
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: CustomTextFieldMap(
-                              controller: searchController,
-                              hintText: "",
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
-              ),
+                MarkerLayer(
+                  markers: markers,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                        margin: const EdgeInsets.only(left: 20),
+                        child: InkWell(
+                            onTap: () {
+
+                            },
+                            child: Image.asset(Constants.searchPath))),
+                    Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 10, right: 10),
+
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: CustomTextFieldMap(
+                          controller: searchController,
+                          hintText: "",
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
       ),
     );
   }
@@ -205,7 +203,7 @@ class _MapScreenState extends State<MapScreen> {
               return const Center(
                   child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              print((snapshot.error.toString()));
+              //print((snapshot.error.toString()));
               return Center(child: Text(snapshot.error.toString()));
             }
             return SimpleDialog(
@@ -282,7 +280,7 @@ class _MapScreenState extends State<MapScreen> {
                             ],
                           ));
                     } else if (snapshot.hasError) {
-                      print((snapshot.error.toString()));
+                      //print((snapshot.error.toString()));
                       return Center(
                           child: Text(snapshot.error.toString()));
                     }

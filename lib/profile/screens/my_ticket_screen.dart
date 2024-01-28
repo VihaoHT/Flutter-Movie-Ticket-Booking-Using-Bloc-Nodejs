@@ -32,11 +32,11 @@ class MyTicketScreen extends StatelessWidget {
           final List<dynamic> tickets = data['data']['tickets'];
           return tickets;
         } else {
-          print(response.statusCode);
+          //print(response.statusCode);
           throw Exception('Invalid data format');
         }
       } catch (e) {
-        throw Exception('Invalid data format' + e.toString());
+        throw Exception('Invalid data format$e');
       }
     }
 
@@ -192,7 +192,7 @@ class MyTicketScreen extends StatelessWidget {
                                                     ),
                                                     TextSpan(
                                                       text:
-                                                          formattedTime + "   |",
+                                                          "$formattedTime   |",
                                                       style: const TextStyle(
                                                         fontSize: 12,
                                                         color: Colors.white,

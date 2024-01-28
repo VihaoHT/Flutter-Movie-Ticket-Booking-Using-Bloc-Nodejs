@@ -87,7 +87,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           final String? avatar = userData['avatar'];
           final String? phoneNumber = userData['phone_number'];
           final String role = userData['role'];
-          print(role);
+          //print(role);
 
           await preferences.setString("token", token);
 

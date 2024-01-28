@@ -10,7 +10,9 @@ exports.getCinema = catchAsync(async (req, res, next) => {
   const cinema = await Cinema.find({name: {$regex: req.query.name, $options: 'i'}})
   res.status(200).json({
     status: 'success',
-    data: cinema
+    data: {
+      data: cinema
+    }
   })
 })
 

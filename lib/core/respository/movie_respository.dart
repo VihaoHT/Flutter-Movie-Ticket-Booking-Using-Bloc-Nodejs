@@ -221,11 +221,9 @@ class MovieRespository {
         }
         return getMovies();
       } else {
-        print("sai cmm roiiiiiiiiiiii ${response.statusCode}");
         return getMovies();
       }
     } catch (e) {
-      print(e.toString());
       throw Exception("failed");
     }
   }
@@ -246,7 +244,7 @@ class MovieRespository {
           'Authorization': 'Bearer $token',
         }));
     if (res.statusCode == 200) {
-      print("Update status successfully!");
+      // print("Update status successfully!");
       return getMovies();
     } else {
       if (context.mounted) {

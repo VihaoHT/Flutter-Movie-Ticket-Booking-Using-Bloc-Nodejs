@@ -93,11 +93,11 @@ class _SeatScreenState extends State<SeatScreen> {
   @override
   void initState() {
     super.initState();
-    print(widget.userId);
+    //print(widget.userId);
 
 
     socket.onConnect((_) {
-      print('Connected');
+      //print('Connected');
     });
 
     // Gửi sự kiện "joinRoom" với mã showtimeId
@@ -373,7 +373,7 @@ class _SeatScreenState extends State<SeatScreen> {
               ),
               const SizedBox(height: 50),
               Container(
-                margin: EdgeInsets.only(left: 20,right: 20),
+                margin: const EdgeInsets.only(left: 20,right: 20),
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(

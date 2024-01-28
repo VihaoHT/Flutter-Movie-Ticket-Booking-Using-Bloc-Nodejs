@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:movie_booking_app/admin/cinema/cinema_bloc/cinema_bloc.dart';
 import 'package:movie_booking_app/admin/user/users_bloc/users_bloc.dart';
 import 'package:movie_booking_app/admin_main.dart';
 import 'package:movie_booking_app/auth/bloc/auth_bloc.dart';
 import 'package:movie_booking_app/auth/screens/login_screen.dart';
 import 'package:movie_booking_app/bottom_navigation.dart';
+import 'package:movie_booking_app/core/respository/cinema_repository.dart';
 import 'package:movie_booking_app/core/respository/movie_respository.dart';
 import 'package:movie_booking_app/core/respository/top5_respository.dart';
 import 'package:movie_booking_app/core/respository/users_respository.dart';
@@ -26,7 +28,10 @@ void main() {
               SearchBloc(MovieRespository())..add(const LoadSearchEvent())),
       BlocProvider<UsersBloc>(
           create: (_) =>
-          UsersBloc(UserRepository())..add( SearchLoadUserEvent(name: ""))),
+          UsersBloc(UserRepository())..add( const SearchLoadUserEvent(name: ""))),
+      BlocProvider<CinemaBloc>(
+          create: (_) =>
+          CinemaBloc(CinemaRepository())..add(const LoadSearchCinemaEvent(name: ""))),
     ],
     child: const MyApp(),
   ));

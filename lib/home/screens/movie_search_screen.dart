@@ -27,7 +27,7 @@ class _MovieSearchScreenState extends State<MovieSearchScreen> {
           child: BlocConsumer<SearchBloc, SearchState>(
             listener: (context, state) {
               if (state is SearchErrorState) {
-                print("search movie error : ${state.error}");
+                //print("search movie error : ${state.error}");
                 showToastFailed(context, "search movie error : ${state.error}");
               }
             },
@@ -83,7 +83,7 @@ class _MovieSearchScreenState extends State<MovieSearchScreen> {
                                                 onPressed: () {
                                                   setState(() {
                                                     genreSelected = genre;
-                                                    print(genreSelected);
+                                                    //print(genreSelected);
                                                   });
                                                   Navigator.pop(context, genre);
                                                 },
@@ -248,13 +248,13 @@ class _MovieSearchScreenState extends State<MovieSearchScreen> {
                                         onPressed: () {
                                           // Xử lý khi người dùng chọn một thể loại
                                           genreSelected = genre;
-                                          print(genreSelected);
+                                          //print(genreSelected);
 
                                           Navigator.pop(context, genre);
                                         },
                                         child: Text(
                                           genre,
-                                          style: TextStyle(color: Colors.red),
+                                          style: const TextStyle(color: Colors.red),
                                         ),
                                       );
                                     }
@@ -278,7 +278,7 @@ class _MovieSearchScreenState extends State<MovieSearchScreen> {
                               child: genreSelected != null
                                   ? Text(
                                       genreSelected!,
-                                      style: TextStyle(color: Colors.white),
+                                      style: const TextStyle(color: Colors.white),
                                     )
                                   : Image.asset(Constants.filterPath))),
                     ],
