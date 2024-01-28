@@ -62,3 +62,5 @@ exports.getDistance = catchAsync(async(req, res, next) => {
     }
   })
 })
+
+exports.deleteCinema = factory.deleteOne(Cinema);

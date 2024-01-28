@@ -288,16 +288,32 @@ class _MovieAdminScreenState extends State<MovieAdminScreen> {
                                               splashColor: Colors.red,
                                               hoverColor: Colors.white54,
                                               onTap: () {
-                                                showToastSuccess(context,
-                                                    "The movie ${movieList[index].title} is now InActive");
-                                                context.read<MovieBloc>().add(
-                                                    UpdateStatusMovieEvent(
-                                                        status: movieList[index]
+                                                Getx.Get.defaultDialog(
+                                                  title: "INACTIVE THE CINEMA!",
+                                                  titleStyle: const TextStyle(fontWeight: FontWeight.bold),
+                                                  middleText:
+                                                  "Are you sure you want to inactive this cinema?",
+                                                  onCancel: () {
+                                                    // do nothing
+                                                  },
+                                                  onConfirm: () {
+                                                    showToastSuccess(context,
+                                                        "The movie ${movieList[index].title} is now InActive");
+                                                    Navigator.pop(context);
+                                                    context.read<MovieBloc>().add(
+                                                        UpdateStatusMovieEvent(
+                                                            status: movieList[index]
                                                                 .status ==
-                                                            false,
-                                                        movieId:
+                                                                false,
+                                                            movieId:
                                                             movieList[index].id,
-                                                        context: context));
+                                                            context: context));
+                                                  },
+                                                  middleTextStyle: const TextStyle(
+                                                      color: Constants.colorTitle,
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.w700),
+                                                );
                                               },
                                               child: Container(
                                                 width: 200,
@@ -323,16 +339,32 @@ class _MovieAdminScreenState extends State<MovieAdminScreen> {
                                               splashColor: Colors.red,
                                               hoverColor: Colors.white54,
                                               onTap: () {
-                                                showToastSuccess(context,
-                                                    "The movie ${movieList[index].title} is now Active");
-                                                context.read<MovieBloc>().add(
-                                                    UpdateStatusMovieEvent(
-                                                        status: movieList[index]
+                                                Getx.Get.defaultDialog(
+                                                  title: "ACTIVE THE CINEMA!",
+                                                  titleStyle: const TextStyle(fontWeight: FontWeight.bold),
+                                                  middleText:
+                                                  "Are you sure you want to active this cinema?",
+                                                  onCancel: () {
+                                                    // do nothing
+                                                  },
+                                                  onConfirm: () {
+                                                    showToastSuccess(context,
+                                                        "The movie ${movieList[index].title} is now Active");
+                                                    Navigator.pop(context);
+                                                    context.read<MovieBloc>().add(
+                                                        UpdateStatusMovieEvent(
+                                                            status: movieList[index]
                                                                 .status ==
-                                                            false,
-                                                        movieId:
+                                                                false,
+                                                            movieId:
                                                             movieList[index].id,
-                                                        context: context));
+                                                            context: context));
+                                                  },
+                                                  middleTextStyle: const TextStyle(
+                                                      color: Constants.colorTitle,
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.w700),
+                                                );
                                               },
                                               child: Container(
                                                 width: 200,

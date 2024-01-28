@@ -32,5 +32,15 @@ class CinemaBloc extends Bloc<CinemaEvent, CinemaState> {
       }
     });
 
+    on<DeleteCinemaEvent>((event, emit) async{
+      emit(CinemaLoadingState());
+      try {
+        final cinema = await _cinemaRepository.deleteCinema(event.cinemaId, event.context);
+        emit(CinemaLoadedState(cinema));
+      }
+      catch (e) {
+        emit(CinemaErrorState(e.toString()));
+      }
+    });
   }
 }

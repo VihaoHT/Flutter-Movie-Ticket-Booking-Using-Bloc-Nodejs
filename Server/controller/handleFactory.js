@@ -35,7 +35,7 @@ exports.deleteOne = Model => catchAsync(async (req, res, next) => {
   if (!document) return next(new AppError('No document found with that id', 404))
   res.status(204).json({
     status: 'success',
-    message: 'Document deleted successfully'
+    message: 'Document deleted successfully'  
   })
 
 })

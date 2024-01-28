@@ -59,7 +59,9 @@ class CinemaAdminScreen extends StatelessWidget {
                     child: TextField(
                       onChanged: (value) async {
                         if (context.mounted) {
-                          context.read<CinemaBloc>().add(LoadSearchCinemaEvent(name: value));
+                          context
+                              .read<CinemaBloc>()
+                              .add(LoadSearchCinemaEvent(name: value));
                         }
                       },
                       style: const TextStyle(color: Colors.white),
@@ -78,8 +80,8 @@ class CinemaAdminScreen extends StatelessWidget {
             BlocConsumer<CinemaBloc, CinemaState>(
               listener: (context, state) {
                 if (state is CinemaErrorState) {
-                  showToastFailed(context,
-                      "Failed to load data ${state.error.toString()}");
+                  showToastFailed(
+                      context, "Failed to load data ${state.error.toString()}");
                   Text(
                     state.error.toString(),
                     style: const TextStyle(
@@ -112,8 +114,7 @@ class CinemaAdminScreen extends StatelessWidget {
                             child: Row(
                               children: [
                                 Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
                                       children: [
@@ -128,9 +129,7 @@ class CinemaAdminScreen extends StatelessWidget {
                                           ),
                                         ),
                                         Text(
-                                          cinemaList[index]
-                                              .id
-                                              .toString(),
+                                          cinemaList[index].id.toString(),
                                           style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 24,
@@ -164,7 +163,7 @@ class CinemaAdminScreen extends StatelessWidget {
                                         const Padding(
                                           padding: EdgeInsets.all(14.0),
                                           child: Text(
-                                            "Category  :",
+                                            "Address  :",
                                             style: TextStyle(
                                                 color: Colors.white54,
                                                 fontSize: 20,
@@ -174,7 +173,7 @@ class CinemaAdminScreen extends StatelessWidget {
                                         SizedBox(
                                           width: 900,
                                           child: Text(
-                                              cinemaList[index].location.address,
+                                            cinemaList[index].location.address,
                                             style: const TextStyle(
                                                 color: Colors.white,
                                                 overflow: TextOverflow.clip,
@@ -185,6 +184,49 @@ class CinemaAdminScreen extends StatelessWidget {
                                       ],
                                     ),
                                   ],
+                                ),
+                                const Spacer(),
+                                Container(
+                                  width: 100,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.red,
+                                  ),
+                                  child: ListTile(
+                                    onTap: () {
+                                      Getx.Get.defaultDialog(
+                                        title: "DELETE THE CINEMA!",
+                                        titleStyle: const TextStyle(fontWeight: FontWeight.bold),
+                                        middleText:
+                                        "Are you sure you want to delete this cinema? After delete you cannot undo",
+                                        onCancel: () {
+                                          // do nothing
+                                        },
+                                        onConfirm: () {
+                                          Navigator.pop(context);
+                                          context.read<CinemaBloc>().add(
+                                            DeleteCinemaEvent(
+                                                cinemaId: cinemaList[index].id,
+                                                context: context),
+                                          );
+                                        },
+                                        middleTextStyle: const TextStyle(
+                                            color: Constants.colorTitle,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w700),
+                                      );
+
+                                    },
+                                    title: const Text(
+                                      "Delete",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),

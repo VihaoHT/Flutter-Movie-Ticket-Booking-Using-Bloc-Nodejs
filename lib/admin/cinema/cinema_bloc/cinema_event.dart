@@ -31,3 +31,15 @@ class PostCinemaEvent extends CinemaEvent {
   @override
   List<Object> get props => [name,coordinates,address,context];
 }
+
+class DeleteCinemaEvent extends CinemaEvent {
+  final  String cinemaId;
+  final BuildContext context;
+
+  const DeleteCinemaEvent({required this.cinemaId, required this.context});
+
+
+
+  @override
+  List<Object> get props => [cinemaId,context];
+}
