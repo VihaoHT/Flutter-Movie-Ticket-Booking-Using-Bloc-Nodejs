@@ -9,7 +9,6 @@ import 'package:movie_booking_app/bottom_navigation.dart';
 import 'package:get/get.dart' as Getx;
 import 'package:movie_booking_app/core/constants/ultis.dart';
 
-import '../../home/screens/test.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

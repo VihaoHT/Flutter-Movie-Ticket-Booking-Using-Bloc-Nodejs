@@ -1,8 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
-import 'package:movie_booking_app/core/constants/ultis.dart';
 import 'package:movie_booking_app/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

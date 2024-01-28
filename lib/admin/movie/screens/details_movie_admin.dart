@@ -7,7 +7,6 @@ import 'package:get/get.dart' as Getx;
 import 'package:url_launcher/url_launcher.dart';
 import '../../../core/constants/constants.dart';
 import '../../../home/movie_bloc/movie_bloc.dart';
-import '../../../home/screens/movie_trailer_Screen.dart';
 
 class DetailsMovieAdmin extends StatelessWidget {
   final Movie movie;
@@ -22,7 +21,7 @@ class DetailsMovieAdmin extends StatelessWidget {
       if (await canLaunchUrl(url)) {
         await launchUrl(url);
       } else {
-        print('Cannot launch Google Maps');
+        //print('Cannot launch Google Maps');
       }
     }
 
@@ -62,7 +61,7 @@ class DetailsMovieAdmin extends StatelessWidget {
                           fontWeight: FontWeight.w700),
                     );
                   },
-                  child: Icon(
+                  child: const Icon(
                     Icons.delete,
                     color: Colors.white54,
                   )),

@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:movie_booking_app/core/respository/users_respository.dart';
 import 'package:movie_booking_app/models/user_model.dart';
 

@@ -3,13 +3,11 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:movie_booking_app/admin/movie/widgets/custom_text_field_add.dart';
 import 'package:movie_booking_app/core/constants/constants.dart';
 import 'package:get/get.dart' as Getx;
 import 'package:movie_booking_app/core/constants/ultis.dart';
 import 'package:movie_booking_app/home/movie_bloc/movie_bloc.dart';
-import 'package:movie_booking_app/profile/widgets/custom_text_field_update.dart';
 
 class AddNewMovieAdmin extends StatefulWidget {
   const AddNewMovieAdmin({super.key});
@@ -46,7 +44,7 @@ class _AddNewMovieAdminState extends State<AddNewMovieAdmin> {
           // print(pickedImage);
         });
       } else {
-        print("File path is null.");
+        //print("File path is null.");
       }
     }
 
@@ -60,10 +58,10 @@ class _AddNewMovieAdminState extends State<AddNewMovieAdmin> {
       if (file.path != null) {
         setState(() {
           pickedVideo = File(file.path!);
-          print(pickedVideo);
+         // print(pickedVideo);
         });
       } else {
-        print("File path is null.");
+       // print("File path is null.");
       }
     }
 
@@ -194,12 +192,12 @@ class _AddNewMovieAdminState extends State<AddNewMovieAdmin> {
                 listener: (context, state) {
                   if (state is MovieErrorState) {
                     showToastFailed(context, state.error);
-                    print(state.error);
+                    //print(state.error);
                   }
                 },
                 builder: (context, state) {
                   if (state is MovieLoadingState) {
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
@@ -262,7 +260,7 @@ class _AddNewMovieAdminState extends State<AddNewMovieAdmin> {
                       ),
                     );
                   }
-                  return SizedBox();
+                  return const SizedBox();
                 },
               ),
             ],

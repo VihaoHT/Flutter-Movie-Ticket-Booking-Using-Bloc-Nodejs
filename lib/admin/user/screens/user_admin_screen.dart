@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
-import 'package:http/http.dart';
 import 'package:movie_booking_app/core/constants/ultis.dart';
-import 'package:movie_booking_app/core/respository/users_respository.dart';
 import 'package:movie_booking_app/models/user_model.dart';
 
 import '../../../core/components/header_admin.dart';
@@ -48,7 +44,7 @@ class _UserAdminScreenState extends State<UserAdminScreen> {
                 decoration: InputDecoration(
                   labelText: "Write username u wanna find",
                   labelStyle: const TextStyle(color: Colors.white),
-                  suffixIcon: const Icon(Icons.search),
+                  suffixIcon:const Icon(Icons.search),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10)),
                 ),
@@ -59,7 +55,7 @@ class _UserAdminScreenState extends State<UserAdminScreen> {
             listener: (context, state) {
               if (state is UserErrorState) {
                 showToastFailed(context, "Failed to load users ${state.error}");
-                print(state.error);
+                //print(state.error);
               }
             },
             builder: (context, state) {
@@ -240,7 +236,7 @@ class _UserAdminScreenState extends State<UserAdminScreen> {
                   ),
                 );
               }
-              return SizedBox();
+              return const SizedBox();
             },
           )
         ],

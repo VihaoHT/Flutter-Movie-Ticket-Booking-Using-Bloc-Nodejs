@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart' as Getx;
 import 'package:intl/intl.dart';
-import 'package:movie_booking_app/admin/movie/widgets/custom_text_field_add.dart';
 import '../../../core/constants/constants.dart';
 import '../../../core/constants/ultis.dart';
 import '../../../home/movie_bloc/movie_bloc.dart';
@@ -199,7 +197,7 @@ class UpdateMovieAdmin extends StatelessWidget {
                 listener: (context, state) {
                   if (state is MovieErrorState) {
                     showToastFailed(context, state.error);
-                    print(state.error);
+                    //print(state.error);
                   }
                 },
                 builder: (context, state) {
@@ -255,7 +253,7 @@ class UpdateMovieAdmin extends StatelessWidget {
                       ),
                     );
                   }
-                  return SizedBox();
+                  return const SizedBox();
                 },
               ),
             ],
@@ -357,7 +355,7 @@ class UpdateMovieAdmin extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                   backgroundColor: Constants.bgColorAdmin),
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );

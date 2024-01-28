@@ -2,11 +2,8 @@ import 'dart:convert';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
-import 'package:movie_booking_app/auth/bloc/auth_bloc.dart';
 import 'package:movie_booking_app/core/components/header_admin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
