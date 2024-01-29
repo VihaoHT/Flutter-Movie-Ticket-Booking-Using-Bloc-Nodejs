@@ -1,11 +1,13 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:movie_booking_app/models/movie_model.dart';
 import 'package:get/get.dart' as Getx;
 import 'package:url_launcher/url_launcher.dart';
 import '../../../core/constants/constants.dart';
+import '../../../core/constants/ultis.dart';
 import '../../../home/movie_bloc/movie_bloc.dart';
 
 class DetailsMovieAdmin extends StatelessWidget {
@@ -96,6 +98,44 @@ class DetailsMovieAdmin extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          const TextSpan(
+                            text: 'Movie ID: ',
+                            style: TextStyle(
+                              fontSize: 19,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          TextSpan(
+                            text: movie.id,
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 24),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                        margin: const EdgeInsets.only(left: 10),
+                        child: InkWell(
+                          onTap: () {
+                            Clipboard.setData(
+                                ClipboardData(text: movie.id  .toString()));
+                            showToastSuccess(context, "Copied");
+                          },
+                          child: Image.asset(Constants.copyPath,color: Colors.white,),
+                        )),
+                  ],
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Row(

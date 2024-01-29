@@ -18,6 +18,8 @@ class MovieAdminScreen extends StatefulWidget {
 }
 
 class _MovieAdminScreenState extends State<MovieAdminScreen> {
+  TextEditingController searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -65,18 +67,24 @@ class _MovieAdminScreenState extends State<MovieAdminScreen> {
                       width: 500,
                       color: Constants.bgColorAdmin,
                       child: TextField(
+                        controller: searchController,
                         onChanged: (value) async {
                           if (context.mounted) {
-                            context
-                                .read<MovieBloc>()
-                                .add(SearchAdminMovieEvent(title: value));
+                            context.read<MovieBloc>().add(SearchAdminMovieEvent(
+                                title: value));
                           }
                         },
                         style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           labelText: "Write the movie name u wanna find",
                           labelStyle: const TextStyle(color: Colors.white),
-                          suffixIcon: const Icon(Icons.search),
+                          suffix:InkWell(
+                              onTap: () {
+                                searchController.clear();
+                                context.read<MovieBloc>().add(const SearchAdminMovieEvent(
+                                    title: ""));
+                              },
+                              child: const Icon(Icons.clear,color: Colors.red,)),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10)),
                         ),
@@ -194,7 +202,7 @@ class _MovieAdminScreenState extends State<MovieAdminScreen> {
                                             ),
                                           ),
                                           Text(
-                                           categories,
+                                            categories,
                                             style: const TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 24,
@@ -290,9 +298,11 @@ class _MovieAdminScreenState extends State<MovieAdminScreen> {
                                               onTap: () {
                                                 Getx.Get.defaultDialog(
                                                   title: "INACTIVE THE CINEMA!",
-                                                  titleStyle: const TextStyle(fontWeight: FontWeight.bold),
+                                                  titleStyle: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                   middleText:
-                                                  "Are you sure you want to inactive this cinema?",
+                                                      "Are you sure you want to inactive this cinema?",
                                                   onCancel: () {
                                                     // do nothing
                                                   },
@@ -302,17 +312,22 @@ class _MovieAdminScreenState extends State<MovieAdminScreen> {
                                                     Navigator.pop(context);
                                                     context.read<MovieBloc>().add(
                                                         UpdateStatusMovieEvent(
-                                                            status: movieList[index]
-                                                                .status ==
+                                                            status: movieList[
+                                                                        index]
+                                                                    .status ==
                                                                 false,
                                                             movieId:
-                                                            movieList[index].id,
+                                                                movieList[index]
+                                                                    .id,
                                                             context: context));
                                                   },
-                                                  middleTextStyle: const TextStyle(
-                                                      color: Constants.colorTitle,
-                                                      fontSize: 14,
-                                                      fontWeight: FontWeight.w700),
+                                                  middleTextStyle:
+                                                      const TextStyle(
+                                                          color: Constants
+                                                              .colorTitle,
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w700),
                                                 );
                                               },
                                               child: Container(
@@ -341,9 +356,11 @@ class _MovieAdminScreenState extends State<MovieAdminScreen> {
                                               onTap: () {
                                                 Getx.Get.defaultDialog(
                                                   title: "ACTIVE THE CINEMA!",
-                                                  titleStyle: const TextStyle(fontWeight: FontWeight.bold),
+                                                  titleStyle: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                   middleText:
-                                                  "Are you sure you want to active this cinema?",
+                                                      "Are you sure you want to active this cinema?",
                                                   onCancel: () {
                                                     // do nothing
                                                   },
@@ -353,17 +370,22 @@ class _MovieAdminScreenState extends State<MovieAdminScreen> {
                                                     Navigator.pop(context);
                                                     context.read<MovieBloc>().add(
                                                         UpdateStatusMovieEvent(
-                                                            status: movieList[index]
-                                                                .status ==
+                                                            status: movieList[
+                                                                        index]
+                                                                    .status ==
                                                                 false,
                                                             movieId:
-                                                            movieList[index].id,
+                                                                movieList[index]
+                                                                    .id,
                                                             context: context));
                                                   },
-                                                  middleTextStyle: const TextStyle(
-                                                      color: Constants.colorTitle,
-                                                      fontSize: 14,
-                                                      fontWeight: FontWeight.w700),
+                                                  middleTextStyle:
+                                                      const TextStyle(
+                                                          color: Constants
+                                                              .colorTitle,
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w700),
                                                 );
                                               },
                                               child: Container(

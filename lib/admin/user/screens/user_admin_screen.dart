@@ -34,17 +34,29 @@ class _UserAdminScreenState extends State<UserAdminScreen> {
               width: 500,
               color: Constants.bgColorAdmin,
               child: TextField(
+                controller: searchController,
                 onChanged: (value) async {
-
-                  if(context.mounted) {
-                   context.read<UsersBloc>().add(SearchLoadUserEvent(name: value));
+                  if (context.mounted) {
+                    context
+                        .read<UsersBloc>()
+                        .add(SearchLoadUserEvent(name: value));
                   }
                 },
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   labelText: "Write username u wanna find",
                   labelStyle: const TextStyle(color: Colors.white),
-                  suffixIcon:const Icon(Icons.search),
+                  suffix: InkWell(
+                      onTap: () {
+                        searchController.clear();
+                        context
+                            .read<UsersBloc>()
+                            .add(const SearchLoadUserEvent(name: ""));
+                      },
+                      child: const Icon(
+                        Icons.clear,
+                        color: Colors.red,
+                      )),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10)),
                 ),
@@ -65,29 +77,6 @@ class _UserAdminScreenState extends State<UserAdminScreen> {
                   flex: 1,
                   child: Column(
                     children: [
-                      // TextFormField(
-                      //   style: const TextStyle(
-                      //       color: Colors.white
-                      //   ),
-                      //   controller: searchController,
-                      //   decoration:  InputDecoration(
-                      //     hintText: "",
-                      //     labelText: "",
-                      //     labelStyle: const TextStyle(
-                      //         color: Colors.white, // Màu sắc của label text
-                      //         fontWeight: FontWeight.bold   // Kích thước của label text
-                      //     ),
-                      //     // label:  Text(label,style: const TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                      //     hintStyle: const TextStyle(color: Colors.white),
-                      //     border: const OutlineInputBorder(
-                      //       borderSide: BorderSide(color: Colors.black),
-                      //       borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                      //     ),
-                      //     suffixIcon: InkWell(onTap: () {
-                      //       context.read<UsersBloc>().add(SearchLoadUserEvent(name: searchController.text.trim()));
-                      //     },child: const Icon(Icons.search))
-                      //   ),
-                      // ),
                       Expanded(
                         child: ListView.builder(
                           itemCount: userList.length,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_booking_app/admin/cinema/cinema_bloc/cinema_bloc.dart';
 import 'package:movie_booking_app/admin/cinema/screens/add_new_cinema.dart';
@@ -13,6 +14,7 @@ class CinemaAdminScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController searchController = TextEditingController();
     return SafeArea(
         child: Scaffold(
       body: Padding(
@@ -57,6 +59,7 @@ class CinemaAdminScreen extends StatelessWidget {
                     width: 500,
                     color: Constants.bgColorAdmin,
                     child: TextField(
+                      controller: searchController,
                       onChanged: (value) async {
                         if (context.mounted) {
                           context
@@ -68,7 +71,17 @@ class CinemaAdminScreen extends StatelessWidget {
                       decoration: InputDecoration(
                         labelText: "Write the cinema name u wanna find",
                         labelStyle: const TextStyle(color: Colors.white),
-                        suffixIcon: const Icon(Icons.search),
+                        suffix: InkWell(
+                            onTap: () {
+                              searchController.clear();
+                              context
+                                  .read<CinemaBloc>()
+                                  .add(const LoadSearchCinemaEvent(name: ""));
+                            },
+                            child: const Icon(
+                              Icons.clear,
+                              color: Colors.red,
+                            )),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10)),
                       ),
@@ -121,7 +134,7 @@ class CinemaAdminScreen extends StatelessWidget {
                                         const Padding(
                                           padding: EdgeInsets.all(14.0),
                                           child: Text(
-                                            "Cinema id  :",
+                                            "Cinema ID  :",
                                             style: TextStyle(
                                                 color: Colors.white54,
                                                 fontSize: 20,
@@ -135,6 +148,20 @@ class CinemaAdminScreen extends StatelessWidget {
                                               fontSize: 24,
                                               fontWeight: FontWeight.w700),
                                         ),
+                                        Container(
+                                            margin:
+                                                const EdgeInsets.only(left: 10),
+                                            child: InkWell(
+                                              onTap: () {
+                                                Clipboard.setData(ClipboardData(
+                                                    text: cinemaList[index]
+                                                        .id
+                                                        .toString()));
+                                                showToastSuccess(context, "Copied");
+                                              },
+                                              child: Image.asset(
+                                                  Constants.copyPath,color: Colors.white,),
+                                            )),
                                       ],
                                     ),
                                     Row(
@@ -197,26 +224,27 @@ class CinemaAdminScreen extends StatelessWidget {
                                     onTap: () {
                                       Getx.Get.defaultDialog(
                                         title: "DELETE THE CINEMA!",
-                                        titleStyle: const TextStyle(fontWeight: FontWeight.bold),
+                                        titleStyle: const TextStyle(
+                                            fontWeight: FontWeight.bold),
                                         middleText:
-                                        "Are you sure you want to delete this cinema? After delete you cannot undo",
+                                            "Are you sure you want to delete this cinema? After delete you cannot undo",
                                         onCancel: () {
                                           // do nothing
                                         },
                                         onConfirm: () {
                                           Navigator.pop(context);
                                           context.read<CinemaBloc>().add(
-                                            DeleteCinemaEvent(
-                                                cinemaId: cinemaList[index].id,
-                                                context: context),
-                                          );
+                                                DeleteCinemaEvent(
+                                                    cinemaId:
+                                                        cinemaList[index].id,
+                                                    context: context),
+                                              );
                                         },
                                         middleTextStyle: const TextStyle(
                                             color: Constants.colorTitle,
                                             fontSize: 14,
                                             fontWeight: FontWeight.w700),
                                       );
-
                                     },
                                     title: const Text(
                                       "Delete",
