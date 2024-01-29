@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:movie_booking_app/admin/cinema/cinema_bloc/cinema_bloc.dart';
+import 'package:movie_booking_app/admin/showtime/showtime_bloc/showtime_bloc.dart';
 import 'package:movie_booking_app/admin/user/users_bloc/users_bloc.dart';
 import 'package:movie_booking_app/admin_main.dart';
 import 'package:movie_booking_app/auth/bloc/auth_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:movie_booking_app/auth/screens/login_screen.dart';
 import 'package:movie_booking_app/bottom_navigation.dart';
 import 'package:movie_booking_app/core/respository/cinema_repository.dart';
 import 'package:movie_booking_app/core/respository/movie_respository.dart';
+import 'package:movie_booking_app/core/respository/showtime_repository.dart';
 import 'package:movie_booking_app/core/respository/top5_respository.dart';
 import 'package:movie_booking_app/core/respository/users_respository.dart';
 import 'package:movie_booking_app/home/movie_bloc/movie_bloc.dart';
@@ -32,6 +34,9 @@ void main() {
       BlocProvider<CinemaBloc>(
           create: (_) =>
           CinemaBloc(CinemaRepository())..add(const LoadSearchCinemaEvent(name: ""))),
+      BlocProvider<ShowtimeBloc>(
+          create: (_) =>
+          ShowtimeBloc(ShowtimeRepository())..add(const LoadSearchShowtimeEvent(title: ""))),
     ],
     child: const MyApp(),
   ));
