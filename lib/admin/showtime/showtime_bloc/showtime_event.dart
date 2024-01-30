@@ -25,8 +25,8 @@ class LoadSearchShowtimeEvent extends ShowtimeEvent {
 class AddShowtimeEvent extends ShowtimeEvent {
   final String movieId;
   final String roomId;
-  final DateTime startTime;
-  final DateTime endTime;
+  final String startTime;
+  final String endTime;
   final int price;
   final BuildContext context;
 

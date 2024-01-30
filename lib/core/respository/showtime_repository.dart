@@ -64,15 +64,15 @@ class ShowtimeRepository {
   Future<List<ShowTime>> addShowTime(
     String movieId,
     String roomId,
-    DateTime startTime,
-    DateTime endTime,
+    String startTime,
+    String endTime,
     int price,
     BuildContext context,
   ) async {
     final response = await post(Uri.parse(api),
         body: json.encode({
           'movie': movieId,
-          'room': movieId,
+          'room': roomId,
           'start_time': startTime,
           'end_time': endTime,
           'price': price

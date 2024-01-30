@@ -2,8 +2,8 @@ class ShowTime {
   final String id;
   final Room room;
   final Movie movie;
-  final DateTime startTime;
-  final DateTime endTime;
+  final String startTime;
+  final String endTime;
   final int price;
 
   ShowTime({
@@ -20,8 +20,8 @@ class ShowTime {
       id: json['_id'] ?? '',
       room: Room.fromJson(json['room'] ?? {}),
       movie: Movie.fromJson(json['movie'] ?? {}),
-      startTime: DateTime.parse(json['start_time'] ?? ''),
-      endTime: DateTime.parse(json['end_time'] ?? ''),
+      startTime: json['start_time'] ?? '',
+      endTime:json['end_time'] ?? '',
       price: json['price'] ?? 0,
     );
   }

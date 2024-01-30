@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart' as Getx;
+import 'package:movie_booking_app/core/constants/ultis.dart';
 import '../../../core/constants/constants.dart';
 import '../../movie/widgets/custom_text_field_add.dart';
 import 'package:intl/intl.dart';
+
+import '../showtime_bloc/showtime_bloc.dart';
+
 class AddNewShowtime extends StatefulWidget {
   const AddNewShowtime({super.key});
 
@@ -19,32 +23,66 @@ class _AddNewShowtimeState extends State<AddNewShowtime> {
     TextEditingController priceController = TextEditingController();
     TextEditingController startTimeController = TextEditingController();
     TextEditingController endTimeController = TextEditingController();
-    DateTime selectedDateTime = DateTime.now();
+    DateTime? selectedStartTime;
+    DateTime? selectedEndTime;
+    // DateTime selectedDateTime0;
 
-    Future<void> _selectDateTime(BuildContext context) async {
-      final DateTime? picked = await showDatePicker(
+    Future pickStartTime() async {
+      DateTime? pickedDate = await showDatePicker(
         context: context,
-        initialDate: selectedDateTime,
-        firstDate: DateTime.now(),
-        lastDate: DateTime(2101),
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2024),
+        lastDate: DateTime(2100),
       );
-
-      if (picked != null && picked != selectedDateTime) {
-        final TimeOfDay? pickedTime = await showTimePicker(
+      if (pickedDate != null) {
+        TimeOfDay? pickedTime = await showTimePicker(
           context: context,
-          initialTime: TimeOfDay.fromDateTime(selectedDateTime),
+          initialTime: TimeOfDay.now(),
         );
-
         if (pickedTime != null) {
           setState(() {
-            selectedDateTime = DateTime(
-              picked.year,
-              picked.month,
-              picked.day,
+            selectedStartTime = DateTime(
+              pickedDate.year,
+              pickedDate.month,
+              pickedDate.day,
               pickedTime.hour,
               pickedTime.minute,
             );
           });
+          showToastSuccess(context,
+              'start time picked: ${DateFormat('yyyy-MM-dd HH:mm:ss.000').format(selectedStartTime!)}');
+          // print(
+          //     'start time picked: ${DateFormat('yyyy-MM-ddTHH:mm:ss.000').format(selectedDateTime)}');
+        }
+      }
+    }
+
+    Future pickEndTime() async {
+      DateTime? pickedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2024),
+        lastDate: DateTime(2100),
+      );
+      if (pickedDate != null) {
+        TimeOfDay? pickedTime = await showTimePicker(
+          context: context,
+          initialTime: TimeOfDay.now(),
+        );
+        if (pickedTime != null) {
+          setState(() {
+            selectedEndTime = DateTime(
+              pickedDate.year,
+              pickedDate.month,
+              pickedDate.day,
+              pickedTime.hour,
+              pickedTime.minute,
+            );
+          });
+          showToastSuccess(context,
+              'end time picked: ${DateFormat('yyyy-MM-dd HH:mm:ss.000').format(selectedEndTime!)}');
+          // print(
+          //     'start time picked: ${DateFormat('yyyy-MM-ddTHH:mm:ss.000').format(selectedDateTime)}');
         }
       }
     }
@@ -62,8 +100,7 @@ class _AddNewShowtimeState extends State<AddNewShowtime> {
                   Getx.Get.defaultDialog(
                     title: "INFORMATION!",
                     titleStyle: const TextStyle(fontWeight: FontWeight.bold),
-                    middleText:
-                    "",
+                    middleText: "",
                     middleTextStyle: const TextStyle(
                         color: Constants.colorTitle,
                         fontSize: 14,
@@ -90,8 +127,7 @@ class _AddNewShowtimeState extends State<AddNewShowtime> {
                   readOnly: false),
               const SizedBox(height: 20),
               CustomTextFieldAdd(
-                  labelText:
-                  "Write room ID",
+                  labelText: "Write room ID",
                   controller: roomIdController,
                   hintText: "",
                   readOnly: false),
@@ -102,98 +138,95 @@ class _AddNewShowtimeState extends State<AddNewShowtime> {
                   hintText: "",
                   readOnly: false),
               const SizedBox(height: 20),
-              // CustomTextFieldAdd(
-              //     labelText: "Select start time",
-              //     controller: startTimeController,
-              //     hintText: "",
-              //     readOnly: true),
-              // const SizedBox(height: 20),
-              // CustomTextFieldAdd(
-              //     labelText: "Select end time",
-              //     controller: endTimeController,
-              //     hintText: "",
-              //     readOnly: true),
-              // const SizedBox(height: 20),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        const Text(
-                          'Selected Start time:',
-                          style: TextStyle(fontSize: 16,color: Colors.white),
-                        ),
-                        Text(
-                          DateFormat('yyyy-MM-dd HH:mm:ss').format(selectedDateTime),
-                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),
-                        ),
-                        const SizedBox(height: 20),
-                        ElevatedButton(
-                          onPressed: () {
-                            print(selectedDateTime);
-                            _selectDateTime(context);
-                          },
-                          child: const Text('Select Start time'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-
-              // BlocConsumer<CinemaBloc, CinemaState>(
-              //   listener: (context, state) {
-              //     if (state is CinemaErrorState) {
-              //       print(state.error);
-              //     }
-              //   },
-              //   builder: (context, state) {
-              //     if (state is CinemaLoadingState) {
-              //       return const Center(
-              //         child: CircularProgressIndicator(),
-              //       );
-              //     }
-              //     if (state is CinemaLoadedState) {
-              //       return ElevatedButton(
+              CustomTextFieldAdd(
+                  labelText: "Write start time example : 2023-12-30T08:30:00.000",
+                  controller: startTimeController,
+                  hintText: "",
+                  readOnly: false),
+              const SizedBox(height: 20),
+              CustomTextFieldAdd(
+                  labelText: "Write end time example : 2023-12-30T09:30:00.000",
+                  controller: endTimeController,
+                  hintText: "",
+                  readOnly: false),
+              const SizedBox(height: 20),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //   children: [
+              //     SizedBox(
+              //       width: 200,
+              //       height: 50,
+              //       child: ElevatedButton(
               //         onPressed: () {
-              //           String input = coordinatesController.text;
-              //           List<double> coordinates = parseCoordinates(input);
-              //
-              //           context.read<CinemaBloc>().add(PostCinemaEvent(
-              //               name: nameController.text.trim(),
-              //               coordinates: coordinates,
-              //               address: addressController.text.trim(),
-              //               context: context));
+              //           pickStartTime();
               //         },
-              //         style: ElevatedButton.styleFrom(
-              //             padding: EdgeInsets.zero,
-              //             shape: RoundedRectangleBorder(
-              //                 borderRadius: BorderRadius.circular(20))),
-              //         child: Ink(
-              //           decoration: BoxDecoration(
-              //               gradient: const LinearGradient(
-              //                   colors: [Color(0xffF34C30), Color(0xffDA004E)]),
-              //               borderRadius: BorderRadius.circular(20)),
-              //           child: Container(
-              //             width: 335,
-              //             height: 60,
-              //             alignment: Alignment.center,
-              //             child: const Text(
-              //               'Confirm',
-              //               style: TextStyle(
-              //                   fontSize: 17,
-              //                   fontWeight: FontWeight.w500,
-              //                   color: Colors.white),
-              //             ),
-              //           ),
-              //         ),
-              //       );
-              //     }
-              //     return const SizedBox();
-              //   },
+              //         child: const Text("Choose start time"),
+              //       ),
+              //     ),
+              //     SizedBox(
+              //       width: 200,
+              //       height: 50,
+              //       child: ElevatedButton(
+              //         onPressed: () {
+              //           pickEndTime();
+              //         },
+              //         child: const Text("Choose end time"),
+              //       ),
+              //     ),
+              //   ],
               // ),
+              BlocConsumer<ShowtimeBloc, ShowtimeState>(
+                listener: (context, state) {
+                  if (state is ShowtimeErrorState) {
+                    print(state.error);
+                  }
+                },
+                builder: (context, state) {
+                  if (state is ShowtimeLoadingState) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (state is ShowtimeLoadedState) {
+                    return ElevatedButton(
+                      onPressed: () {
+                        print(movieIdController.text.trim());
+                        print(roomIdController.text.trim());
+                        context.read<ShowtimeBloc>().add(AddShowtimeEvent(
+                            movieId: movieIdController.text.trim(),
+                            roomId: roomIdController.text.trim(),
+                            startTime:startTimeController.text.trim(),
+                            endTime: endTimeController.text.trim(),
+                            price: int.parse(priceController.text.trim()),
+                            context: context));
+                      },
+                      style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20))),
+                      child: Ink(
+                        decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                                colors: [Color(0xffF34C30), Color(0xffDA004E)]),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Container(
+                          width: 335,
+                          height: 60,
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Confirm',
+                            style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                  return const SizedBox();
+                },
+              ),
             ],
           ),
         ),
