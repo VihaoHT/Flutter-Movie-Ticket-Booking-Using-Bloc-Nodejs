@@ -6,6 +6,8 @@ import 'package:movie_booking_app/admin/statistics/screens/statistics_admin_scre
 import 'package:movie_booking_app/admin/user/screens/user_admin_screen.dart';
 import 'package:movie_booking_app/core/constants/constants.dart';
 
+import 'admin/room/screens/room_admin_screen.dart';
+
 class AdminMain extends StatefulWidget {
   const AdminMain({super.key});
 
@@ -70,13 +72,23 @@ class _AdminMainState extends State<AdminMain> {
                 ),
                 DrawerListTile(
                   title: "Showtime",
-                  imageSrc: Constants.cinemaPath,
+                  imageSrc: Constants.showtimePath,
                   press: () {
                     setState(() {
                       selectedDrawerItem = "Showtime";
                     });
                   },
                   isSelected: selectedDrawerItem == "Showtime",
+                ),
+                DrawerListTile(
+                  title: "Room",
+                  imageSrc: Constants.roomPath,
+                  press: () {
+                    setState(() {
+                      selectedDrawerItem = "Room";
+                    });
+                  },
+                  isSelected: selectedDrawerItem == "Room",
                 ),
               ],
             )),
@@ -106,6 +118,8 @@ class _AdminMainState extends State<AdminMain> {
         return const CinemaAdminScreen();
       case "Showtime":
         return const ShowtimeAdminScreen();
+      case "Room":
+        return const RoomAdminScreen();
       default:
         return Container();
     }

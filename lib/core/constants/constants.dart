@@ -45,6 +45,8 @@ class Constants {
   static const addVideoPath = 'assets/images/addvideo.png';
   static const cinemaPath = 'assets/images/cinemaadmin.png';
   static const copyPath = 'assets/images/copy.png';
+  static const showtimePath = 'assets/images/showtime.png';
+  static const roomPath = 'assets/images/room.png';
 
   // animation
   static const homeAnimation = 'assets/animation/home_animation.json';
