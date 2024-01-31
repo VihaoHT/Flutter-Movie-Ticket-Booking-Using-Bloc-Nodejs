@@ -7,3 +7,5 @@ router.post('/add', actorController.uploadActorPhoto, actorController.resizeActo
 router.route('/').get(actorController.getAllActors)
 router.route('/:id').get(actorController.getActor)
 module.exports = router
+
+

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_booking_app/admin/actors/screens/actor_admin_screen.dart';
 import 'package:movie_booking_app/admin/cinema/screens/cinema_admin_screen.dart';
 import 'package:movie_booking_app/admin/movie/screens/movie_admin_screen.dart';
 import 'package:movie_booking_app/admin/showtime/screens/showtime_admin_screen.dart';
@@ -90,6 +91,16 @@ class _AdminMainState extends State<AdminMain> {
                   },
                   isSelected: selectedDrawerItem == "Room",
                 ),
+                DrawerListTile(
+                  title: "Actor",
+                  imageSrc: Constants.actorPath,
+                  press: () {
+                    setState(() {
+                      selectedDrawerItem = "Actor";
+                    });
+                  },
+                  isSelected: selectedDrawerItem == "Actor",
+                ),
               ],
             )),
             Expanded(
@@ -120,6 +131,8 @@ class _AdminMainState extends State<AdminMain> {
         return const ShowtimeAdminScreen();
       case "Room":
         return const RoomAdminScreen();
+      case "Actor":
+        return const ActorAdminScreen();
       default:
         return Container();
     }

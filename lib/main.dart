@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:movie_booking_app/admin/actors/bloc/actor_bloc.dart';
 import 'package:movie_booking_app/admin/cinema/cinema_bloc/cinema_bloc.dart';
 import 'package:movie_booking_app/admin/room/room_bloc/room_bloc.dart';
 import 'package:movie_booking_app/admin/showtime/showtime_bloc/showtime_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:movie_booking_app/admin_main.dart';
 import 'package:movie_booking_app/auth/bloc/auth_bloc.dart';
 import 'package:movie_booking_app/auth/screens/login_screen.dart';
 import 'package:movie_booking_app/bottom_navigation.dart';
+import 'package:movie_booking_app/core/respository/actor_repository.dart';
 import 'package:movie_booking_app/core/respository/cinema_repository.dart';
 import 'package:movie_booking_app/core/respository/movie_respository.dart';
 import 'package:movie_booking_app/core/respository/room_repository.dart';
@@ -42,6 +44,9 @@ void main() {
       BlocProvider<RoomBloc>(
           create: (_) =>
           RoomBloc(RoomRepository())..add( const LoadSearchRoomEvent(id: ""))),
+      BlocProvider<ActorBloc>(
+          create: (_) =>
+          ActorBloc(ActorRepository())..add( const LoadSearchActorEvent(id: ""))),
     ],
     child: const MyApp(),
   ));
