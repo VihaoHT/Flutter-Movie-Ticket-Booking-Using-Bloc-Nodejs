@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart' as Getx;
-import 'package:movie_booking_app/models/cinema_model.dart';
 import '../../../core/constants/constants.dart';
 import '../../movie/widgets/custom_text_field_add.dart';
 import '../cinema_bloc/cinema_bloc.dart';

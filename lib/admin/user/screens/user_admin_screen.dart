@@ -63,173 +63,177 @@ class _UserAdminScreenState extends State<UserAdminScreen> {
               ),
             ),
           ),
-          BlocConsumer<UsersBloc, UsersState>(
-            listener: (context, state) {
-              if (state is UserErrorState) {
-                showToastFailed(context, "Failed to load users ${state.error}");
-                //print(state.error);
-              }
-            },
-            builder: (context, state) {
-              if (state is UserLoadedState) {
-                List<User> userList = state.users;
-                return Expanded(
-                  flex: 1,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: userList.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Container(
-                                padding: const EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                  color: Constants.bgColorAdmin,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Row(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: userList[index].avatar != null
-                                          ? Image.network(
-                                              userList[index].avatar!,
-                                              width: 200,
-                                              height: 200,
-                                              fit: BoxFit.fill,
-                                            )
-                                          : Image.asset(
-                                              Constants.avatarDefaultPath,
-                                              width: 200,
-                                              height: 200,
-                                              fit: BoxFit.fill,
-                                            ),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            const Padding(
-                                              padding: EdgeInsets.all(14.0),
-                                              child: Text(
-                                                "Email :",
-                                                style: TextStyle(
-                                                    color: Colors.white54,
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ),
-                                            Text(
-                                              userList[index].email,
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 24,
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            const Padding(
-                                              padding: EdgeInsets.all(14.0),
-                                              child: Text(
-                                                "Username :",
-                                                style: TextStyle(
-                                                    color: Colors.white54,
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ),
-                                            Text(
-                                              userList[index].username,
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 24,
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            const Padding(
-                                              padding: EdgeInsets.all(14.0),
-                                              child: Text(
-                                                "Role  :",
-                                                style: TextStyle(
-                                                    color: Colors.white54,
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ),
-                                            Text(
-                                              userList[index].role,
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 24,
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            const Padding(
-                                              padding: EdgeInsets.all(14.0),
-                                              child: Text(
-                                                "Phone Number :",
-                                                style: TextStyle(
-                                                    color: Colors.white54,
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ),
-                                            userList[index].phone_number != null
-                                                ? Text(
-                                                    userList[index]
-                                                        .phone_number!,
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 24,
-                                                        fontWeight:
-                                                            FontWeight.w700),
-                                                  )
-                                                : const Text(
-                                                    "Null (The user not provide phone number yet)",
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 24,
-                                                        fontWeight:
-                                                            FontWeight.w700),
-                                                  )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    const Spacer()
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }
-              return const SizedBox();
-            },
-          )
+          _userListBuilder()
         ],
       ),
     )));
+  }
+
+  BlocConsumer<UsersBloc, UsersState> _userListBuilder() {
+    return BlocConsumer<UsersBloc, UsersState>(
+          listener: (context, state) {
+            if (state is UserErrorState) {
+              showToastFailed(context, "Failed to load users ${state.error}");
+              //print(state.error);
+            }
+          },
+          builder: (context, state) {
+            if (state is UserLoadedState) {
+              List<User> userList = state.users;
+              return Expanded(
+                flex: 1,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: userList.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Container(
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: Constants.bgColorAdmin,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: userList[index].avatar != null
+                                        ? Image.network(
+                                            userList[index].avatar!,
+                                            width: 200,
+                                            height: 200,
+                                            fit: BoxFit.fill,
+                                          )
+                                        : Image.asset(
+                                            Constants.avatarDefaultPath,
+                                            width: 200,
+                                            height: 200,
+                                            fit: BoxFit.fill,
+                                          ),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          const Padding(
+                                            padding: EdgeInsets.all(14.0),
+                                            child: Text(
+                                              "Email :",
+                                              style: TextStyle(
+                                                  color: Colors.white54,
+                                                  fontSize: 20,
+                                                  fontWeight:
+                                                      FontWeight.w500),
+                                            ),
+                                          ),
+                                          Text(
+                                            userList[index].email,
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Padding(
+                                            padding: EdgeInsets.all(14.0),
+                                            child: Text(
+                                              "Username :",
+                                              style: TextStyle(
+                                                  color: Colors.white54,
+                                                  fontSize: 20,
+                                                  fontWeight:
+                                                      FontWeight.w500),
+                                            ),
+                                          ),
+                                          Text(
+                                            userList[index].username,
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Padding(
+                                            padding: EdgeInsets.all(14.0),
+                                            child: Text(
+                                              "Role  :",
+                                              style: TextStyle(
+                                                  color: Colors.white54,
+                                                  fontSize: 20,
+                                                  fontWeight:
+                                                      FontWeight.w500),
+                                            ),
+                                          ),
+                                          Text(
+                                            userList[index].role,
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Padding(
+                                            padding: EdgeInsets.all(14.0),
+                                            child: Text(
+                                              "Phone Number :",
+                                              style: TextStyle(
+                                                  color: Colors.white54,
+                                                  fontSize: 20,
+                                                  fontWeight:
+                                                      FontWeight.w500),
+                                            ),
+                                          ),
+                                          userList[index].phone_number != null
+                                              ? Text(
+                                                  userList[index]
+                                                      .phone_number!,
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 24,
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                )
+                                              : const Text(
+                                                  "Null (The user not provide phone number yet)",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 24,
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  const Spacer()
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+            return const SizedBox();
+          },
+        );
   }
 }

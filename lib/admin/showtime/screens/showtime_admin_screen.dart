@@ -90,320 +90,324 @@ class ShowtimeAdminScreen extends StatelessWidget {
                 ),
               ],
             ),
-            BlocConsumer<ShowtimeBloc, ShowtimeState>(
-              listener: (context, state) {
-                if (state is ShowtimeErrorState) {
-                  showToastFailed(
-                      context, "Failed to load data ${state.error.toString()}");
-                  Text(
-                    state.error.toString(),
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  );
-                }
-              },
-              builder: (context, state) {
-                if (state is ShowtimeLoadingState) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (state is ShowtimeLoadedState) {
-                  List<ShowTime> showtimeList = state.showtimes;
-                  return Expanded(
-                    flex: 1,
-                    child: ListView.builder(
-                      itemCount: showtimeList.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        var startTime =
-                            showtimeList[index].startTime.toString();
-                        var endTime = showtimeList[index].endTime.toString();
-                        var price = showtimeList[index].price;
+            _showtimeListBuilder(),
+          ],
+        ),
+      ),
+    ));
+  }
 
-                        //date format
-                        DateTime starttime = DateTime.parse(startTime);
-                        String formattedStartTime =
-                            DateFormat('HH:mm:ss').format(starttime);
-                        DateTime endtime = DateTime.parse(endTime);
-                        String formattedEndTime =
-                            DateFormat('HH:mm:ss').format(endtime);
+  BlocConsumer<ShowtimeBloc, ShowtimeState> _showtimeListBuilder() {
+    return BlocConsumer<ShowtimeBloc, ShowtimeState>(
+            listener: (context, state) {
+              if (state is ShowtimeErrorState) {
+                showToastFailed(
+                    context, "Failed to load data ${state.error.toString()}");
+                Text(
+                  state.error.toString(),
+                  style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                );
+              }
+            },
+            builder: (context, state) {
+              if (state is ShowtimeLoadingState) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (state is ShowtimeLoadedState) {
+                List<ShowTime> showtimeList = state.showtimes;
+                return Expanded(
+                  flex: 1,
+                  child: ListView.builder(
+                    itemCount: showtimeList.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      var startTime =
+                          showtimeList[index].startTime.toString();
+                      var endTime = showtimeList[index].endTime.toString();
+                      var price = showtimeList[index].price;
 
-                        //price format
-                        String formattedPrice = NumberFormat.currency(
-                                locale: 'vi_VN', symbol: 'VND')
-                            .format(price);
+                      //date format
+                      DateTime starttime = DateTime.parse(startTime);
+                      String formattedStartTime =
+                          DateFormat('HH:mm:ss').format(starttime);
+                      DateTime endtime = DateTime.parse(endTime);
+                      String formattedEndTime =
+                          DateFormat('HH:mm:ss').format(endtime);
 
-                        return Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Container(
-                            padding: const EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                              color: Constants.bgColorAdmin,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        const Padding(
-                                          padding: EdgeInsets.all(14.0),
-                                          child: Text(
-                                            "Showtime ID  :",
-                                            style: TextStyle(
-                                                color: Colors.white54,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w500),
-                                          ),
+                      //price format
+                      String formattedPrice = NumberFormat.currency(
+                              locale: 'vi_VN', symbol: 'VND')
+                          .format(price);
+
+                      return Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Constants.bgColorAdmin,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Padding(
+                                        padding: EdgeInsets.all(14.0),
+                                        child: Text(
+                                          "Showtime ID  :",
+                                          style: TextStyle(
+                                              color: Colors.white54,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500),
                                         ),
-                                        Text(
-                                          showtimeList[index].id,
-                                          style: const TextStyle(
+                                      ),
+                                      Text(
+                                        showtimeList[index].id,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                      Container(
+                                          margin:
+                                              const EdgeInsets.only(left: 10),
+                                          child: InkWell(
+                                            onTap: () {
+                                              // this is for copy text
+                                              Clipboard.setData(ClipboardData(
+                                                  text: showtimeList[index]
+                                                      .id
+                                                      .toString()));
+                                              showToastSuccess(
+                                                  context, "Copied");
+                                            },
+                                            child: Image.asset(
+                                              Constants.copyPath,
                                               color: Colors.white,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w700),
+                                            ),
+                                          )),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Padding(
+                                        padding: EdgeInsets.all(14.0),
+                                        child: Text(
+                                          "Room name :",
+                                          style: TextStyle(
+                                              color: Colors.white54,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500),
                                         ),
-                                        Container(
-                                            margin:
-                                                const EdgeInsets.only(left: 10),
-                                            child: InkWell(
-                                              onTap: () {
-                                                // this is for copy text
-                                                Clipboard.setData(ClipboardData(
-                                                    text: showtimeList[index]
-                                                        .id
-                                                        .toString()));
-                                                showToastSuccess(
-                                                    context, "Copied");
-                                              },
-                                              child: Image.asset(
-                                                Constants.copyPath,
-                                                color: Colors.white,
-                                              ),
-                                            )),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Padding(
-                                          padding: EdgeInsets.all(14.0),
-                                          child: Text(
-                                            "Room name :",
-                                            style: TextStyle(
-                                                color: Colors.white54,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w500),
-                                          ),
+                                      ),
+                                      Text(
+                                        showtimeList[index].room.name,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Padding(
+                                        padding: EdgeInsets.all(14.0),
+                                        child: Text(
+                                          "Cinema name :",
+                                          style: TextStyle(
+                                              color: Colors.white54,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500),
                                         ),
-                                        Text(
-                                          showtimeList[index].room.name,
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w700),
+                                      ),
+                                      Text(
+                                        showtimeList[index].room.cinema.name,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Padding(
+                                        padding: EdgeInsets.all(14.0),
+                                        child: Text(
+                                          "Cinema address :",
+                                          style: TextStyle(
+                                              color: Colors.white54,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500),
                                         ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Padding(
-                                          padding: EdgeInsets.all(14.0),
-                                          child: Text(
-                                            "Cinema name :",
-                                            style: TextStyle(
-                                                color: Colors.white54,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ),
-                                        Text(
-                                          showtimeList[index].room.cinema.name,
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Padding(
-                                          padding: EdgeInsets.all(14.0),
-                                          child: Text(
-                                            "Cinema address :",
-                                            style: TextStyle(
-                                                color: Colors.white54,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 500,
-                                          child: Text(
-                                            showtimeList[index]
-                                                .room
-                                                .cinema
-                                                .location
-                                                .address,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w700),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 20)),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        const Padding(
-                                          padding: EdgeInsets.all(14.0),
-                                          child: Text(
-                                            "Movie title  :",
-                                            style: TextStyle(
-                                                color: Colors.white54,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ),
-                                        Text(
-                                          showtimeList[index].movie.title,
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                        Container(
-                                            margin:
-                                                const EdgeInsets.only(left: 10),
-                                            child: InkWell(
-                                              onTap: () {
-                                                // this is for copy text
-                                                Clipboard.setData(ClipboardData(
-                                                    text: showtimeList[index]
-                                                        .movie
-                                                        .title));
-                                                showToastSuccess(
-                                                    context, "Copied");
-                                              },
-                                              child: Image.asset(
-                                                Constants.copyPath,
-                                                color: Colors.white,
-                                              ),
-                                            )),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Padding(
-                                          padding: EdgeInsets.all(14.0),
-                                          child: Text(
-                                            "Start time :",
-                                            style: TextStyle(
-                                                color: Colors.white54,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ),
-                                        Text(
-                                          formattedStartTime,
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Padding(
-                                          padding: EdgeInsets.all(14.0),
-                                          child: Text(
-                                            "End time :",
-                                            style: TextStyle(
-                                                color: Colors.white54,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ),
-                                        Text(
-                                          formattedEndTime,
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Padding(
-                                          padding: EdgeInsets.all(14.0),
-                                          child: Text(
-                                            "Price :",
-                                            style: TextStyle(
-                                                color: Colors.white54,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ),
-                                        Text(
-                                          formattedPrice,
+                                      ),
+                                      SizedBox(
+                                        width: 500,
+                                        child: Text(
+                                          showtimeList[index]
+                                              .room
+                                              .cinema
+                                              .location
+                                              .address,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 20,
                                               fontWeight: FontWeight.w700),
                                         ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                const Spacer(),
-                                Container(
-                                  width: 100,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.deepPurple,
+                                      ),
+                                    ],
                                   ),
-                                  child: ListTile(
-                                    onTap: () {},
-                                    title: const Text(
-                                      "Details",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
-                                    ),
+                                ],
+                              ),
+                              const Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 20)),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Padding(
+                                        padding: EdgeInsets.all(14.0),
+                                        child: Text(
+                                          "Movie title  :",
+                                          style: TextStyle(
+                                              color: Colors.white54,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                      Text(
+                                        showtimeList[index].movie.title,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                      Container(
+                                          margin:
+                                              const EdgeInsets.only(left: 10),
+                                          child: InkWell(
+                                            onTap: () {
+                                              // this is for copy text
+                                              Clipboard.setData(ClipboardData(
+                                                  text: showtimeList[index]
+                                                      .movie
+                                                      .title));
+                                              showToastSuccess(
+                                                  context, "Copied");
+                                            },
+                                            child: Image.asset(
+                                              Constants.copyPath,
+                                              color: Colors.white,
+                                            ),
+                                          )),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Padding(
+                                        padding: EdgeInsets.all(14.0),
+                                        child: Text(
+                                          "Start time :",
+                                          style: TextStyle(
+                                              color: Colors.white54,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                      Text(
+                                        formattedStartTime,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Padding(
+                                        padding: EdgeInsets.all(14.0),
+                                        child: Text(
+                                          "End time :",
+                                          style: TextStyle(
+                                              color: Colors.white54,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                      Text(
+                                        formattedEndTime,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Padding(
+                                        padding: EdgeInsets.all(14.0),
+                                        child: Text(
+                                          "Price :",
+                                          style: TextStyle(
+                                              color: Colors.white54,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                      Text(
+                                        formattedPrice,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const Spacer(),
+                              Container(
+                                width: 100,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.deepPurple,
+                                ),
+                                child: ListTile(
+                                  onTap: () {},
+                                  title: const Text(
+                                    "Details",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        );
-                      },
-                    ),
-                  );
-                }
-                return const SizedBox();
-              },
-            ),
-          ],
-        ),
-      ),
-    ));
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }
+              return const SizedBox();
+            },
+          );
   }
 }

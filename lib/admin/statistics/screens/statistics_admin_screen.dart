@@ -55,59 +55,7 @@ class _StatisticsAdminScreenState extends State<StatisticsAdminScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ColorSuggest(
-                        color: Colors.blue,
-                        title: "January",
-                      ),
-                      ColorSuggest(
-                        color: Colors.red,
-                        title: "February",
-                      ),
-                      ColorSuggest(
-                        color: Colors.yellow,
-                        title: "March",
-                      ),
-                      ColorSuggest(
-                        color: Colors.green,
-                        title: "April",
-                      ),
-                      ColorSuggest(
-                        color: Colors.cyanAccent,
-                        title: "May",
-                      ),
-                      ColorSuggest(
-                        color: Colors.pinkAccent,
-                        title: "June",
-                      ),
-                      ColorSuggest(
-                        color: Colors.purple,
-                        title: "July",
-                      ),
-                      ColorSuggest(
-                        color: Colors.teal,
-                        title: "August",
-                      ),
-                      ColorSuggest(
-                        color: Colors.grey,
-                        title: "September",
-                      ),
-                      ColorSuggest(
-                        color: Colors.blueGrey,
-                        title: "October",
-                      ),
-                      ColorSuggest(
-                        color: Colors.amber,
-                        title: "November",
-                      ),
-                      ColorSuggest(
-                        color: Colors.orange,
-                        title: "December",
-                      ),
-                    ],
-                  ),
+                  const _SuggestColumn(),
                   Stack(
                     alignment: Alignment.center,
                     children: [
@@ -121,182 +69,7 @@ class _StatisticsAdminScreenState extends State<StatisticsAdminScreen> {
                       SizedBox(
                         width: 700,
                         height: 700,
-                        child: FutureBuilder(
-                            future: fetchData(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Center(
-                                    child:
-                                        CircularProgressIndicator()); // Display loading for data waiting
-                              } else if (snapshot.hasError) {
-                                return Text('Error: ${snapshot.error}');
-                              } else {
-                                //price format
-                                String formattedMonth1 = NumberFormat.currency(
-                                        locale: 'vi_VN', symbol: 'VND')
-                                    .format(snapshot.data[0]);
-                                String formattedMonth2 = NumberFormat.currency(
-                                        locale: 'vi_VN', symbol: 'VND')
-                                    .format(snapshot.data[1]);
-                                String formattedMonth3 = NumberFormat.currency(
-                                        locale: 'vi_VN', symbol: 'VND')
-                                    .format(snapshot.data[2]);
-                                String formattedMonth4 = NumberFormat.currency(
-                                        locale: 'vi_VN', symbol: 'VND')
-                                    .format(snapshot.data[3]);
-                                String formattedMonth5 = NumberFormat.currency(
-                                        locale: 'vi_VN', symbol: 'VND')
-                                    .format(snapshot.data[4]);
-                                String formattedMonth6 = NumberFormat.currency(
-                                        locale: 'vi_VN', symbol: 'VND')
-                                    .format(snapshot.data[5]);
-                                String formattedMonth7 = NumberFormat.currency(
-                                        locale: 'vi_VN', symbol: 'VND')
-                                    .format(snapshot.data[6]);
-                                String formattedMonth8 = NumberFormat.currency(
-                                        locale: 'vi_VN', symbol: 'VND')
-                                    .format(snapshot.data[7]);
-                                String formattedMonth9 = NumberFormat.currency(
-                                        locale: 'vi_VN', symbol: 'VND')
-                                    .format(snapshot.data[8]);
-                                String formattedMonth10 = NumberFormat.currency(
-                                        locale: 'vi_VN', symbol: 'VND')
-                                    .format(snapshot.data[9]);
-                                String formattedMonth11 = NumberFormat.currency(
-                                        locale: 'vi_VN', symbol: 'VND')
-                                    .format(snapshot.data[10]);
-                                String formattedMonth12 = NumberFormat.currency(
-                                        locale: 'vi_VN', symbol: 'VND')
-                                    .format(snapshot.data[11]);
-                                return PieChart(
-                                    swapAnimationCurve: Curves.easeInOutQuint,
-                                    swapAnimationDuration:
-                                        const Duration(milliseconds: 750),
-                                    PieChartData(sections: [
-                                      PieChartSectionData(
-                                        value: snapshot.data[0].toDouble(),
-                                        title: formattedMonth1,
-                                        radius: 100,
-                                        titleStyle: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 12),
-                                        color: Colors.blue,
-                                      ),
-                                      PieChartSectionData(
-                                        value: snapshot.data[1].toDouble(),
-                                        title: formattedMonth2,
-                                        radius: 100,
-                                        titleStyle: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 12),
-                                        color: Colors.red,
-                                      ),
-                                      PieChartSectionData(
-                                        value: snapshot.data[2].toDouble(),
-                                        title: formattedMonth3,
-                                        radius: 100,
-                                        titleStyle: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 12),
-                                        color: Colors.yellow,
-                                      ),
-                                      PieChartSectionData(
-                                        value: snapshot.data[3].toDouble(),
-                                        title: formattedMonth4,
-                                        radius: 100,
-                                        titleStyle: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 12),
-                                        color: Colors.green,
-                                      ),
-                                      PieChartSectionData(
-                                        value: snapshot.data[4].toDouble(),
-                                        title: formattedMonth5,
-                                        radius: 100,
-                                        titleStyle: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 12),
-                                        color: Colors.cyanAccent,
-                                      ),
-                                      PieChartSectionData(
-                                        value: snapshot.data[5].toDouble(),
-                                        title: formattedMonth6,
-                                        radius: 100,
-                                        titleStyle: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 12),
-                                        color: Colors.pinkAccent,
-                                      ),
-                                      PieChartSectionData(
-                                        value: snapshot.data[6].toDouble(),
-                                        title: formattedMonth7,
-                                        radius: 100,
-                                        titleStyle: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 12),
-                                        color: Colors.purple,
-                                      ),
-                                      PieChartSectionData(
-                                        value: snapshot.data[7].toDouble(),
-                                        title: formattedMonth8,
-                                        radius: 100,
-                                        titleStyle: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 12),
-                                        color: Colors.teal,
-                                      ),
-                                      PieChartSectionData(
-                                        value: snapshot.data[8].toDouble(),
-                                        title: formattedMonth9,
-                                        radius: 100,
-                                        titleStyle: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 12),
-                                        color: Colors.grey,
-                                      ),
-                                      PieChartSectionData(
-                                        value: snapshot.data[9].toDouble(),
-                                        title: formattedMonth10,
-                                        radius: 100,
-                                        titleStyle: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 12),
-                                        color: Colors.blueGrey,
-                                      ),
-                                      PieChartSectionData(
-                                        value: snapshot.data[10].toDouble(),
-                                        title: formattedMonth11,
-                                        radius: 100,
-                                        titleStyle: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 12),
-                                        color: Colors.amber,
-                                      ),
-                                      PieChartSectionData(
-                                        value: snapshot.data[11].toDouble(),
-                                        title: formattedMonth12,
-                                        radius: 100,
-                                        titleStyle: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 12),
-                                        color: Colors.orange,
-                                      ),
-                                    ]));
-                              }
-                            }),
+                        child: _statisticsBuilder(),
                       )
                     ],
                   ),
@@ -306,6 +79,248 @@ class _StatisticsAdminScreenState extends State<StatisticsAdminScreen> {
           ),
         ),
       )),
+    );
+  }
+
+  FutureBuilder<dynamic> _statisticsBuilder() {
+    return FutureBuilder(
+                          future: fetchData(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                  child:
+                                      CircularProgressIndicator()); // Display loading for data waiting
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else {
+                              //price format
+                              String formattedMonth1 = NumberFormat.currency(
+                                      locale: 'vi_VN', symbol: 'VND')
+                                  .format(snapshot.data[0]);
+                              String formattedMonth2 = NumberFormat.currency(
+                                      locale: 'vi_VN', symbol: 'VND')
+                                  .format(snapshot.data[1]);
+                              String formattedMonth3 = NumberFormat.currency(
+                                      locale: 'vi_VN', symbol: 'VND')
+                                  .format(snapshot.data[2]);
+                              String formattedMonth4 = NumberFormat.currency(
+                                      locale: 'vi_VN', symbol: 'VND')
+                                  .format(snapshot.data[3]);
+                              String formattedMonth5 = NumberFormat.currency(
+                                      locale: 'vi_VN', symbol: 'VND')
+                                  .format(snapshot.data[4]);
+                              String formattedMonth6 = NumberFormat.currency(
+                                      locale: 'vi_VN', symbol: 'VND')
+                                  .format(snapshot.data[5]);
+                              String formattedMonth7 = NumberFormat.currency(
+                                      locale: 'vi_VN', symbol: 'VND')
+                                  .format(snapshot.data[6]);
+                              String formattedMonth8 = NumberFormat.currency(
+                                      locale: 'vi_VN', symbol: 'VND')
+                                  .format(snapshot.data[7]);
+                              String formattedMonth9 = NumberFormat.currency(
+                                      locale: 'vi_VN', symbol: 'VND')
+                                  .format(snapshot.data[8]);
+                              String formattedMonth10 = NumberFormat.currency(
+                                      locale: 'vi_VN', symbol: 'VND')
+                                  .format(snapshot.data[9]);
+                              String formattedMonth11 = NumberFormat.currency(
+                                      locale: 'vi_VN', symbol: 'VND')
+                                  .format(snapshot.data[10]);
+                              String formattedMonth12 = NumberFormat.currency(
+                                      locale: 'vi_VN', symbol: 'VND')
+                                  .format(snapshot.data[11]);
+                              return PieChart(
+                                  swapAnimationCurve: Curves.easeInOutQuint,
+                                  swapAnimationDuration:
+                                      const Duration(milliseconds: 750),
+                                  PieChartData(sections: [
+                                    PieChartSectionData(
+                                      value: snapshot.data[0].toDouble(),
+                                      title: formattedMonth1,
+                                      radius: 100,
+                                      titleStyle: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 12),
+                                      color: Colors.blue,
+                                    ),
+                                    PieChartSectionData(
+                                      value: snapshot.data[1].toDouble(),
+                                      title: formattedMonth2,
+                                      radius: 100,
+                                      titleStyle: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 12),
+                                      color: Colors.red,
+                                    ),
+                                    PieChartSectionData(
+                                      value: snapshot.data[2].toDouble(),
+                                      title: formattedMonth3,
+                                      radius: 100,
+                                      titleStyle: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 12),
+                                      color: Colors.yellow,
+                                    ),
+                                    PieChartSectionData(
+                                      value: snapshot.data[3].toDouble(),
+                                      title: formattedMonth4,
+                                      radius: 100,
+                                      titleStyle: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 12),
+                                      color: Colors.green,
+                                    ),
+                                    PieChartSectionData(
+                                      value: snapshot.data[4].toDouble(),
+                                      title: formattedMonth5,
+                                      radius: 100,
+                                      titleStyle: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 12),
+                                      color: Colors.cyanAccent,
+                                    ),
+                                    PieChartSectionData(
+                                      value: snapshot.data[5].toDouble(),
+                                      title: formattedMonth6,
+                                      radius: 100,
+                                      titleStyle: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 12),
+                                      color: Colors.pinkAccent,
+                                    ),
+                                    PieChartSectionData(
+                                      value: snapshot.data[6].toDouble(),
+                                      title: formattedMonth7,
+                                      radius: 100,
+                                      titleStyle: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 12),
+                                      color: Colors.purple,
+                                    ),
+                                    PieChartSectionData(
+                                      value: snapshot.data[7].toDouble(),
+                                      title: formattedMonth8,
+                                      radius: 100,
+                                      titleStyle: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 12),
+                                      color: Colors.teal,
+                                    ),
+                                    PieChartSectionData(
+                                      value: snapshot.data[8].toDouble(),
+                                      title: formattedMonth9,
+                                      radius: 100,
+                                      titleStyle: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 12),
+                                      color: Colors.grey,
+                                    ),
+                                    PieChartSectionData(
+                                      value: snapshot.data[9].toDouble(),
+                                      title: formattedMonth10,
+                                      radius: 100,
+                                      titleStyle: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 12),
+                                      color: Colors.blueGrey,
+                                    ),
+                                    PieChartSectionData(
+                                      value: snapshot.data[10].toDouble(),
+                                      title: formattedMonth11,
+                                      radius: 100,
+                                      titleStyle: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 12),
+                                      color: Colors.amber,
+                                    ),
+                                    PieChartSectionData(
+                                      value: snapshot.data[11].toDouble(),
+                                      title: formattedMonth12,
+                                      radius: 100,
+                                      titleStyle: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 12),
+                                      color: Colors.orange,
+                                    ),
+                                  ]));
+                            }
+                          });
+  }
+}
+
+class _SuggestColumn extends StatelessWidget {
+  const _SuggestColumn({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ColorSuggest(
+          color: Colors.blue,
+          title: "January",
+        ),
+        ColorSuggest(
+          color: Colors.red,
+          title: "February",
+        ),
+        ColorSuggest(
+          color: Colors.yellow,
+          title: "March",
+        ),
+        ColorSuggest(
+          color: Colors.green,
+          title: "April",
+        ),
+        ColorSuggest(
+          color: Colors.cyanAccent,
+          title: "May",
+        ),
+        ColorSuggest(
+          color: Colors.pinkAccent,
+          title: "June",
+        ),
+        ColorSuggest(
+          color: Colors.purple,
+          title: "July",
+        ),
+        ColorSuggest(
+          color: Colors.teal,
+          title: "August",
+        ),
+        ColorSuggest(
+          color: Colors.grey,
+          title: "September",
+        ),
+        ColorSuggest(
+          color: Colors.blueGrey,
+          title: "October",
+        ),
+        ColorSuggest(
+          color: Colors.amber,
+          title: "November",
+        ),
+        ColorSuggest(
+          color: Colors.orange,
+          title: "December",
+        ),
+      ],
     );
   }
 }
