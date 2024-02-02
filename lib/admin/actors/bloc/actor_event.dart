@@ -15,16 +15,36 @@ class LoadSearchActorEvent extends ActorEvent {
   List<Object> get props => [id!];
 }
 
-// class AddRoomEvent extends ActorEvent {
-//   final String roomName;
-//   final String cinemaId;
-//   final BuildContext context;
-//
-//   const AddRoomEvent({required this.roomName, required this.cinemaId, required this.context});
-//
-//
-//   @override
-//   List<Object> get props => [roomName,cinemaId,context];
-// }
+class AddActorsEvent extends ActorEvent {
+  final File avatar;
+  final String name;
+  final String dob;
+  final String country;
+  final BuildContext context;
+
+  const AddActorsEvent({required this.avatar, required this.name, required this.dob, required this.country, required this.context});
+
+
+
+  @override
+  List<Object> get props => [avatar,name,dob,country,context];
+}
+
+class UpdateActorsEvent extends ActorEvent {
+  final File? avatar;
+  final String name;
+  final String dob;
+  final String country;
+  final String actorID;
+  final BuildContext context;
+
+  const UpdateActorsEvent({required this.avatar, required this.name, required this.dob, required this.country,required this.actorID, required this.context});
+
+
+
+  @override
+  List<Object> get props => [avatar!,name,dob,country,actorID,context];
+}
+
 
 

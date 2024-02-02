@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:movie_booking_app/admin/actors/screens/add_new_actor.dart';
+import 'package:movie_booking_app/admin/actors/screens/update_actor.dart';
 import 'package:movie_booking_app/models/actor_model.dart';
-
+import 'package:get/get.dart' as Getx;
 import '../../../core/components/header_admin.dart';
 import '../../../core/constants/constants.dart';
 import '../../../core/constants/ultis.dart';
@@ -29,9 +32,9 @@ class ActorAdminScreen extends StatelessWidget {
                   splashColor: Colors.red,
                   hoverColor: Colors.white54,
                   onTap: () {
-                    // Getx.Get.to(() => (const AddNewRoom()),
-                    //     transition: Getx.Transition.cupertino,
-                    //     duration: const Duration(seconds: 2));
+                    Getx.Get.to(() => (const AddNewActor()),
+                        transition: Getx.Transition.cupertino,
+                        duration: const Duration(seconds: 2));
                   },
                   child: Container(
                     width: 195,
@@ -98,176 +101,195 @@ class ActorAdminScreen extends StatelessWidget {
 
   BlocConsumer<ActorBloc, ActorState> _actorListBuilder() {
     return BlocConsumer<ActorBloc, ActorState>(
-            listener: (context, state) {
-              if (state is ActorErrorState) {
-                //print(state.error);
-              }
-            },
-            builder: (context, state) {
-              if (state is ActorLoadingState) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              if (state is ActorLoadedState) {
-                List<Actor> actorList = state.actor;
-                return Expanded(
-                  flex: 1,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: actorList.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Container(
-                                padding: const EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                  color: Constants.bgColorAdmin,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Row(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Image.network(
-                                        actorList[index].avatar,
-                                        width: 200,
-                                        height: 200,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            const Padding(
-                                              padding: EdgeInsets.all(14.0),
-                                              child: Text(
-                                                "Actor ID :",
-                                                style: TextStyle(
-                                                    color: Colors.white54,
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ),
-                                            Text(
-                                              actorList[index].id,
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 24,
-                                                  fontWeight:
-                                                      FontWeight.w700),
-                                            ),
-                                            Container(
-                                                margin: const EdgeInsets.only(
-                                                    left: 10),
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    // this is for copy text
-                                                    Clipboard.setData(
-                                                        ClipboardData(
-                                                            text: actorList[
-                                                                    index]
-                                                                .id));
-                                                    showToastSuccess(
-                                                        context, "Copied");
-                                                  },
-                                                  child: Image.asset(
-                                                    Constants.copyPath,
-                                                    color: Colors.white,
-                                                  ),
-                                                )),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            const Padding(
-                                              padding: EdgeInsets.all(14.0),
-                                              child: Text(
-                                                "Actor name :",
-                                                style: TextStyle(
-                                                    color: Colors.white54,
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ),
-                                            Text(
-                                              actorList[index].name,
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 24,
-                                                  fontWeight:
-                                                      FontWeight.w700),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            const Padding(
-                                              padding: EdgeInsets.all(14.0),
-                                              child: Text(
-                                                "Actor country :",
-                                                style: TextStyle(
-                                                    color: Colors.white54,
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ),
-                                            Text(
-                                              actorList[index].country,
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 24,
-                                                  fontWeight:
-                                                      FontWeight.w700),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            const Padding(
-                                              padding: EdgeInsets.all(14.0),
-                                              child: Text(
-                                                "Actor Dob  :",
-                                                style: TextStyle(
-                                                    color: Colors.white54,
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ),
-                                            Text(
-                                              actorList[index].dob,
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 24,
-                                                  fontWeight:
-                                                      FontWeight.w700),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    const Spacer()
-                                  ],
+      listener: (context, state) {
+        if (state is ActorErrorState) {
+          //print(state.error);
+        }
+      },
+      builder: (context, state) {
+        if (state is ActorLoadingState) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (state is ActorLoadedState) {
+          List<Actor> actorList = state.actor;
+
+          return Expanded(
+            flex: 1,
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: actorList.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      var dob = actorList[index].dob;
+                      DateTime dobDate = DateTime.parse(dob);
+                      String formattedDob =
+                          DateFormat('yyyy/MM/dd').format(dobDate);
+                      return Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Constants.bgColorAdmin,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.network(
+                                  actorList[index].avatar,
+                                  width: 200,
+                                  height: 200,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
-                            );
-                          },
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Padding(
+                                        padding: EdgeInsets.all(14.0),
+                                        child: Text(
+                                          "Actor ID :",
+                                          style: TextStyle(
+                                              color: Colors.white54,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                      Text(
+                                        actorList[index].id,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                      Container(
+                                          margin:
+                                              const EdgeInsets.only(left: 10),
+                                          child: InkWell(
+                                            onTap: () {
+                                              // this is for copy text
+                                              Clipboard.setData(ClipboardData(
+                                                  text: actorList[index].id));
+                                              showToastSuccess(
+                                                  context, "Copied");
+                                            },
+                                            child: Image.asset(
+                                              Constants.copyPath,
+                                              color: Colors.white,
+                                            ),
+                                          )),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Padding(
+                                        padding: EdgeInsets.all(14.0),
+                                        child: Text(
+                                          "Actor name :",
+                                          style: TextStyle(
+                                              color: Colors.white54,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                      Text(
+                                        actorList[index].name,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Padding(
+                                        padding: EdgeInsets.all(14.0),
+                                        child: Text(
+                                          "Actor country :",
+                                          style: TextStyle(
+                                              color: Colors.white54,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                      Text(
+                                        actorList[index].country,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Padding(
+                                        padding: EdgeInsets.all(14.0),
+                                        child: Text(
+                                          "Actor Dob  :",
+                                          style: TextStyle(
+                                              color: Colors.white54,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                      Text(
+                                        formattedDob,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const Spacer(),
+                              Container(
+                                width: 100,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.blue,
+                                ),
+                                child: ListTile(
+                                  onTap: () {
+                                    Getx.Get.to(
+                                        () => (UpdateActor(
+                                              actor: actorList[index],
+                                            )),
+                                        transition: Getx.Transition.cupertino,
+                                        duration: const Duration(seconds: 2));
+                                  },
+                                  title: const Text(
+                                    "Update",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
-                );
-              }
-              return const SizedBox();
-            },
+                ),
+              ],
+            ),
           );
+        }
+        return const SizedBox();
+      },
+    );
   }
 }
