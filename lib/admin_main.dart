@@ -4,8 +4,10 @@ import 'package:movie_booking_app/admin/cinema/screens/cinema_admin_screen.dart'
 import 'package:movie_booking_app/admin/movie/screens/movie_admin_screen.dart';
 import 'package:movie_booking_app/admin/showtime/screens/showtime_admin_screen.dart';
 import 'package:movie_booking_app/admin/statistics/screens/statistics_admin_screen.dart';
+import 'package:movie_booking_app/admin/user/screens/update_admin_profile.dart';
 import 'package:movie_booking_app/admin/user/screens/user_admin_screen.dart';
 import 'package:movie_booking_app/core/constants/constants.dart';
+import 'package:movie_booking_app/profile/screens/update_profile_screen.dart';
 
 import 'admin/room/screens/room_admin_screen.dart';
 
@@ -101,12 +103,22 @@ class _AdminMainState extends State<AdminMain> {
                   },
                   isSelected: selectedDrawerItem == "Actor",
                 ),
+                DrawerListTile(
+                  title: "Settings",
+                  imageSrc: Constants.settingPath,
+                  press: () {
+                    setState(() {
+                      selectedDrawerItem = "Settings";
+                    });
+                  },
+                  isSelected: selectedDrawerItem == "Settings",
+                ),
               ],
             )),
             Expanded(
               flex: 5,
               child: Container(
-                color: Colors.blue,
+                color: Constants.bgColorAdmin,
                 child: _buildSelectedContent(),
               ),
             ),
@@ -133,6 +145,8 @@ class _AdminMainState extends State<AdminMain> {
         return const RoomAdminScreen();
       case "Actor":
         return const ActorAdminScreen();
+      case "Settings":
+        return const UpdateAdminProfile();
       default:
         return Container();
     }

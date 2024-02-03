@@ -378,26 +378,6 @@ class ShowtimeAdminScreen extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              const Spacer(),
-                              Container(
-                                width: 100,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.deepPurple,
-                                ),
-                                child: ListTile(
-                                  onTap: () {},
-                                  title: const Text(
-                                    "Details",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  ),
-                                ),
-                              ),
                             ],
                           ),
                         ),
