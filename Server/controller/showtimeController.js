@@ -18,7 +18,7 @@ exports.getAllShowtimes = catchAsync(async(req, res, next) => {
 exports.getShowtimeByName = catchAsync(async(req, res, next) => {
   if(!req.query.title) return next();
 
-  let showtimes = await Showtime.find({start_time: { $gt: req.request_time }}).populate({path: 'room', select: 'name', populate: 'cinema'}).populate({path: 'movie', select: 'title'})
+  let showtimes = await Showtime.find({start_time: { $gt: req.request_time }}).populate({path: 'room', select: 'name', populate: 'cinema'}).populate({path: 'movie', select: 'title'}) .populate({path: 'movie', select: 'title imageCover'})
   showtimes = showtimes.filter(item => item.movie.title == req.query.title)
   res.json({
     status: 'success',  

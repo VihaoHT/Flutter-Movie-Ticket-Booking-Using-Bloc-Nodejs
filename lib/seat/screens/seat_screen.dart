@@ -1,5 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
+import 'package:movie_booking_app/core/constants/ultis.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/constants/constants.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
@@ -9,15 +15,14 @@ import '../../models/user_model.dart';
 class SeatScreen extends StatefulWidget {
   final dynamic item;
   final String userId;
-  const SeatScreen({super.key, required this.item,required this.userId});
+
+  const SeatScreen({super.key, required this.item, required this.userId});
 
   @override
   State<SeatScreen> createState() => _SeatScreenState();
 }
 
 class _SeatScreenState extends State<SeatScreen> {
-  static const host = "http://192.168.2.6:3000";
-  final socket = io.io(host);
   List<String> selectedSeats = [];
   List<String> mySeats = [];
   List<String> specialSeats = [];
@@ -92,55 +97,85 @@ class _SeatScreenState extends State<SeatScreen> {
 
   @override
   void initState() {
+    print(widget.item);
+    print(selectedSeats);
     super.initState();
-    //print(widget.userId);
+  }
 
-
-    socket.onConnect((_) {
-      //print('Connected');
-    });
-
-    // Gửi sự kiện "joinRoom" với mã showtimeId
-    socket.emit('joinRoom', widget.item['_id']);
-
-    // Lắng nghe sự kiện "seat_changed"
-    socket.on('seat_changed', (dataGot) {
-      // Xử lý dữ liệu khi có thay đổi về ghế ngồi
-      if (dataGot.length == 0) {
-        // Không có ai chọn ghế
-        selectedSeats = [];
-        mySeats = [];
-        return;
+  void toggleSeatSelection(String seat) {
+    setState(() {
+      if (selectedSeats.contains(seat)) {
+        selectedSeats.remove(seat);
+        print(selectedSeats);
+      } else {
+        selectedSeats.add(seat);
+        print(selectedSeats);
       }
-      // Xử lý dữ liệu khi có thay đổi về ghế ngồi
-
     });
   }
 
-  // Hàm để lọc các ghế đã đặt
-  List<String> filterReservedSeats(List<dynamic> arr) {
-    // Filter seats with "reserved" status:
-    final reservedSeats = arr.where((item) => item['status'] == 'reserved').toList();
+  checkoutSelectedSeats() async {
+    // Gửi danh sách ghế đã chọn lên API
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? token = preferences.getString('token');
+    final response = await post(
+        Uri.parse(
+            'http://192.168.2.6:3000/api/tickets/checkout/${widget.item['_id']}'),
+        body: {
+          'seats': json.encode(selectedSeats)
+        },
+        headers: {
+          'Authorization': 'Bearer $token',
+        });
 
-    // Return either reserved seat numbers or special seats:
-    return reservedSeats.isNotEmpty
-        ? reservedSeats.map((item) => item['seat_number'] as String).toList()
-        : specialSeats;
+    // Xử lý phản hồi từ API
+    if (response.statusCode == 200) {
+      // Xử lý thành công
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      Stripe.publishableKey = "pk_test_51NBvkEFht8KJ0hQJRDYtBvGbE1gXSaIFRFiz3pBErwMQ9B45YKIGVv6CoDVut4nhX7UMipWPeHZDcDzdNdZhnGny00bPelUPPE";
+      await Stripe.instance
+          .initPaymentSheet(
+          paymentSheetParameters: SetupPaymentSheetParameters(
+              paymentIntentClientSecret: data['paymentIntent'], //Gotten from payment intent
+              style: ThemeMode.dark,
+              merchantDisplayName: 'BEENEMA'));
+      displayPaymentSheet();
+      print(data);
+    } else {
+      // Xử lý lỗi
+      print('Checkout failed');
+    }
   }
+  displayPaymentSheet() async {
+    try {
+      // 3. display the payment sheet.
+      await Stripe.instance.presentPaymentSheet();
 
-  // Hàm để lọc các ghế đã đặt bởi người dùng hiện tại
-  List<String> filterMySeats(List<dynamic> arr, String myUserId) {
-    // Filter seats belonging to the current user and not "reserved":
-    final mySeats = arr.where((item) => item['user'] == myUserId && item['status'] != 'reserved').toList();
-
-    // Return seat numbers of my seats:
-    return mySeats.map((item) => item['seat_number'] as String).toList();
-  }
-
-  @override
-  void dispose() {
-    socket.disconnect(); // Ngắt kết nối khi Widget bị hủy
-    super.dispose();
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      String? token = preferences.getString('token');
+      await post(
+          Uri.parse(
+              'http://192.168.2.6:3000/api/tickets/checkout/${widget.item['_id']}/create-ticket'),
+          body: {
+            'seat_number': json.encode(selectedSeats)
+          },
+          headers: {
+            'Authorization': 'Bearer $token',
+          });
+      if(context.mounted) {
+        showToastSuccess(context, 'Payment Successfully!');
+      }
+    } on Exception catch (e) {
+      if (e is StripeException) {
+        // if(context.mounted) {
+        //   showToastFailed(context, 'Error from Stripe: ${e.error.localizedMessage}');
+        // }
+      } else {
+        if(context.mounted) {
+          showToastFailed(context,  'Unforeseen error: ${e}');
+        }
+      }
+    }
   }
 
 
@@ -192,10 +227,14 @@ class _SeatScreenState extends State<SeatScreen> {
                 margin: const EdgeInsets.only(left: 33),
                 child: Row(
                   children: [
-                    Image.network(
-                      widget.item['movie']['imageCover'],
-                      width: 105,
-                      height: 180,
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(
+                        widget.item['movie']['imageCover'],
+                        width: 105,
+                        height: 180,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                     Container(
                       margin: const EdgeInsets.only(left: 20),
@@ -275,12 +314,12 @@ class _SeatScreenState extends State<SeatScreen> {
                   ),
                   itemCount: seats.length,
                   itemBuilder: (context, index) {
-                    final seatNumber = seats[index];
-                    final isSelected = selectedSeats.contains(seatNumber);
+                    final seat = seats[index];
+                    final isSelected = selectedSeats.contains(seat);
 
                     return GestureDetector(
                       onTap: () {
-                        //handleSeatPress(seatNumber);
+                        toggleSeatSelection(seat);
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -290,7 +329,7 @@ class _SeatScreenState extends State<SeatScreen> {
                         ),
                         child: Center(
                           child: Text(
-                            seatNumber,
+                            seat,
                             style: const TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
@@ -373,9 +412,11 @@ class _SeatScreenState extends State<SeatScreen> {
               ),
               const SizedBox(height: 50),
               Container(
-                margin: const EdgeInsets.only(left: 20,right: 20),
+                margin: const EdgeInsets.only(left: 20, right: 20),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    checkoutSelectedSeats();
+                  },
                   style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.zero,
                       shape: RoundedRectangleBorder(
@@ -390,18 +431,6 @@ class _SeatScreenState extends State<SeatScreen> {
                         Container(
                             margin: const EdgeInsets.only(left: 20),
                             child: Image.asset(Constants.cartPath)),
-                        Container(
-                          margin: const EdgeInsets.only(left: 10),
-                          height: 60,
-                          alignment: Alignment.centerLeft,
-                          child: const Text(
-                            '80.000VND',
-                            style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white),
-                          ),
-                        ),
                         Container(
                           margin: const EdgeInsets.only(left: 80),
                           height: 60,

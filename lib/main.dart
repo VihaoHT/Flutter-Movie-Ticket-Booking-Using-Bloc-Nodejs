@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:movie_booking_app/admin/actors/bloc/actor_bloc.dart';
 import 'package:movie_booking_app/admin/cinema/cinema_bloc/cinema_bloc.dart';

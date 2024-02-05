@@ -25,6 +25,7 @@ class _CinemaScreenState extends State<CinemaScreen> {
   void initState() {
     super.initState();
     fetchDistances("");
+    fetchData();
   }
   Future<List<dynamic>> fetchDistances(String cinemaId) async {
     LocationPermission permission = await Geolocator.checkPermission();

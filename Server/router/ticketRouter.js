@@ -6,7 +6,7 @@ const authCOntroller = require('../controller/authController')
 router.use(authCOntroller.protect)
 
 router.post('/checkout/:showtimeId', authCOntroller.protect, ticketController.getShowtime,
-ticketController.seatsCheck, ticketController.checkOut)
+ticketController.checkOut)
 router.post('/checkout/:showtimeId/create-ticket',ticketController.getShowtime, ticketController.createTicketCheckout) 
 router.route('/user').get(ticketController.getTicketFromOneUser)
 router.route('/thong-ke')

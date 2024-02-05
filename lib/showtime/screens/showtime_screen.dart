@@ -21,10 +21,10 @@ class ShowTimeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future<List<dynamic>> fetchData() async {
-      final response = await get(Uri.parse("$uri/api/showtimes?cinema=$id"));
+      final response = await get(Uri.parse("$uri/api/showtimes?title=$title"));
 
       if (response.statusCode == 200) {
-        var responseData = json.decode(response.body)['data']['showtimes'];
+        var responseData = json.decode(response.body)['data'];
         if (responseData is List) {
           return responseData;
         } else {
