@@ -23,6 +23,7 @@ import 'package:movie_booking_app/home/search_bloc/search_bloc.dart';
 import 'package:movie_booking_app/home/top5_bloc/top5_bloc.dart';
 
 void main() {
+  Stripe.publishableKey = "your_stripe_key";
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider<AuthBloc>(create: (_) => AuthBloc()),

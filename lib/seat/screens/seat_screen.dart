@@ -2,11 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:movie_booking_app/core/constants/ultis.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../bottom_navigation.dart';
 import '../../core/constants/constants.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
@@ -95,44 +97,35 @@ class _SeatScreenState extends State<SeatScreen> {
     "H8",
   ];
 
-  @override
-  void initState() {
-    print(widget.item);
-    print(selectedSeats);
-    super.initState();
-  }
-
+  // this is for seats select
   void toggleSeatSelection(String seat) {
     setState(() {
       if (selectedSeats.contains(seat)) {
         selectedSeats.remove(seat);
-        print(selectedSeats);
       } else {
         selectedSeats.add(seat);
-        print(selectedSeats);
+
       }
     });
   }
 
+  // Check out payment
   checkoutSelectedSeats() async {
-    // Gửi danh sách ghế đã chọn lên API
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? token = preferences.getString('token');
     final response = await post(
         Uri.parse(
-            'http://192.168.2.6:3000/api/tickets/checkout/${widget.item['_id']}'),
-        body: {
-          'seats': json.encode(selectedSeats)
-        },
+            '$uri/api/tickets/checkout/${widget.item['_id']}'),
+        body: jsonEncode({
+          'seats': selectedSeats,
+        }),
         headers: {
           'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json'
         });
 
-    // Xử lý phản hồi từ API
     if (response.statusCode == 200) {
-      // Xử lý thành công
       final Map<String, dynamic> data = jsonDecode(response.body);
-      Stripe.publishableKey = "pk_test_51NBvkEFht8KJ0hQJRDYtBvGbE1gXSaIFRFiz3pBErwMQ9B45YKIGVv6CoDVut4nhX7UMipWPeHZDcDzdNdZhnGny00bPelUPPE";
       await Stripe.instance
           .initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
@@ -140,30 +133,40 @@ class _SeatScreenState extends State<SeatScreen> {
               style: ThemeMode.dark,
               merchantDisplayName: 'BEENEMA'));
       displayPaymentSheet();
-      print(data);
+      //print(data);
     } else {
-      // Xử lý lỗi
-      print('Checkout failed');
+      // if user dont pick any seat then toast failed
+      if(context.mounted) {
+        showToastFailed(context, 'You forgot to pick up seats!');
+      }
+      //print('Checkout failed');
     }
   }
   displayPaymentSheet() async {
     try {
       // 3. display the payment sheet.
       await Stripe.instance.presentPaymentSheet();
-
       SharedPreferences preferences = await SharedPreferences.getInstance();
       String? token = preferences.getString('token');
       await post(
           Uri.parse(
-              'http://192.168.2.6:3000/api/tickets/checkout/${widget.item['_id']}/create-ticket'),
-          body: {
-            'seat_number': json.encode(selectedSeats)
-          },
+              '$uri/api/tickets/checkout/${widget.item['_id']}/create-ticket'),
+          body: jsonEncode({
+            'seat_number': selectedSeats,
+          }),
           headers: {
             'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json'
           });
       if(context.mounted) {
         showToastSuccess(context, 'Payment Successfully!');
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const BottomNavigation(),
+          ),
+              (route) => false,
+        );
       }
     } on Exception catch (e) {
       if (e is StripeException) {
@@ -361,7 +364,7 @@ class _SeatScreenState extends State<SeatScreen> {
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(left: 50),
+                    margin: const EdgeInsets.only(left: 40),
                     child: Row(
                       children: [
                         Image.asset(Constants.paidPath),
@@ -377,12 +380,12 @@ class _SeatScreenState extends State<SeatScreen> {
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(left: 50),
+                    margin: const EdgeInsets.only(left: 40),
                     child: Row(
                       children: [
                         Image.asset(Constants.myPath),
                         const Text(
-                          "My seats",
+                          "My seats selecting",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w300,
@@ -393,22 +396,6 @@ class _SeatScreenState extends State<SeatScreen> {
                     ),
                   ),
                 ],
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 20, top: 5),
-                child: Row(
-                  children: [
-                    Image.asset(Constants.otherPath),
-                    const Text(
-                      "Other people selected seats",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w300,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
               ),
               const SizedBox(height: 50),
               Container(

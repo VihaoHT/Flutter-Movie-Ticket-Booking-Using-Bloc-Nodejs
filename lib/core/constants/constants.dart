@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-String uri = 'http://192.168.2.6:3000';
+String uri = 'http://your_ipv4address:3000';
 
 class Constants {
   // image and icon Client
