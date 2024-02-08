@@ -1,16 +1,7 @@
-# movie_booking_app
+# Flutter Movie Ticket Booking Application
 
-A new Flutter project.
+In this project I Using Flutter with Bloc for state management  + NodeJS(Express) Backend 
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+2 THINGS YOU NEED TO RUN THIS PROJECT:
+- In # constants.dart file you need to change String uri = 'http://your_ipv4address:3000' to your ipv4 address!
+- In # main.dart file you need to provide your stripe key Stripe.publishableKey = "your_stripe_key" to access the payment! And also in folder Server config.env too :D then enjoy! 
